@@ -27,7 +27,7 @@ public class Main {
                 case 1 -> {
                     System.out.println("Please choose the id of the node to send to:");
                     int id = input.nextInt();
-                    Node dest = n.getNeighbor(id);
+                    Neighbor dest = n.getNeighbor(id);
                     System.out.println("Please enter the message you want to send:");
                     int msg = input.nextInt();
                     n.addMessage(dest, msg);
@@ -36,7 +36,7 @@ public class Main {
 
                     System.out.println("Please enter the ip of the node to add:");
                     String ip = input.next();
-                    Node neighbor = new Node(ip);
+                    Neighbor neighbor = new Node(ip);
                     n.addConnection(neighbor);
                 }
                 case 3 -> end = true;

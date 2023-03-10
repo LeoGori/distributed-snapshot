@@ -1,73 +1,43 @@
-import java.io.IOException;
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.net.SocketException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Vector;
-import java.util.Queue;
 
-public class Node {
-    private int status;
+public class Node extends Neighbor {
 
-    private ReceiverThread receiverThread;
+    private final ReceiverThread receiverThread;
 
-    private Vector<SenderThread> senderThreads;
-
-    private InetAddress ipAddr;
-
-    private final Vector<Node> neighbors;
+    private final Vector<SenderThread> senderThreads;
+    private final Vector<Neighbor> neighbors;
 
     public Node() throws UnknownHostException {
-        this.status = 0;
-        this.ipAddr = InetAddress.getLocalHost();
-        this.receiverThread = new ReceiverThread(8080);
+        super();
+        this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.senderThreads = new Vector<>();
         this.neighbors = new Vector<>();
     }
 
     public Node(String ipAddr) throws UnknownHostException {
-        this.status = 0;
-        this.ipAddr = InetAddress.getByName(ipAddr);
-        this.receiverThread = new ReceiverThread(8080);
+        super(ipAddr);
+        this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.senderThreads = new Vector<>();
         this.neighbors = new Vector<>();
     }
 
-    public void addConnection(Node n) {
+    public void addConnection(Neighbor n) {
         neighbors.add(n);
         SenderThread senderThread = new SenderThread(n);
         senderThread.start();
         senderThreads.add(senderThread);
     }
 
-    public Node getNeighbor(int id) {
-        return neighbors.get(id);
-    }
-
-    public void addMessage(Node dest, int value) {
+    public void addMessage(Neighbor dest, int value) {
         int index = neighbors.indexOf(dest);
         senderThreads.get(index).addMessage(value);
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public InetAddress getIpAddr() {
-        return ipAddr;
-    }
-
-    public void setIpAddr(InetAddress ipAddr) {
-        this.ipAddr = ipAddr;
+    public Neighbor getNeighbor(int id) {
+        return neighbors.get(id);
     }
 
     public int getPort() {
@@ -75,14 +45,14 @@ public class Node {
     }
 
     @Override public String toString() {
-        String string = "Node " + " at " + ipAddr + ":" + receiverThread.getPort() + "\n";
-        string += " has neighbors: \n";
+        StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
+        string.append(" has neighbors: \n");
         int index = 0;
-        for (Node n : neighbors) {
-            string += "Node " + index + " at " + n.getIpAddr() + ":" + n.getPort() + "\n";
+        for (Neighbor n : neighbors) {
+            string.append("Node ").append(index).append(" at ").append(n.getIpAddr()).append(":").append(port).append("\n");
             index++;
         }
-        return string;
+        return string.toString();
     }
 
 }

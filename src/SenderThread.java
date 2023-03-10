@@ -7,13 +7,13 @@ import java.util.Queue;
 import java.util.LinkedList;
 
 public class SenderThread extends Thread {
-    private final Node neighbor;
+    private final Neighbor neighbor;
 
     private final boolean stop;
 
     private final Queue<Integer> messages;
 
-    public SenderThread(Node neighbor) {
+    public SenderThread(Neighbor neighbor) {
         this.neighbor = neighbor;
         this.messages = new LinkedList<>();
         this.stop = false;
@@ -41,7 +41,6 @@ public class SenderThread extends Thread {
             DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), recv_ip, recv_port);
             try {
                 socket.send(dp);
-                System.out.println("Sent: " + msg);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -26,7 +26,6 @@ public class ReceiverThread extends Thread {
         return port;
     }
 
-
     public void run() {
         while (!stop) {
             System.out.println("Waiting for message...");
