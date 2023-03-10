@@ -9,34 +9,40 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Queue;
 
-public class Node extends Thread {
+public class Node {
     private int status;
+
+    private ReceiverThread receiverThread;
+
+    private Vector<SenderThread> senderThreads;
 
     private InetAddress ipAddr;
 
     private final Vector<Node> neighbors;
 
-    Map<Node, Queue<Integer>> messageTable;
-
-    private int port;
-
     public Node() throws UnknownHostException {
         this.status = 0;
         this.ipAddr = InetAddress.getLocalHost();
-        this.port = 8080;
+        this.receiverThread = new ReceiverThread(8080);
+        this.receiverThread.start();
+        this.senderThreads = new Vector<>();
         this.neighbors = new Vector<>();
     }
 
     public Node(String ipAddr) throws UnknownHostException {
         this.status = 0;
         this.ipAddr = InetAddress.getByName(ipAddr);
-        this.port = 8080;
+        this.receiverThread = new ReceiverThread(8080);
+        this.receiverThread.start();
+        this.senderThreads = new Vector<>();
         this.neighbors = new Vector<>();
     }
 
     public void addConnection(Node n) {
         neighbors.add(n);
-        messageTable.put(n, new LinkedList<>());
+        SenderThread senderThread = new SenderThread(n);
+        senderThread.start();
+        senderThreads.add(senderThread);
     }
 
     public Node getNeighbor(int id) {
@@ -44,31 +50,8 @@ public class Node extends Thread {
     }
 
     public void addMessage(Node dest, int value) {
-        if (messageTable.containsKey(dest)) {
-            messageTable.get(dest).add(value);
-        } else {
-            Queue <Integer> q = new LinkedList<>();
-            q.add(value);
-            messageTable.put(dest, q);
-        }
-    }
-
-    @Override
-    public void run(){
-        for (Node key : messageTable.keySet()) {
-            for (int i = 0; i < messageTable.get(key).size(); i++) {
-                try {
-                    sendMsg(messageTable.get(key).remove().toString(), key);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        try {
-            recvMsg();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        int index = neighbors.indexOf(dest);
+        senderThreads.get(index).addMessage(value);
     }
 
     public int getStatus() {
@@ -88,37 +71,11 @@ public class Node extends Thread {
     }
 
     public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public void sendMsg(String msg, Node neighbor) throws IOException {
-        InetAddress recv_ip = neighbor.getIpAddr();
-        int recv_port = neighbor.getPort();
-
-        DatagramSocket socket = new DatagramSocket();
-
-        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), recv_ip, recv_port);
-        socket.send(dp);
-        socket.close();
-
-    }
-
-    public void recvMsg() throws IOException {
-        DatagramSocket socket = new DatagramSocket(port);
-        byte[] buf = new byte[256];
-        DatagramPacket dp = new DatagramPacket(buf, buf.length);
-        socket.receive(dp);
-        String msg = new String(dp.getData(), 0, dp.getLength());
-        System.out.println("Received: " + msg);
-        socket.close();
+        return receiverThread.getPort();
     }
 
     @Override public String toString() {
-        String string = "Node " + " at " + ipAddr + ":" + port + "\n";
+        String string = "Node " + " at " + ipAddr + ":" + receiverThread.getPort() + "\n";
         string += " has neighbors: \n";
         int index = 0;
         for (Node n : neighbors) {

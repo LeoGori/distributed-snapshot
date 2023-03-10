@@ -12,7 +12,6 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         Node n = new Node();
-        n.start();
 
         while (!end) {
 
@@ -22,12 +21,12 @@ public class Main {
                     3. Exit
                     """;
             System.out.println(menu);
+            System.out.println(n);
             int choice = input.nextInt();
 
             switch (choice){
                 case 1 -> {
                     System.out.println("Please choose the id of the node to send to:");
-                    System.out.println(n);
                     int id = input.nextInt();
                     Node dest = n.getNeighbor(id);
                     System.out.println("Please enter the message you want to send:");
@@ -49,7 +48,6 @@ public class Main {
 //                }
             }
         }
-
-
+        System.exit(0);
     }
 }
