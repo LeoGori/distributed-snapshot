@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Main {
@@ -40,9 +39,8 @@ public class Main {
                     Node neighbor = new Node(ip);
                     n.addConnection(neighbor);
                 }
-                case 3 -> {
-                    end = true;
-                }
+                case 3 -> end = true;
+
 //                case 2 -> {
 //                    n2.initSnapshot();
 //                }

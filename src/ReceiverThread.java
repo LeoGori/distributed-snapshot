@@ -7,14 +7,15 @@ import java.util.LinkedList;
 
 public class ReceiverThread extends Thread {
 
-    private int port;
-    private Queue<Integer> messages;
+    private final int port;
+    private final Queue<Integer> messages;
 
-    private boolean stop;
+    private final boolean stop;
 
     public ReceiverThread(int port) {
         this.port = port;
         this.messages = new LinkedList<>();
+        this.stop = false;
     }
 
     public int popMessage() {
