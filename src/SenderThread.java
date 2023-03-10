@@ -21,32 +21,41 @@ public class SenderThread extends Thread {
 
     public void addMessage(int value) {
         messages.add(value);
+        System.out.println("Added value of " + value + " to messages");
     }
 
     public void run() {
-
+        DatagramSocket socket;
+        try {
+            socket = new DatagramSocket();
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
         while(!stop) {
+
             InetAddress recv_ip = neighbor.getIpAddr();
             int recv_port = neighbor.getPort();
-
-            DatagramSocket socket;
+//            System.out.println("messages : " + messages);
             try {
-                socket = new DatagramSocket();
-            } catch (SocketException e) {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            if (!messages.isEmpty()) {
+                System.out.println("check for messages");
+                String msg = String.valueOf(messages.poll());
 
-            String msg = String.valueOf(messages.poll());
-
-            DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), recv_ip, recv_port);
-            try {
-                socket.send(dp);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), recv_ip, recv_port);
+                try {
+                    System.out.println("sending " + msg + " to " + recv_ip.toString());
+                    socket.send(dp);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-            socket.close();
+
         }
-
+        socket.close();
     }
 
 }

@@ -10,6 +10,7 @@ public class Node extends Neighbor {
 
     public Node() throws UnknownHostException {
         super();
+        this.port = 12000;
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.senderThreads = new Vector<>();
@@ -18,6 +19,7 @@ public class Node extends Neighbor {
 
     public Node(String ipAddr) throws UnknownHostException {
         super(ipAddr);
+        this.port = 12000;
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.senderThreads = new Vector<>();
@@ -33,6 +35,7 @@ public class Node extends Neighbor {
 
     public void addMessage(Neighbor dest, int value) {
         int index = neighbors.indexOf(dest);
+        System.out.println(index);
         senderThreads.get(index).addMessage(value);
     }
 

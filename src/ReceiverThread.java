@@ -27,24 +27,29 @@ public class ReceiverThread extends Thread {
     }
 
     public void run() {
+        DatagramSocket socket;
+        try {
+            socket = new DatagramSocket(port);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
         while (!stop) {
-            System.out.println("Waiting for message...");
-            DatagramSocket socket;
-            try {
-                socket = new DatagramSocket(port);
-            } catch (SocketException e) {
-                throw new RuntimeException(e);
-            }
+//            System.out.println("Waiting for message...");
+
             byte[] buf = new byte[256];
             DatagramPacket dp = new DatagramPacket(buf, buf.length);
             try {
+//                System.out.println("Trying to receive...");
                 socket.receive(dp);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             String msg = new String(dp.getData(), 0, dp.getLength());
-            System.out.println("Received: " + msg);
-            socket.close();
+            // if msg is not null, print message
+//            if (msg.length() > 0) {
+//                System.out.println("Received: " + msg);
+//            }
         }
+        socket.close();
     }
 }
