@@ -45,10 +45,8 @@ public class ReceiverThread extends Thread {
                 throw new RuntimeException(e);
             }
             String msg = new String(dp.getData(), 0, dp.getLength());
-            // if msg is not null, print message
-//            if (msg.length() > 0) {
-//                System.out.println("Received: " + msg);
-//            }
+//          if msg is not null, print message
+            System.out.println("Received: " + msg);
         }
         socket.close();
     }
