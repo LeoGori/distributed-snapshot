@@ -14,7 +14,6 @@ public class Neighbor {
 
     public Neighbor() throws UnknownHostException {
         this.status = 0;
-        this.ipAddr = InetAddress.getLocalHost();
         this.port = 12000;
     }
 

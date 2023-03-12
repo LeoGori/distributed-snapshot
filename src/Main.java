@@ -36,7 +36,7 @@ public class Main {
 
                     System.out.println("Please enter the ip of the node to add:");
                     String ip = input.next();
-                    Neighbor neighbor = new Node(ip);
+                    Neighbor neighbor = new Neighbor(ip);
                     n.addConnection(neighbor);
                 }
                 case 3 -> end = true;
