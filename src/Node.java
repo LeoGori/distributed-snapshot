@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.Vector;
+import java.util.Enumeration;
+import java.util.Collections;
 
 public class Node extends Neighbor {
 
@@ -12,6 +14,11 @@ public class Node extends Neighbor {
         super();
         this.port = 12000;
         this.ipAddr = InetAddress.getLocalHost();
+        try {
+            this.getInterfaces();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.neighbors = new Vector<>();
@@ -23,6 +30,32 @@ public class Node extends Neighbor {
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.neighbors = new Vector<>();
+    }
+
+    public void getInterfaces() throws Exception {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+
+        for (NetworkInterface netint : Collections.list(interfaces)) {
+            displayInterfaceInformation(netint);
+            if (netint.getName().equals("wlan0")) {
+                Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+                for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+                    if (inetAddress instanceof Inet4Address) {
+                        this.ipAddr = inetAddress;
+                    }
+                }
+            }
+        }
+    }
+
+    static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
+        System.out.println("Display name:" + netint.getDisplayName());
+        System.out.println("Name: " + netint.getName());
+        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            System.out.println("InetAddress: " + inetAddress);
+        }
+        System.out.println("\n");
     }
 
     public void addConnection(Neighbor n) {
