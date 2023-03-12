@@ -10,6 +10,8 @@ public class Node extends Neighbor {
 
     private final Vector<Neighbor> neighbors;
 
+    private final DatagramSocket socket;
+
     public Node() throws UnknownHostException {
         super();
         this.port = 12000;
@@ -22,6 +24,11 @@ public class Node extends Neighbor {
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.neighbors = new Vector<>();
+        try {
+            socket = new DatagramSocket(port+1);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Node(String ipAddr) throws UnknownHostException {
@@ -30,6 +37,11 @@ public class Node extends Neighbor {
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
         this.neighbors = new Vector<>();
+        try {
+            socket = new DatagramSocket(port);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void getInterfaces() throws Exception {
@@ -66,13 +78,6 @@ public class Node extends Neighbor {
         int index = neighbors.indexOf(dest);
         System.out.println(index);
 
-        DatagramSocket socket;
-        try {
-            socket = new DatagramSocket();
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-
         InetAddress recv_ip = dest.getIpAddr();
         int recv_port = dest.getPort();
 //            System.out.println("messages : " + messages);
@@ -91,7 +96,6 @@ public class Node extends Neighbor {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        socket.close();
     }
 
     public Neighbor getNeighbor(int id) {

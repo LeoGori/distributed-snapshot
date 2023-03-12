@@ -34,12 +34,10 @@ public class ReceiverThread extends Thread {
             throw new RuntimeException(e);
         }
         while (!stop) {
-//            System.out.println("Waiting for message...");
 
             byte[] buf = new byte[256];
             DatagramPacket dp = new DatagramPacket(buf, buf.length);
             try {
-//                System.out.println("Trying to receive...");
                 socket.receive(dp);
             } catch (IOException e) {
                 throw new RuntimeException(e);
