@@ -17,7 +17,8 @@ public class Main {
             String menu = """
                     1. Send message
                     2. Add connection
-                    3. Exit
+                    3. Require snapshot
+                    4. Exit
                     """;
             System.out.println(menu);
             System.out.println(n);
@@ -39,7 +40,12 @@ public class Main {
                     Neighbor neighbor = new Neighbor(ip);
                     n.addConnection(neighbor);
                 }
-                case 3 -> end = true;
+
+                case 3 -> {
+//                    n.initSnapshot();
+                }
+
+                case 4 -> end = true;
 
 //                case 2 -> {
 //                    n2.initSnapshot();

@@ -4,8 +4,11 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Vector;
 
 public class ReceiverThread extends Thread {
+
+    private int status;
 
     private final int port;
     private final Queue<Integer> messages;
@@ -44,8 +47,19 @@ public class ReceiverThread extends Thread {
             }
             String msg = new String(dp.getData(), 0, dp.getLength());
 //          if msg is not null, print message
-            System.out.println("Received: " + msg);
+//            dp.getAddress().getHostAddress(), dp.getPort()
+            System.out.println("Received: " + msg + " from " + dp.getAddress().toString());
+
+//            if (msg.equals("token")) {
+//            } else {
+//                status = status + Integer.parseInt(msg);
+//            }
         }
         socket.close();
     }
+
+//    public Queue<Integer> getStatus() {
+//        return messages;
+//    }
+
 }

@@ -78,7 +78,7 @@ public class Node extends Neighbor {
         int index = neighbors.indexOf(dest);
         System.out.println(index);
 
-        InetAddress recv_ip = dest.getIpAddr();
+        InetAddress dest_ip = dest.getIpAddr();
         int recv_port = dest.getPort();
 //            System.out.println("messages : " + messages);
         try {
@@ -89,9 +89,9 @@ public class Node extends Neighbor {
 
         String msg = Integer.toString(value);
 
-        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), recv_ip, recv_port);
+        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
         try {
-            System.out.println("sending " + msg + " to " + recv_ip.toString());
+            System.out.println("sending " + msg + " to " + dest_ip.toString());
             socket.send(dp);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -117,4 +117,14 @@ public class Node extends Neighbor {
         return string.toString();
     }
 
+//    public void initSnapshot() {
+//        for (Neighbor n : neighbors) {
+//            addMessage(n, 0);
+//        }
+//    }
+
+//    public Vector<int> getStatus() {
+//        int status = receiverThread.getStatus();
+//        System.out.println("Status: " + status);
+//    }
 }
