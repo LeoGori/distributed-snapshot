@@ -127,7 +127,8 @@ public class Node extends Neighbor {
         return receiverThread.getPort();
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
         string.append(" has neighbors: \n");
         int index = 0;
