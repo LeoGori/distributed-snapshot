@@ -1,14 +1,15 @@
 import java.io.IOException;
 import java.net.*;
+import java.util.HashSet;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.util.Collections;
+import java.util.Set;
+
 
 public class Node extends Neighbor {
 
     private final ReceiverThread receiverThread;
-
-    private final Vector<Neighbor> neighbors;
 
     private final DatagramSocket socket;
 
@@ -23,7 +24,6 @@ public class Node extends Neighbor {
         }
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
-        this.neighbors = new Vector<>();
         try {
             socket = new DatagramSocket(port+1);
         } catch (SocketException e) {
@@ -36,7 +36,6 @@ public class Node extends Neighbor {
         this.port = 12000;
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
-        this.neighbors = new Vector<>();
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException e) {
@@ -70,13 +69,32 @@ public class Node extends Neighbor {
         System.out.println("\n");
     }
 
-    public void addConnection(Neighbor n) {
-        neighbors.add(n);
+    public void MulticastOwnIP() throws IOException {
+
+        Boolean end = false;
+
+        DatagramSocket socket;
+        InetAddress group;
+        byte[] buf;
+
+        String multicastMessage = "Hello";
+
+        while (!end) {
+
+            socket = new DatagramSocket();
+            group = InetAddress.getByName("230.0.0.0");
+            buf = multicastMessage.getBytes();
+
+            DatagramPacket packet
+                    = new DatagramPacket(buf, buf.length, group, 4446);
+            socket.send(packet);
+            socket.close();
+        }
+
+
     }
 
-    public void addMessage(Neighbor dest, int value) {
-        int index = neighbors.indexOf(dest);
-        System.out.println(index);
+    public void sendMessage(Neighbor dest, int value) {
 
         InetAddress dest_ip = dest.getIpAddr();
         int recv_port = dest.getPort();
@@ -99,7 +117,10 @@ public class Node extends Neighbor {
     }
 
     public Neighbor getNeighbor(int id) {
-        return neighbors.get(id);
+
+        Set<Neighbor> node = receiverThread.multiReceiver.getSenders();
+        Neighbor[] neighbors = node.toArray(new Neighbor[node.size()]);
+        return neighbors[id];
     }
 
     public int getPort() {
@@ -110,7 +131,7 @@ public class Node extends Neighbor {
         StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
         string.append(" has neighbors: \n");
         int index = 0;
-        for (Neighbor n : neighbors) {
+        for (Neighbor n : receiverThread.multiReceiver.getSenders()) {
             string.append("Node ").append(index).append(" at ").append(n.getIpAddr()).append(":").append(port).append("\n");
             index++;
         }

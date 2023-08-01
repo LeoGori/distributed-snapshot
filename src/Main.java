@@ -16,13 +16,15 @@ public class Main {
 
             String menu = """
                     1. Send message
-                    2. Add connection
-                    3. Require snapshot
+                    2. Require snapshot
+                    3. Pass
                     4. Exit
                     """;
             System.out.println(menu);
             System.out.println(n);
             int choice = input.nextInt();
+
+            n.MulticastOwnIP();
 
             switch (choice){
                 case 1 -> {
@@ -31,25 +33,19 @@ public class Main {
                     Neighbor dest = n.getNeighbor(id);
                     System.out.println("Please enter the message you want to send:");
                     int msg = input.nextInt();
-                    n.addMessage(dest, msg);
+                    n.sendMessage(dest, msg);
                 }
-                case 2 -> {
 
-                    System.out.println("Please enter the ip of the node to add:");
-                    String ip = input.next();
-                    Neighbor neighbor = new Neighbor(ip);
-                    n.addConnection(neighbor);
+                case 2 -> {
+//                    n.initSnapshot();
                 }
 
                 case 3 -> {
-//                    n.initSnapshot();
+                    System.out.println("Pass");
                 }
 
                 case 4 -> end = true;
 
-//                case 2 -> {
-//                    n2.initSnapshot();
-//                }
             }
         }
         System.exit(0);

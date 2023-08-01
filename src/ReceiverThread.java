@@ -1,21 +1,29 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Vector;
+import java.net.*;
+import java.util.*;
+import java.net.MulticastSocket;
+
 
 public class ReceiverThread extends Thread {
 
-    private int status;
+    protected static final String TOKEN = "-1";
 
-    private final int port;
-    private final Queue<Integer> messages;
+    protected int status;
 
-    private final boolean stop;
+    protected final int port;
+    protected final Queue<Integer> messages;
+
+    protected final boolean stop;
+
+    MultiCastReceiver multiReceiver = new MultiCastReceiver();
+
+
+    public ReceiverThread() {
+        this(12000);
+    }
 
     public ReceiverThread(int port) {
+
         this.port = port;
         this.messages = new LinkedList<>();
         this.stop = false;
@@ -30,15 +38,18 @@ public class ReceiverThread extends Thread {
     }
 
     public void run() {
+
+        byte[] buf = new byte[256];
+
         DatagramSocket socket;
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
+
         while (!stop) {
 
-            byte[] buf = new byte[256];
             DatagramPacket dp = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(dp);
@@ -48,12 +59,18 @@ public class ReceiverThread extends Thread {
             String msg = new String(dp.getData(), 0, dp.getLength());
 //          if msg is not null, print message
 //            dp.getAddress().getHostAddress(), dp.getPort()
-            System.out.println("Received: " + msg + " from " + dp.getAddress().toString());
 
-//            if (msg.equals("token")) {
-//            } else {
-//                status = status + Integer.parseInt(msg);
-//            }
+            if (msg.equals(TOKEN)) {
+                System.out.println("stop algo");
+            }
+            else {
+                status = status + Integer.parseInt(msg);
+            }
+
+            System.out.println("Received: " + msg + " from " + dp.getAddress().getHostAddress());
+            // print status
+            System.out.println("Status: " + status);
+
         }
         socket.close();
     }
