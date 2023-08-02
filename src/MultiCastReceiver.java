@@ -11,10 +11,15 @@ public class MultiCastReceiver extends Thread {
 
     private InetAddress group;
 
-    public MultiCastReceiver() {
+    private InetAddress inetAddr;
+
+    private NetworkInterface netInt;
+
+    public MultiCastReceiver(InetAddress inetAddr) {
 
         this.senders = new HashSet<Neighbor>();
         this.stop = false;
+        this.inetAddr = inetAddr;
 
 
     }
@@ -35,9 +40,16 @@ public class MultiCastReceiver extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            socket.setInterface(this.inetAddr);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
+
         this.group = null;
         try {
-            this.group = InetAddress.getByName("230.0.0.0");
+            this.group = InetAddress.getByName("239.0.0.0");
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }

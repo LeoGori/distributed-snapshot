@@ -20,7 +20,7 @@ public class Node extends Neighbor {
     public Node() throws UnknownHostException {
         super();
         this.port = 12000;
-        this.ipAddr = InetAddress.getLocalHost();
+//        this.ipAddr = InetAddress.getLocalHost();
         try {
             this.getInterfaces();
         } catch (Exception e) {
@@ -28,13 +28,14 @@ public class Node extends Neighbor {
         }
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
-        this.multiReceiver =  new MultiCastReceiver();
+        this.multiReceiver =  new MultiCastReceiver(ipAddr);
         multiReceiver.start();
         try {
             socket = new DatagramSocket(port+1);
         } catch (SocketException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public Node(String ipAddr) throws UnknownHostException {
@@ -42,7 +43,7 @@ public class Node extends Neighbor {
         this.port = 12000;
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
-        this.multiReceiver =  new MultiCastReceiver();
+        this.multiReceiver =  new MultiCastReceiver(this.ipAddr);
         multiReceiver.start();
         try {
             socket = new DatagramSocket(port);
@@ -83,11 +84,12 @@ public class Node extends Neighbor {
         InetAddress group;
         byte[] buf;
 
-        group = InetAddress.getByName("230.0.0.0");
+        group = InetAddress.getByName("239.0.0.0");
 
-//        MulticastSocket multisocket = new MulticastSocket(4446);
-//        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
-
+        MulticastSocket multisocket = new MulticastSocket(4446);
+        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+        multisocket.setInterface(ipAddr);
+        multisocket.joinGroup(group);
 
         String multicastMessage = "Hello";
         buf = multicastMessage.getBytes();
