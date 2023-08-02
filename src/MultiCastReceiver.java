@@ -45,6 +45,12 @@ public class MultiCastReceiver extends Thread {
     @Override
     public void run() {
 
+        try {
+            this.socket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         while (!stop) {
             byte[] buf = new byte[256];
             DatagramPacket dp = new DatagramPacket(buf, buf.length);
