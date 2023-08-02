@@ -15,8 +15,6 @@ public class ReceiverThread extends Thread {
 
     protected final boolean stop;
 
-    MultiCastReceiver multiReceiver;
-
 
     public ReceiverThread() {
         this(12000);
@@ -27,8 +25,6 @@ public class ReceiverThread extends Thread {
         this.port = port;
         this.messages = new LinkedList<>();
         this.stop = false;
-        this.multiReceiver =  new MultiCastReceiver();
-        multiReceiver.start();
     }
 
     public int popMessage() {

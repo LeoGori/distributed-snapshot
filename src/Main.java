@@ -16,17 +16,20 @@ public class Main {
 
             String menu = """
                     1. Send message
-                    2. Require snapshot
+                    2. Send message 2
                     3. Pass
                     4. Exit
                     """;
+//            String menu = "1. Send message\n2. Require snapshot\n3. Pass\n4. Exit ";
             System.out.println(menu);
-            System.out.println(n);
-            int choice = input.nextInt();
 
             n.MulticastOwnIP();
 
-            switch (choice){
+            System.out.println(n);
+
+            int choice = input.nextInt();
+
+            switch (choice) {
                 case 1 -> {
                     System.out.println("Please choose the id of the node to send to:");
                     int id = input.nextInt();
@@ -36,15 +39,24 @@ public class Main {
                     n.sendMessage(dest, msg);
                 }
 
+
                 case 2 -> {
 //                    n.initSnapshot();
+                    System.out.println("Please enter the destination IP:");
+                    String destIP = input.nextLine();
+                    System.out.println("Please choose the message you want to send:");
+                    int val = input.nextInt();
+                    n.sendMessage_2(destIP, val);
                 }
+
 
                 case 3 -> {
                     System.out.println("Pass");
                 }
 
-                case 4 -> end = true;
+                case 4 -> {
+                    end = true;
+                }
 
             }
         }

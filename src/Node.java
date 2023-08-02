@@ -11,6 +11,8 @@ public class Node extends Neighbor {
 
     private final ReceiverThread receiverThread;
 
+    private MultiCastReceiver multiReceiver;
+
     private final DatagramSocket socket;
 
     public Node() throws UnknownHostException {
@@ -24,6 +26,8 @@ public class Node extends Neighbor {
         }
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
+        this.multiReceiver =  new MultiCastReceiver();
+        multiReceiver.start();
         try {
             socket = new DatagramSocket(port+1);
         } catch (SocketException e) {
@@ -36,6 +40,8 @@ public class Node extends Neighbor {
         this.port = 12000;
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
+        this.multiReceiver =  new MultiCastReceiver();
+        multiReceiver.start();
         try {
             socket = new DatagramSocket(port);
         } catch (SocketException e) {
@@ -71,26 +77,20 @@ public class Node extends Neighbor {
 
     public void MulticastOwnIP() throws IOException {
 
-        Boolean end = false;
-
-        DatagramSocket socket;
         InetAddress group;
         byte[] buf;
 
+        group = InetAddress.getByName("230.0.0.0");
+
         String multicastMessage = "Hello";
+        buf = multicastMessage.getBytes();
 
-        while (!end) {
+        DatagramPacket packet
+                = new DatagramPacket(buf, buf.length, group, 4446);
+        socket.send(packet);
+//        socket.close();
 
-            socket = new DatagramSocket();
-            group = InetAddress.getByName("230.0.0.0");
-            buf = multicastMessage.getBytes();
-
-            DatagramPacket packet
-                    = new DatagramPacket(buf, buf.length, group, 4446);
-            socket.send(packet);
-            socket.close();
-        }
-
+        System.out.println("Multicast message sent to group: " + packet.getAddress());
 
     }
 
@@ -118,7 +118,7 @@ public class Node extends Neighbor {
 
     public Neighbor getNeighbor(int id) {
 
-        Set<Neighbor> node = receiverThread.multiReceiver.getSenders();
+        Set<Neighbor> node = multiReceiver.getSenders();
         Neighbor[] neighbors = node.toArray(new Neighbor[node.size()]);
         return neighbors[id];
     }
@@ -132,11 +132,33 @@ public class Node extends Neighbor {
         StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
         string.append(" has neighbors: \n");
         int index = 0;
-        for (Neighbor n : receiverThread.multiReceiver.getSenders()) {
+        for (Neighbor n : multiReceiver.getSenders()) {
             string.append("Node ").append(index).append(" at ").append(n.getIpAddr()).append(":").append(port).append("\n");
             index++;
         }
         return string.toString();
+    }
+
+    public void sendMessage_2(String destinationIP, int value) throws UnknownHostException {
+
+        InetAddress dest_ip = InetAddress.getByName(destinationIP);
+        int recv_port = 12000;
+//            System.out.println("messages : " + messages);
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        String msg = Integer.toString(value);
+
+        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
+        try {
+            System.out.println("sending " + msg + " to " + dest_ip.toString());
+            socket.send(dp);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    public void initSnapshot() {

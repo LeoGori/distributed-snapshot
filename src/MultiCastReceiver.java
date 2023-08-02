@@ -54,13 +54,13 @@ public class MultiCastReceiver extends Thread {
             System.out.println("Multicast on line");
 
             try {
-                this.socket.receive(dp);
+                socket.receive(dp);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
             String msg = new String(dp.getData(), 0, dp.getLength());
-            System.out.println("Received: " + msg + " from " + dp.getAddress().getHostAddress());
+            System.out.println("Received: " + msg + " from " + dp.getAddress());
 
             try {
                 senders.add(new Neighbor(dp.getAddress().getHostAddress()));
@@ -72,7 +72,7 @@ public class MultiCastReceiver extends Thread {
         }
 
         try {
-            this.socket.leaveGroup(group);
+            socket.leaveGroup(group);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
