@@ -43,6 +43,7 @@ public class Main {
                 case 2 -> {
 //                    n.initSnapshot();
                     System.out.println("Please enter the destination IP:");
+                    input.nextLine();
                     String destIP = input.nextLine();
                     System.out.println("Please choose the message you want to send:");
                     int val = input.nextInt();

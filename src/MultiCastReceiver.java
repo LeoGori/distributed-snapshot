@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +30,7 @@ public class MultiCastReceiver extends Thread {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
+//        SocketAddress socketAddress = new InetSocketAddress(group.getAddress(), groupPort);
         try {
             this.socket.joinGroup(this.group);
         } catch (IOException e) {

@@ -15,6 +15,8 @@ public class Node extends Neighbor {
 
     private final DatagramSocket socket;
 
+    private NetworkInterface netInt;
+
     public Node() throws UnknownHostException {
         super();
         this.port = 12000;
@@ -55,6 +57,7 @@ public class Node extends Neighbor {
         for (NetworkInterface netint : Collections.list(interfaces)) {
             displayInterfaceInformation(netint);
             if (netint.getName().equals("wlan0")) {
+                this.netInt = netint;
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
                 for (InetAddress inetAddress : Collections.list(inetAddresses)) {
                     if (inetAddress instanceof Inet4Address) {
@@ -82,12 +85,15 @@ public class Node extends Neighbor {
 
         group = InetAddress.getByName("230.0.0.0");
 
+        MulticastSocket multisocket = new MulticastSocket(4446);
+        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+
         String multicastMessage = "Hello";
         buf = multicastMessage.getBytes();
 
         DatagramPacket packet
                 = new DatagramPacket(buf, buf.length, group, 4446);
-        socket.send(packet);
+        multisocket.send(packet);
 //        socket.close();
 
         System.out.println("Multicast message sent to group: " + packet.getAddress());
@@ -144,11 +150,11 @@ public class Node extends Neighbor {
         InetAddress dest_ip = InetAddress.getByName(destinationIP);
         int recv_port = 12000;
 //            System.out.println("messages : " + messages);
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(1);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 
         String msg = Integer.toString(value);
 
