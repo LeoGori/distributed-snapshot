@@ -9,8 +9,6 @@ public class MultiCastReceiver extends Thread {
 
     private Boolean stop;
 
-    private MulticastSocket socket;
-
     private InetAddress group;
 
     public MultiCastReceiver() {
@@ -18,9 +16,22 @@ public class MultiCastReceiver extends Thread {
         this.senders = new HashSet<Neighbor>();
         this.stop = false;
 
-        this.socket = null;
+
+    }
+
+    public Set<Neighbor> getSenders() {
+        return senders;
+    }
+
+    @Override
+    public void run() {
+
+        byte[] buf = new byte[256];
+
+        MulticastSocket socket;
+
         try {
-            this.socket = new MulticastSocket(4446);
+            socket = new MulticastSocket(4446);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -32,27 +43,19 @@ public class MultiCastReceiver extends Thread {
         }
 //        SocketAddress socketAddress = new InetSocketAddress(group.getAddress(), groupPort);
         try {
-            this.socket.joinGroup(this.group);
+            socket.joinGroup(this.group);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public Set<Neighbor> getSenders() {
-        return senders;
-    }
-
-    @Override
-    public void run() {
 
         try {
-            this.socket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+            socket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         while (!stop) {
-            byte[] buf = new byte[256];
+
             DatagramPacket dp = new DatagramPacket(buf, buf.length);
 
             System.out.println("Multicast on line");

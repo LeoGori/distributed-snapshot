@@ -85,7 +85,7 @@ public class Node extends Neighbor {
 
         group = InetAddress.getByName("230.0.0.0");
 
-        MulticastSocket multisocket = new MulticastSocket(4446);
+//        MulticastSocket multisocket = new MulticastSocket(4446);
 //        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
 
 
@@ -94,7 +94,7 @@ public class Node extends Neighbor {
 
         DatagramPacket packet
                 = new DatagramPacket(buf, buf.length, group, 4446);
-        multisocket.send(packet);
+        socket.send(packet);
 //        socket.close();
 
         System.out.println("Multicast message sent to group: " + packet.getAddress());
