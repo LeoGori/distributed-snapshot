@@ -87,7 +87,7 @@ public class Node extends Neighbor {
         group = InetAddress.getByName("239.0.0.0");
 
         MulticastSocket multisocket = new MulticastSocket(4446);
-        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, false);
         multisocket.setInterface(ipAddr);
         multisocket.joinGroup(group);
 

@@ -61,7 +61,7 @@ public class MultiCastReceiver extends Thread {
         }
 
         try {
-            socket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+            socket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, false);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
