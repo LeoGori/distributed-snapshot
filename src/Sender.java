@@ -125,14 +125,14 @@ public class Sender extends Thread implements Observer {
     public synchronized void update() {
 
         Token token = ((ReceiverThread) receiver).getToken();
-        InetAddress initiator = ((ReceiverThread) receiver).getFirstInitiator();
+        InetAddress initiator = ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator();
 
         if (initiator == null) {
 
             token.setTimeStamp(token.getTimeStamp() + 1);
             String shareToken = token.getSerialized();
 
-            for (Neighbor neighbor : ((ReceiverThread) receiver).getOutputChannelManager().getFreeChannels()) {
+            for (Neighbor neighbor : ((ReceiverThread) receiver).getInputChannelManager().getFreeChannels()) {
 
                 addMessage(neighbor, shareToken);
             }
