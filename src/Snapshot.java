@@ -1,18 +1,31 @@
+import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Snapshot {
 
-    private HashMap<Neighbor, Integer> channelState;
+    private HashMap<InetAddress, ArrayList<Integer>> channelState;
 
     public Snapshot() {
-        this.channelState = new HashMap<>();
+        this(0);
     }
 
-    public void addChannelState(Neighbor neighbor, int state) {
-        channelState.put(neighbor, state);
+    public Snapshot(int state) {
+        channelState = new HashMap<>();
+    }
+    public void addChannelState(InetAddress ipAddr, int state) {
+
+        if (channelState.containsKey(ipAddr)) {
+            channelState.get(ipAddr).add(state);
+        } else {
+            ArrayList<Integer> states = new ArrayList<>();
+            states.add(state);
+            channelState.put(ipAddr, states);
+        }
     }
 
-    public HashMap<Neighbor, Integer> getChannelState() {
+    public HashMap<InetAddress, ArrayList<Integer>> getChannelState() {
         return channelState;
     }
 }

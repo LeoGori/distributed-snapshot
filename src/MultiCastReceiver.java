@@ -21,7 +21,6 @@ public class MultiCastReceiver extends Thread {
         this.stop = false;
         this.inetAddr = inetAddr;
 
-
     }
 
     public Set<Neighbor> getSenders() {

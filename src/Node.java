@@ -11,62 +11,41 @@ public class Node extends Neighbor {
 
     private final ReceiverThread receiverThread;
 
-    private MultiCastReceiver multiReceiver;
+    private final MultiCastReceiver multiReceiver;
 
-    private final DatagramSocket socket;
+    private final Sender sender;
 
-    private NetworkInterface netInt;
-
-    public Node() throws UnknownHostException {
+    public Node() throws UnknownHostException, SocketException {
         super();
-        this.port = 12000;
-//        this.ipAddr = InetAddress.getLocalHost();
         try {
-            this.getInterfaces();
+            ipAddr = this.getInterfaces();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         this.receiverThread = new ReceiverThread(port);
         this.receiverThread.start();
-        this.multiReceiver =  new MultiCastReceiver(ipAddr);
-        multiReceiver.start();
-        try {
-            socket = new DatagramSocket(port+1);
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public Node(String ipAddr) throws UnknownHostException {
-        super(ipAddr);
-        this.port = 12000;
-        this.receiverThread = new ReceiverThread(port);
-        this.receiverThread.start();
         this.multiReceiver =  new MultiCastReceiver(this.ipAddr);
         multiReceiver.start();
-        try {
-            socket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
+        sender = new Sender();
+        sender.start();
+
     }
 
-    public void getInterfaces() throws Exception {
+    public InetAddress getInterfaces() throws Exception {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 
         for (NetworkInterface netint : Collections.list(interfaces)) {
             displayInterfaceInformation(netint);
             if (netint.getName().equals("wlan0")) {
-                this.netInt = netint;
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
                 for (InetAddress inetAddress : Collections.list(inetAddresses)) {
                     if (inetAddress instanceof Inet4Address) {
-                        this.ipAddr = inetAddress;
+                        return inetAddress;
                     }
                 }
             }
         }
+        return null;
     }
 
     static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
@@ -79,52 +58,6 @@ public class Node extends Neighbor {
         System.out.println("\n");
     }
 
-    public void MulticastOwnIP() throws IOException {
-
-        InetAddress group;
-        byte[] buf;
-
-        group = InetAddress.getByName("239.0.0.0");
-
-        MulticastSocket multisocket = new MulticastSocket(4446);
-        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, false);
-        multisocket.setInterface(ipAddr);
-        multisocket.joinGroup(group);
-
-        String multicastMessage = "Hello";
-        buf = multicastMessage.getBytes();
-
-        DatagramPacket packet
-                = new DatagramPacket(buf, buf.length, group, 4446);
-        socket.send(packet);
-//        socket.close();
-
-        System.out.println("Multicast message sent to group: " + packet.getAddress());
-
-    }
-
-    public void sendMessage(Neighbor dest, int value) {
-
-        InetAddress dest_ip = dest.getIpAddr();
-        int recv_port = dest.getPort();
-//            System.out.println("messages : " + messages);
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        String msg = Integer.toString(value);
-
-        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
-        try {
-            System.out.println("sending " + msg + " to " + dest_ip.toString());
-            socket.send(dp);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Neighbor getNeighbor(int id) {
 
         Set<Neighbor> node = multiReceiver.getSenders();
@@ -134,6 +67,10 @@ public class Node extends Neighbor {
 
     public int getPort() {
         return receiverThread.getPort();
+    }
+
+    public void sendMessage(Neighbor n, String message) {
+        sender.addMessage(n, message);
     }
 
     @Override
@@ -148,30 +85,14 @@ public class Node extends Neighbor {
         return string.toString();
     }
 
-    public void sendMessage_2(String destinationIP, int value) throws UnknownHostException {
-
-        InetAddress dest_ip = InetAddress.getByName(destinationIP);
-        int recv_port = 12000;
-//            System.out.println("messages : " + messages);
-//        try {
-//            Thread.sleep(1);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
-        String msg = Integer.toString(value);
-
-        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
-        try {
-            System.out.println("sending " + msg + " to " + dest_ip.toString());
-            socket.send(dp);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public Sender getSender() {
+        return sender;
     }
 
+
+
 //    public void initSnapshot() {
-//        for (Neighbor n : neighbors) {
+//        for (Neighbor n : multiReceiver.getSenders()) {
 //            addMessage(n, 0);
 //        }
 //    }
