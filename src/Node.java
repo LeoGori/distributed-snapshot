@@ -26,9 +26,8 @@ public class Node extends Neighbor {
         this.receiverThread.start();
         this.multiReceiver =  new MultiCastReceiver(this.ipAddr);
         multiReceiver.start();
-        sender = new Sender();
+        sender = new Sender(ipAddr);
         sender.start();
-
     }
 
     public InetAddress getInterfaces() throws Exception {

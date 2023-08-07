@@ -109,7 +109,7 @@ public class ReceiverThread extends Thread implements Subject {
                 }
             }
 
-            System.out.println("Received: " + msg + " from " + dp.getAddress().getHostAddress());
+            System.out.println("Received: " + msg + " from " + dp.getAddress());
             // print status
 
             System.out.println("Status: " + state);
