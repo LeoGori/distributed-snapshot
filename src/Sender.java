@@ -190,4 +190,12 @@ public class Sender extends Thread implements Observer {
 
     }
 
+    public int getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(int ts) {
+        timeStamp = ts;
+    }
+
 }

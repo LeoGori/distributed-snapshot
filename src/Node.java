@@ -93,7 +93,8 @@ public class Node extends Neighbor {
         receiverThread.initSnapshot(ipAddr);
 
         for (Neighbor n : receiverThread.getInputChannelManager().getChannels()) {
-            String token = ipAddr.toString();
+            String token = ipAddr.getHostAddress() + "-" + String.valueOf(sender.getTimeStamp());
+            sender.setTimeStamp(sender.getTimeStamp() + 1);
             sender.addMessage(n, token);
         }
     }

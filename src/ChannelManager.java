@@ -17,7 +17,7 @@ public class ChannelManager {
         this(new HashSet<>());
     }
 
-    public ChannelManager(HashSet channels) {
+    public ChannelManager(HashSet<Neighbor> channels) {
         blockedChannels = new HashSet<>();
         this.channels = channels;
         borderList = new HashSet<>();
@@ -108,7 +108,6 @@ public class ChannelManager {
 
     public synchronized void blockAllChannels() {
         blockedChannels.addAll(channels);
-        channels.clear();
     }
 
 

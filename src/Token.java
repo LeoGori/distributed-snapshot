@@ -13,7 +13,7 @@ public class Token {
     private Boolean isToken;
 
     public static Boolean isToken(String msg) {
-        return msg.contains("token-");
+        return msg.contains("-");
     }
 
     public Token(DatagramPacket packet) throws UnknownHostException {
@@ -23,8 +23,8 @@ public class Token {
 
         String[] parts = msg.split("-");
 
-        initiator = InetAddress.getByName(parts[1]);
-        timeStamp = Integer.parseInt(parts[2]);
+        initiator = InetAddress.getByName(parts[0]);
+        timeStamp = Integer.parseInt(parts[1]);
 //        isEndToken = parts[2].equals("end");
 
         srcIpAddr = packet.getAddress();
