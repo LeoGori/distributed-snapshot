@@ -59,8 +59,8 @@ public class Sender extends Thread implements Observer {
             throw new RuntimeException(e);
         }
 
-        msg += msg + "-" + String.valueOf(timeStamp);
-        timeStamp ++;
+//        msg += "-" + String.valueOf(timeStamp);
+//        timeStamp ++;
 
         DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
 
@@ -153,18 +153,13 @@ public class Sender extends Thread implements Observer {
         else {
             Neighbor firstTokenSender = ((ReceiverThread) receiver).getInputChannelManager().getFirstTokenSender();
 
-            if (timeStamp < token.getTimeStamp())
-                timeStamp = token.getTimeStamp() + 1;
+            if (token.getInitiator() != ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator()) {
+                if (timeStamp < token.getTimeStamp())
+                    timeStamp = token.getTimeStamp() + 1;
 
-            token.setTimeStamp(timeStamp);
-            timeStamp ++;
-            String endToken = token.getSerialized();
-
-            if (((ReceiverThread) receiver).getInputChannelManager().getBlockedChannels().isEmpty()) {
-
-                addMessage(firstTokenSender, endToken);
-            }
-            else if (token.getInitiator() != ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator()) {
+                token.setTimeStamp(timeStamp);
+                timeStamp ++;
+                String endToken = token.getSerialized();
 
                 Neighbor sender = ((ReceiverThread) receiver).getInputChannelManager().getNeighbor(token.getSrcIpAddr());
                 addMessage(sender, endToken);
@@ -172,6 +167,18 @@ public class Sender extends Thread implements Observer {
                 Neighbor initiator = ((ReceiverThread) receiver).getInputChannelManager().getNeighbor(initiatorIP);
 
                 addMessage(initiator, ((ReceiverThread) receiver).getSnapshot());
+            }
+            else {
+                if (((ReceiverThread) receiver).getInputChannelManager().getBlockedChannels().isEmpty()) {
+                    if (timeStamp < token.getTimeStamp())
+                        timeStamp = token.getTimeStamp() + 1;
+
+                    token.setTimeStamp(timeStamp);
+                    timeStamp++;
+                    String endToken = token.getSerialized();
+
+                    addMessage(firstTokenSender, endToken);
+                }
             }
         }
     }

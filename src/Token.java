@@ -10,7 +10,7 @@ public class Token {
 
     private InetAddress initiator;
 
-//    private Boolean isEndToken;
+    private Boolean isToken;
 
     public static Boolean isToken(String msg) {
         return msg.contains("token-");
