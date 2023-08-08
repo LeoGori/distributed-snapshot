@@ -153,7 +153,7 @@ public class Sender extends Thread implements Observer {
         else {
             Neighbor firstTokenSender = ((ReceiverThread) receiver).getInputChannelManager().getFirstTokenSender();
 
-            if (token.getInitiator() != ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator()) {
+            if (!token.getInitiator().equals( ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator())) {
                 if (timeStamp < token.getTimeStamp())
                     timeStamp = token.getTimeStamp() + 1;
 
@@ -185,9 +185,7 @@ public class Sender extends Thread implements Observer {
 
     @Override
     public void setSubject(Subject sub) {
-
         this.receiver = sub;
-
     }
 
     public int getTimeStamp() {

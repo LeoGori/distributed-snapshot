@@ -83,6 +83,12 @@ public class Neighbor {
         return ipAddr;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
+        return string.toString();
+    }
+
     public void setIpAddr(InetAddress ipAddr) {
         this.ipAddr = ipAddr;
     }

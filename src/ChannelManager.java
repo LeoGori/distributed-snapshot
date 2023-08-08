@@ -37,9 +37,15 @@ public class ChannelManager {
     }
 
     public void setFirstTokenSender(InetAddress tokenSender) {
-        for (Neighbor n : channels)
-            if (n.getIpAddr() == tokenSender)
+        for (Neighbor n : channels) {
+            System.out.println(n.getIpAddr().getHostAddress() + " " + tokenSender.getHostAddress());
+            if (n.getIpAddr().equals(tokenSender)) {
+                System.out.println("Found");
                 firstTokenSender = n;
+                channels.remove(n);
+                blockedChannels.remove(n);
+            }
+        }
     }
 
     public Neighbor getFirstTokenSender() {
@@ -48,12 +54,10 @@ public class ChannelManager {
 
     public synchronized void blockChannel(Neighbor neighbor) {
         blockedChannels.add(neighbor);
-        channels.remove(neighbor);
     }
 
     public synchronized void freeChannel(Neighbor neighbor) {
         blockedChannels.remove(neighbor);
-        channels.add(neighbor);
     }
 
     public synchronized void addBorder(Neighbor neighbor) {
@@ -70,7 +74,6 @@ public class ChannelManager {
 
         if (neighbor != null) {
             blockedChannels.remove(neighbor);
-            channels.add(neighbor);
         }
     }
 
@@ -83,7 +86,6 @@ public class ChannelManager {
 
         if (neighbor != null) {
             borderList.add(neighbor);
-            channels.remove(neighbor);
         }
 
     }

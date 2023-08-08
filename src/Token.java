@@ -31,7 +31,7 @@ public class Token {
     }
 
     public String getSerialized() {
-        return "token-" + initiator.getHostAddress() + "-" + timeStamp + "-";
+        return initiator.getHostAddress() + "-" + timeStamp;
     }
 
     public InetAddress getInitiator() {

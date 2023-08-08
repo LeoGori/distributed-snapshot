@@ -94,6 +94,10 @@ public class ReceiverThread extends Thread implements Subject {
 
                     inputChannelManager.setFirstInitiator(token.getInitiator());
                     inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
+
+                    System.out.println("First initiator: " + inputChannelManager.getFirstInitiator().getHostAddress());
+                    System.out.println("First token sender: " + inputChannelManager.getFirstTokenSender().getIpAddr().getHostAddress());
+
                     inputChannelManager.blockAllChannels();
                 }
                 else {

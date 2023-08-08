@@ -22,12 +22,17 @@ public class Node extends Neighbor {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        sender = new Sender(ipAddr);
         this.receiverThread = new ReceiverThread(port);
+
+        receiverThread.register(sender);
+        sender.setSubject(receiverThread);
+
+        sender.start();
         this.receiverThread.start();
         this.multiReceiver =  new MultiCastReceiver(this.ipAddr);
         multiReceiver.start();
-        sender = new Sender(ipAddr);
-        sender.start();
     }
 
     public InetAddress getInterfaces() throws Exception {
@@ -74,7 +79,7 @@ public class Node extends Neighbor {
 
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
+        StringBuilder string = new StringBuilder(super.toString());
         string.append(" has neighbors: \n");
         int index = 0;
         for (Neighbor n : multiReceiver.getSenders()) {
