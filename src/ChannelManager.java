@@ -33,7 +33,7 @@ public class ChannelManager {
     }
 
     public void setFirstInitiator(InetAddress initiator) {
-        setFirstInitiator(initiator);
+        firstInitiator = initiator;
     }
 
     public void setFirstTokenSender(InetAddress tokenSender) {

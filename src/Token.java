@@ -13,7 +13,7 @@ public class Token {
 //    private Boolean isEndToken;
 
     public static Boolean isToken(String msg) {
-        return msg.contains("-");
+        return msg.contains("token-");
     }
 
     public Token(DatagramPacket packet) throws UnknownHostException {
@@ -23,15 +23,15 @@ public class Token {
 
         String[] parts = msg.split("-");
 
-        initiator = InetAddress.getByName(parts[0]);
-        timeStamp = Integer.parseInt(parts[1]);
+        initiator = InetAddress.getByName(parts[1]);
+        timeStamp = Integer.parseInt(parts[2]);
 //        isEndToken = parts[2].equals("end");
 
         srcIpAddr = packet.getAddress();
     }
 
     public String getSerialized() {
-        return initiator.getHostAddress() + "-" + timeStamp + "-";
+        return "token-" + initiator.getHostAddress() + "-" + timeStamp + "-";
     }
 
     public InetAddress getInitiator() {
