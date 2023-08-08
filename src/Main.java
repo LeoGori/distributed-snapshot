@@ -34,6 +34,8 @@ public class Main {
 
         end = false;
 
+        n.setChannels();
+
         while (!end) {
 
             String menu = """
@@ -61,7 +63,7 @@ public class Main {
                 }
 
                 case 2 -> {
-//                    n.initSnapshot();
+                    n.initSnapshot();
                 }
 
 

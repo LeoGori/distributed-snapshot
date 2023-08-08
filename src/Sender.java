@@ -18,6 +18,8 @@ public class Sender extends Thread implements Observer {
 
     private Boolean stop;
 
+    private int timeStamp;
+
     public Sender(InetAddress ipAddr) throws SocketException, UnknownHostException {
         this.socket = new DatagramSocket();
         messages = new LinkedList<>();
@@ -25,6 +27,7 @@ public class Sender extends Thread implements Observer {
         multicastGroup = InetAddress.getByName("239.0.0.0");
 //        multicast = false;
         this.srcIpAddr = ipAddr;
+        timeStamp = 0;
     }
 
     public void run() {
@@ -55,6 +58,9 @@ public class Sender extends Thread implements Observer {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        msg += msg + "-" + String.valueOf(timeStamp);
+        timeStamp ++;
 
         DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
 
@@ -130,36 +136,42 @@ public class Sender extends Thread implements Observer {
     public synchronized void update() {
 
         Token token = ((ReceiverThread) receiver).getToken();
-        InetAddress initiator = ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator();
+        InetAddress initiatorIP = ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator();
 
-        if (initiator == null) {
+        if (initiatorIP == null) {
 
-            token.setTimeStamp(token.getTimeStamp() + 1);
-            String shareToken = token.getSerialized();
+            if (timeStamp < token.getTimeStamp())
+                timeStamp = token.getTimeStamp() + 1;
 
             for (Neighbor neighbor : ((ReceiverThread) receiver).getInputChannelManager().getFreeChannels()) {
-
+                token.setTimeStamp(timeStamp);
+                timeStamp ++;
+                String shareToken = token.getSerialized();
                 addMessage(neighbor, shareToken);
             }
         }
         else {
+            Neighbor firstTokenSender = ((ReceiverThread) receiver).getInputChannelManager().getFirstTokenSender();
+
+            if (timeStamp < token.getTimeStamp())
+                timeStamp = token.getTimeStamp() + 1;
+
+            token.setTimeStamp(timeStamp);
+            timeStamp ++;
+            String endToken = token.getSerialized();
+
             if (((ReceiverThread) receiver).getInputChannelManager().getBlockedChannels().isEmpty()) {
-
-                Neighbor firstTokenSender = ((ReceiverThread) receiver).getInputChannelManager().getFirstTokenSender();
-
-                token.setTimeStamp(token.getTimeStamp() + 1);
-                String endToken = token.getSerialized();
 
                 addMessage(firstTokenSender, endToken);
             }
             else if (token.getInitiator() != ((ReceiverThread) receiver).getInputChannelManager().getFirstInitiator()) {
 
-                token.setTimeStamp(token.getTimeStamp() + 1);
-                String endToken = token.getSerialized();
-
                 Neighbor sender = ((ReceiverThread) receiver).getInputChannelManager().getNeighbor(token.getSrcIpAddr());
-
                 addMessage(sender, endToken);
+
+                Neighbor initiator = ((ReceiverThread) receiver).getInputChannelManager().getNeighbor(initiatorIP);
+
+                addMessage(initiator, ((ReceiverThread) receiver).getSnapshot());
             }
         }
     }

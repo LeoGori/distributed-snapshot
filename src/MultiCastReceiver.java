@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class MultiCastReceiver extends Thread {
 
-    protected Set<Neighbor> senders;
+    protected HashSet<Neighbor> senders;
 
     private Boolean stop;
 
@@ -23,7 +23,7 @@ public class MultiCastReceiver extends Thread {
 
     }
 
-    public Set<Neighbor> getSenders() {
+    public HashSet<Neighbor> getSenders() {
         return senders;
     }
 

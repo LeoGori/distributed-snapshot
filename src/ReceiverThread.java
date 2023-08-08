@@ -29,9 +29,18 @@ public class ReceiverThread extends Thread implements Subject {
         this.messages = new LinkedList<>();
         this.stop = false;
         this.state = 0;
-        this.snapshot = new Snapshot();
+        this.snapshot = null;
         inputChannelManager = new ChannelManager();
+    }
 
+    public void setChannels (HashSet<Neighbor> channels) {
+        inputChannelManager.setChannels(channels);
+    }
+
+    public void initSnapshot(InetAddress ipAddr) {
+        snapshot = new Snapshot(state);
+        inputChannelManager.setFirstInitiator(ipAddr);
+        inputChannelManager.blockAllChannels();
     }
 
     public ChannelManager getInputChannelManager() {
@@ -81,12 +90,9 @@ public class ReceiverThread extends Thread implements Subject {
                 if (inputChannelManager.getFirstInitiator() == null) {
                     System.out.println("Blocking all channels");
 
-                    HashSet<Neighbor> channels = inputChannelManager.getChannels();
+                    snapshot = new Snapshot(state);
 
                     inputChannelManager.setFirstInitiator(token.getInitiator());
-
-
-
                     inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
                     inputChannelManager.blockAllChannels();
                 }
@@ -98,6 +104,9 @@ public class ReceiverThread extends Thread implements Subject {
                         inputChannelManager.addBorder(token.getSrcIpAddr());
                     }
                 }
+
+                token.setTimeStamp(token.getTimeStamp() + 1);
+
                 notifyObserver();
             }
             else {
@@ -148,6 +157,10 @@ public class ReceiverThread extends Thread implements Subject {
 
     public Token getToken() {
         return token;
+    }
+
+    public String getSnapshot() {
+        return snapshot.toString();
     }
 
     //    public Queue<Integer> getStatus() {

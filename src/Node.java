@@ -89,12 +89,18 @@ public class Node extends Neighbor {
     }
 
 
+    public void initSnapshot() {
+        receiverThread.initSnapshot(ipAddr);
 
-//    public void initSnapshot() {
-//        for (Neighbor n : multiReceiver.getSenders()) {
-//            addMessage(n, 0);
-//        }
-//    }
+        for (Neighbor n : receiverThread.getInputChannelManager().getChannels()) {
+            String token = ipAddr.toString();
+            sender.addMessage(n, token);
+        }
+    }
+
+    public void setChannels() {
+        receiverThread.setChannels(multiReceiver.getSenders());
+    }
 
 //    public Vector<int> getStatus() {
 //        int status = receiverThread.getStatus();

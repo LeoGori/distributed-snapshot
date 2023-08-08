@@ -24,6 +24,10 @@ public class ChannelManager {
         firstInitiator = null;
     }
 
+    public void setChannels(HashSet<Neighbor> channels) {
+        this.channels = channels;
+    }
+
     public InetAddress getFirstInitiator() {
         return firstInitiator;
     }
