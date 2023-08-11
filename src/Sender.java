@@ -42,7 +42,6 @@ public class Sender extends Thread {
 //                counter = 0;
 //            }
 
-
             this.sendMessage();
 
         }

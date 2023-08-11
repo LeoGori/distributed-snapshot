@@ -21,6 +21,9 @@ public class ReceiverThread extends Thread implements Subject {
 
         this.port = port;
         this.stop = false;
+
+        byte[] buf = new byte[256];
+        datagramPacket = new DatagramPacket(buf, buf.length);
     }
 
     public int getPort() {
@@ -29,8 +32,6 @@ public class ReceiverThread extends Thread implements Subject {
 
 
     public void run() {
-
-        byte[] buf = new byte[256];
 
         DatagramSocket socket;
         try {
@@ -41,9 +42,9 @@ public class ReceiverThread extends Thread implements Subject {
 
         while (!stop) {
 
-            DatagramPacket dp = new DatagramPacket(buf, buf.length);
+//            datagramPacket = new DatagramPacket(buf, buf.length);
             try {
-                socket.receive(dp);
+                socket.receive(datagramPacket);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -61,7 +62,6 @@ public class ReceiverThread extends Thread implements Subject {
         }
 
         socket.close();
-
     }
 
     @Override

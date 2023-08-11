@@ -13,7 +13,7 @@ public class Token {
     private Boolean isToken;
 
     public static Boolean isToken(String msg) {
-        return msg.contains("-");
+        return msg.contains("--");
     }
 
     public Token(DatagramPacket packet) throws UnknownHostException {
@@ -21,7 +21,7 @@ public class Token {
 //          if msg is not null, print message
 //            dp.getAddress().getHostAddress(), dp.getPort()
 
-        String[] parts = msg.split("-");
+        String[] parts = msg.split("--");
 
         initiator = InetAddress.getByName(parts[0]);
         timeStamp = Integer.parseInt(parts[1]);
@@ -31,7 +31,7 @@ public class Token {
     }
 
     public String getSerialized() {
-        return initiator.getHostAddress() + "-" + timeStamp;
+        return initiator.getHostAddress() + "--" + timeStamp;
     }
 
     public InetAddress getInitiator() {

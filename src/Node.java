@@ -35,6 +35,8 @@ public class Node extends Neighbor implements Observer {
         this.receiverThread.start();
         this.multiReceiver =  new MultiCastReceiver(this.ipAddr);
         multiReceiver.start();
+
+        inputChannelManager = new ChannelManager();
     }
 
     public InetAddress getInterfaces() throws Exception {
@@ -111,6 +113,8 @@ public class Node extends Neighbor implements Observer {
         String msg = new String(dp.getData(), 0, dp.getLength());
         Token token;
 
+        System.out.println("Received: " + msg + " from " + dp.getAddress());
+
         if (Token.isToken(msg)) {
             try {
                 token = new Token(dp);
@@ -133,7 +137,9 @@ public class Node extends Neighbor implements Observer {
                 inputChannelManager.blockAllChannels();
 
                 if (sender.getTimeStamp() < token.getTimeStamp())
-                    sender.setTimeStamp(token.getTimeStamp() + 1);
+                    sender.setTimeStamp(token.getTimeStamp());
+
+                sender.incrementTimeStamp();
 
                 for (Neighbor neighbor : inputChannelManager.getFreeChannels()) {
                     token.setTimeStamp(sender.getTimeStamp());
@@ -147,39 +153,40 @@ public class Node extends Neighbor implements Observer {
                 if (inputChannelManager.getFirstInitiator().equals(token.getInitiator())) {
                     inputChannelManager.freeChannel(token.getSrcIpAddr());
 
-                    // if it is the last token, end the snapshot
-                    if (inputChannelManager.getBlockedChannels().isEmpty()) {
-                        if (sender.getTimeStamp() < token.getTimeStamp())
-                            sender.setTimeStamp(token.getTimeStamp() + 1);
-
-                        token.setTimeStamp(sender.getTimeStamp());
-                        sender.incrementTimeStamp();
-                        String endToken = token.getSerialized();
-
-                        sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
-
-//                        Neighbor initiator = receiverThread.getInputChannelManager().getNeighbor(initiatorIP);
-//
-//                        sender.addMessage(initiator, receiverThread.getSnapshot());
-
-                    }
                 // if the token of a concurrent snapshot is received
                 } else {
                     inputChannelManager.addBorder(token.getSrcIpAddr());
 
-                    if (sender.getTimeStamp() < token.getTimeStamp())
-                        sender.setTimeStamp(token.getTimeStamp() + 1);
+//                    if (sender.getTimeStamp() < token.getTimeStamp())
+//                        sender.setTimeStamp(token.getTimeStamp() + 1);
 
-                    token.setTimeStamp(sender.getTimeStamp());
-                    sender.incrementTimeStamp();
+                    token.setTimeStamp(token.getTimeStamp() + 1);
+
                     String endToken = token.getSerialized();
 
                     Neighbor tokenSender = inputChannelManager.getNeighbor(token.getSrcIpAddr());
                     sender.addMessage(tokenSender, endToken);
 
+//                    sender.incrementTimeStamp();
                 }
 
-                token.setTimeStamp(token.getTimeStamp() + 1);
+            }
+
+            // if it is the last token, end the snapshot
+            if (inputChannelManager.getBlockedChannels().isEmpty()) {
+//                if (sender.getTimeStamp() < token.getTimeStamp())
+//                    sender.setTimeStamp(token.getTimeStamp() + 1);
+
+                token.setTimeStamp(sender.getTimeStamp());
+                sender.incrementTimeStamp();
+                String endToken = token.getSerialized();
+
+                sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
+
+//                        Neighbor initiator = receiverThread.getInputChannelManager().getNeighbor(initiatorIP);
+//
+//                        sender.addMessage(initiator, receiverThread.getSnapshot());
+
             }
         }
         else {
@@ -190,6 +197,8 @@ public class Node extends Neighbor implements Observer {
                 state += Integer.parseInt(msg);
             }
         }
+
+        System.out.println("Status: " + state);
     }
 
     public void initSnapshot() {
@@ -199,7 +208,7 @@ public class Node extends Neighbor implements Observer {
         inputChannelManager.blockAllChannels();
 
         for (Neighbor n : inputChannelManager.getChannels()) {
-            String token = ipAddr.getHostAddress() + "-" + String.valueOf(sender.getTimeStamp());
+            String token = ipAddr.getHostAddress() + "--" + String.valueOf(sender.getTimeStamp());
             sender.setTimeStamp(sender.getTimeStamp() + 1);
             sender.addMessage(n, token);
         }
