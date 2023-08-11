@@ -10,7 +10,7 @@ public class Main {
 
         Scanner input = new Scanner(System.in);
 
-        Node n = new Node();
+        SnapshotNode n = new SnapshotNode();
 
         while(!end) {
             System.out.println("Initialization phase");

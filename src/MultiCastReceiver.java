@@ -12,6 +12,8 @@ public class MultiCastReceiver extends Thread {
 
     private InetAddress inetAddr;
 
+    private Neighbor tester;
+
     private NetworkInterface netInt;
 
     public MultiCastReceiver(InetAddress inetAddr) {
@@ -24,6 +26,10 @@ public class MultiCastReceiver extends Thread {
 
     public HashSet<Neighbor> getSenders() {
         return senders;
+    }
+
+    public Neighbor getTester() {
+        return tester;
     }
 
     @Override
@@ -79,10 +85,19 @@ public class MultiCastReceiver extends Thread {
             String msg = new String(dp.getData(), 0, dp.getLength());
             System.out.println("Received: " + msg + " from " + dp.getAddress());
 
-            try {
-                senders.add(new Neighbor(dp.getAddress().getHostAddress()));
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
+            if (msg.contains("tester")) {
+                try {
+                    tester = new Neighbor(dp.getAddress().getHostAddress());
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else {
+                try {
+                    senders.add(new Neighbor(dp.getAddress().getHostAddress()));
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             System.out.println("Neighbors: " + senders);
@@ -95,4 +110,6 @@ public class MultiCastReceiver extends Thread {
         }
         socket.close();
     }
+
+
 }

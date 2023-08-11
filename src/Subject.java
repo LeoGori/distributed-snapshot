@@ -1,3 +1,5 @@
+import java.net.UnknownHostException;
+
 public interface Subject {
 
     //methods to register and unregister observers
@@ -5,7 +7,7 @@ public interface Subject {
     public void unregister(Observer obj);
 
     //method to notify observers of change
-    public void notifyObserver();
+    public void notifyObserver() throws UnknownHostException;
 
 //    //method to get updates from subject
 //    public Object getUpdate();

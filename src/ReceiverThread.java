@@ -52,7 +52,11 @@ public class ReceiverThread extends Thread implements Subject {
 //          if msg is not null, print message
 //            dp.getAddress().getHostAddress(), dp.getPort()
 
-            notifyObserver();
+            try {
+                notifyObserver();
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
 
 //            System.out.println("Received: " + msg + " from " + dp.getAddress());
             // print status
@@ -79,7 +83,7 @@ public class ReceiverThread extends Thread implements Subject {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver() throws UnknownHostException {
         if (observer != null) {
             observer.update();
         }

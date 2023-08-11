@@ -1,4 +1,5 @@
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 
 public class ChannelManager {
@@ -12,6 +13,8 @@ public class ChannelManager {
     private InetAddress firstInitiator;
 
     private Neighbor firstTokenSender;
+
+    private Neighbor tester;
 
     public ChannelManager() {
         this(new HashSet<>());
@@ -118,6 +121,14 @@ public class ChannelManager {
             if (n.getIpAddr() == ipAddr)
                 return n;
         return null;
+    }
+
+    public void setTester(Neighbor t) throws UnknownHostException {
+        tester = t;
+    }
+
+    public Neighbor getTester() {
+        return tester;
     }
 
 

@@ -1,4 +1,7 @@
+import javax.xml.crypto.Data;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,14 +12,41 @@ public class Snapshot {
 
     private int state;
 
-    public Snapshot() {
-        this(0);
-    }
+    private InetAddress initiator;
+
+    private HashSet<Neighbor> borderList;
 
     public Snapshot(int state) {
-
         channelState = new HashMap<>();
         this.state = state;
+        borderList = new HashSet<>();
+    }
+
+    public Snapshot(DatagramPacket packet) throws UnknownHostException {
+        String msg = new String(packet.getData(), 0, packet.getLength());
+
+        String[] parts = msg.split("-");
+
+        initiator = InetAddress.getByName(parts[0].split(":")[1]);
+        state = Integer.parseInt(parts[1].split(":")[1]);
+
+        if (parts.length - 2 > 0) {
+            String[] subParts;
+            for (int i = 2; i < parts.length; i++) {
+                subParts = parts[i].split(":");
+                if (!subParts[0].contains("be")) {
+                    InetAddress channelIp = InetAddress.getByName(subParts[0]);
+                    String[] items = subParts[1].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
+                    ArrayList<Integer> values = new ArrayList<Integer>();
+                    for (String item : items)
+                        values.add(Integer.parseInt(item));
+                    channelState.put(channelIp, values);
+                }
+                else {
+                    borderList.add(new Neighbor(subParts[1]));
+                }
+            }
+        }
     }
 
     public int getState() {
@@ -33,14 +63,40 @@ public class Snapshot {
         }
     }
 
+    public String getSerialized() {
+
+        StringBuilder s = new StringBuilder("init:" + initiator.getHostAddress());
+        s.append("-s:" + String.valueOf(state));
+        for (InetAddress addr : channelState.keySet()) {
+            s.append("-").append(addr).append(":").append(channelState.get(addr));
+        }
+        for (Neighbor n : borderList) {
+            s.append("-be:" + n.getIpAddr().getHostAddress());
+        }
+        return s.toString();
+    }
+
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder("state: " + String.valueOf(state) + "\n");
+        StringBuilder string = new StringBuilder("initiator: " + initiator.getHostAddress() + "\n");
+        string.append(new StringBuilder("state: " + String.valueOf(state) + "\n"));
         string.append("channel state: \n");
         for (InetAddress addr : channelState.keySet()) {
             string.append("Node ").append(addr).append(":").append(channelState.get(addr)).append("\n");
         }
+        string.append("Border list: \n");
+        for (Neighbor n : borderList) {
+            string.append("border element: " + n.getIpAddr().getHostAddress() + "\n");
+        }
         return string.toString();
+    }
+
+    public void setBorderList(HashSet<Neighbor> bl) {
+        borderList = bl;
+    }
+
+    public InetAddress getInitiator() {
+        return initiator;
     }
 
     public HashMap<InetAddress, ArrayList<Integer>> getChannelState() {
