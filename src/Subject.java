@@ -7,7 +7,7 @@ public interface Subject {
     //method to notify observers of change
     public void notifyObserver();
 
-    //method to get updates from subject
-    public Object getUpdate();
+//    //method to get updates from subject
+//    public Object getUpdate();
 
 }
