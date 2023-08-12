@@ -2,6 +2,7 @@ import java.net.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Set;
+import java.util.HashSet;
 
 public class Node extends Neighbor {
     protected final ReceiverThread receiverThread;
@@ -95,6 +96,10 @@ public class Node extends Neighbor {
     public void setChannels() throws UnknownHostException {
         inputChannelManager.setChannels(multiReceiver.getSenders());
         inputChannelManager.setTester(multiReceiver.getTester());
+    }
+
+    public HashSet<Neighbor> getChannels() {
+        return inputChannelManager.getChannels();
     }
 
 }

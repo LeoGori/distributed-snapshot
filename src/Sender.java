@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 
+
 public class Sender extends Thread {
 
     private Subject receiver;
@@ -70,7 +71,7 @@ public class Sender extends Thread {
         System.out.println(messages.isEmpty());
     }
 
-    public void multicastOwnIP() throws IOException {
+    public void multicastOwnIP(String msg) throws IOException {
 
         byte[] buf;
 
@@ -79,8 +80,7 @@ public class Sender extends Thread {
         multisocket.setInterface(srcIpAddr);
         multisocket.joinGroup(multicastGroup);
 
-        String multicastMessage = "Hello";
-        buf = multicastMessage.getBytes();
+        buf = msg.getBytes();
 
         DatagramPacket packet
                 = new DatagramPacket(buf, buf.length, multicastGroup, 4446);

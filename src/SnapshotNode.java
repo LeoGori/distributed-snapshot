@@ -34,6 +34,8 @@ public class SnapshotNode extends Node implements Observer{
                 snapshot = new Snapshot(state);
 
                 inputChannelManager.setFirstInitiator(token.getInitiator());
+                snapshot.setInitiator(token.getInitiator());
+
                 inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
 
                 System.out.println("First initiator: " + inputChannelManager.getFirstInitiator().getHostAddress());
@@ -96,7 +98,6 @@ public class SnapshotNode extends Node implements Observer{
 //                        Neighbor initiator = receiverThread.getInputChannelManager().getNeighbor(initiatorIP);
 //
 //                        sender.addMessage(initiator, receiverThread.getSnapshot());
-
             }
         }
         else {

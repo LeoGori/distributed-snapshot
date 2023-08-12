@@ -101,6 +101,7 @@ public class MultiCastReceiver extends Thread {
             }
 
             System.out.println("Neighbors: " + senders);
+            System.out.println("Tester: " + tester);
         }
 
         try {

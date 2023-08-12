@@ -66,7 +66,7 @@ public class Snapshot {
     public String getSerialized() {
 
         StringBuilder s = new StringBuilder("init:" + initiator.getHostAddress());
-        s.append("-s:" + String.valueOf(state));
+        s.append("-s:" + state);
         for (InetAddress addr : channelState.keySet()) {
             s.append("-").append(addr).append(":").append(channelState.get(addr));
         }
@@ -79,7 +79,7 @@ public class Snapshot {
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder("initiator: " + initiator.getHostAddress() + "\n");
-        string.append(new StringBuilder("state: " + String.valueOf(state) + "\n"));
+        string.append(new StringBuilder("state: " + state + "\n"));
         string.append("channel state: \n");
         for (InetAddress addr : channelState.keySet()) {
             string.append("Node ").append(addr).append(":").append(channelState.get(addr)).append("\n");
@@ -101,5 +101,20 @@ public class Snapshot {
 
     public HashMap<InetAddress, ArrayList<Integer>> getChannelState() {
         return channelState;
+    }
+
+    public void setInitiator(InetAddress i) {
+        initiator = i;
+    }
+
+    public int getBalance() {
+        int balance = 0;
+        balance += state;
+        for (InetAddress addr : channelState.keySet()) {
+            for (int i : channelState.get(addr)) {
+                balance += i;
+            }
+        }
+        return balance;
     }
 }
