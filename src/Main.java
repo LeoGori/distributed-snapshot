@@ -62,7 +62,7 @@ public class Main {
         end = false;
 
         n.setChannels();
-        n.setSender("tcp");
+        n.setTransmissionProtocol("tcp");
 
         while (!end) {
 
