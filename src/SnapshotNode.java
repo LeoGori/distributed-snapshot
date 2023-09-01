@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.*;
 
+
 public class SnapshotNode extends Node implements Observer{
 
     private Snapshot snapshot;
@@ -125,6 +126,8 @@ public class SnapshotNode extends Node implements Observer{
         else {
             throw new RuntimeException("Invalid sender type");
         }
+        receiverThread.register(this);
+
         sender.start();
         receiverThread.start();
     }

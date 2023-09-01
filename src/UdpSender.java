@@ -44,7 +44,7 @@ public class UdpSender extends Sender {
                 String msg = p.getMsg();
                 InetAddress dest_ip = p.getIpAddr();
                 String port = String.valueOf(p.getPort());
-                System.out.println("sending " + msg + " to " + dest_ip.toString() + ":" + port);
+                System.out.println("sending " + msg + " to " + dest_ip.toString() + ":" + port + " through UDP");
 
                 DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, p.getPort());
 

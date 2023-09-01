@@ -13,7 +13,6 @@ public class TcpReceiverThread extends ReceiverThread {
     }
 
     public TcpReceiverThread(int port) throws IOException {
-
         this.port = port;
         this.stop = false;
         serverSocket = new ServerSocket(port);
@@ -36,12 +35,16 @@ public class TcpReceiverThread extends ReceiverThread {
                 throw new RuntimeException(e);
             }
 
+            System.out.println("Accepted connection from " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort());
+
 
             try {
                 packet = new Packet(clientSocket);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            System.out.println("Received: " + packet.getMsg() + " from " + packet.getIpAddr());
 
 
             try {

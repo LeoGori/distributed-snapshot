@@ -41,7 +41,7 @@ public class TcpSender extends Sender {
 
                 String msg = p.getMsg();
 
-                System.out.println("sending " + msg + " to " + ipAddr.toString() + ":" + port);
+                System.out.println("sending " + msg + " to " + ipAddr.toString() + ":" + port + " through TCP");
 
                 out.println(msg);
 
