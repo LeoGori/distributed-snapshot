@@ -116,6 +116,7 @@ public class SnapshotNode extends Node implements Observer{
         if (type.equals("udp")) {
             sender = new UdpSender(ipAddr);
             receiverThread = new UdpReceiverThread(port);
+
         }
         else if (type.equals("tcp")) {
             sender = new TcpSender(ipAddr);
@@ -124,6 +125,8 @@ public class SnapshotNode extends Node implements Observer{
         else {
             throw new RuntimeException("Invalid sender type");
         }
+        sender.start();
+        receiverThread.start();
     }
 
     public void initSnapshot() {
