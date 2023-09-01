@@ -7,7 +7,7 @@ public class Main {
 
         System.out.println("Hello world!");
 
-        boolean isTester = true;
+        boolean isTester = false;
 
         if (isTester)
             testerMenu();
@@ -62,6 +62,7 @@ public class Main {
         end = false;
 
         n.setChannels();
+        n.setSender("tcp");
 
         while (!end) {
 

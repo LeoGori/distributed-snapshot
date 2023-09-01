@@ -112,6 +112,18 @@ public class SnapshotNode extends Node implements Observer{
         System.out.println("State: " + state);
     }
 
+    public void setSender(String type) throws IOException {
+        if (type.equals("udp")) {
+            sender = new UdpSender(ipAddr);
+        }
+        else if (type.equals("tcp")) {
+            sender = new TcpSender(ipAddr);
+        }
+        else {
+            throw new RuntimeException("Invalid sender type");
+        }
+    }
+
     public void initSnapshot() {
 
         snapshot = new Snapshot(state);

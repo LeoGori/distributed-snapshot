@@ -22,8 +22,8 @@ public class Node extends Neighbor {
             throw new RuntimeException(e);
         }
 
-        sender = new TcpSender();
-        this.receiverThread = new TcpReceiverThread(port);
+        sender = new UdpSender(ipAddr);
+        this.receiverThread = new UdpReceiverThread(port);
 
         receiverThread.register((Observer) this);
 
