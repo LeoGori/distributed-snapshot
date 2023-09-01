@@ -27,11 +27,11 @@ public class Main {
 
         while (!end) {
             System.out.println("Initialization phase");
-            String menu = """
-                    1. Notify neighbors
-                    2. Exit
-                    """;
-//            String menu = "1. Send message\n2. Require snapshot\n3. Pass\n4. Exit ";
+//            String menu = """
+//                    1. Notify neighbors
+//                    2. Exit
+//                    """;
+            String menu = "1. Notify neighbors\n2. Exit ";
             System.out.println(menu);
 
             System.out.println(n);
@@ -40,11 +40,21 @@ public class Main {
 
             System.out.println(n.getClass());
 
+//            switch (choice) {
+//                case 1 -> {
+//                    ((UdpSender) n.getSender()).multicastOwnIP("hello");
+//                }
+//                case 2 -> end = true;
+//            }
+
             switch (choice) {
-                case 1 -> {
+                case 1:
                     ((UdpSender) n.getSender()).multicastOwnIP("hello");
-                }
-                case 2 -> end = true;
+                    break;
+
+                case 2:
+                    end = true;
+                    break;
             }
 
         }
@@ -55,21 +65,46 @@ public class Main {
 
         while (!end) {
 
-            String menu = """
-                    1. Send message
-                    2. Request snapshot
-                    3. Test distributed snapshot
-                    4. Exit
-                    """;
-//            String menu = "1. Send message\n2. Require snapshot\n3. Pass\n4. Exit ";
+//            String menu = """
+//                    1. Send message
+//                    2. Request snapshot
+//                    3. Test distributed snapshot
+//                    4. Exit
+//                    """;
+            String menu = "1. Send message\n2. Require snapshot\n3. Test distributed snapshot\n4. Exit ";
             System.out.println(menu);
 
             System.out.println(n);
 
             int choice = input.nextInt();
 
+//            switch (choice) {
+//                case 1 -> {
+//                    System.out.println("Please choose the id of the node to send to:");
+//                    int id = input.nextInt();
+//                    Neighbor dest = n.getNeighbor(id);
+//                    System.out.println("Please enter the message you want to send:");
+//                    input.nextLine();
+//                    String msg = input.nextLine();
+//                    n.sendMessage(dest, msg);
+//                }
+//
+//                case 2 -> {
+//                    n.initSnapshot();
+//                }
+//
+//                case 3 -> {
+//                    automaticSnapshot(n);
+//                }
+//
+//                case 4 -> {
+//                    end = true;
+//                }
+//
+//            }
+
             switch (choice) {
-                case 1 -> {
+                case 1:
                     System.out.println("Please choose the id of the node to send to:");
                     int id = input.nextInt();
                     Neighbor dest = n.getNeighbor(id);
@@ -77,19 +112,19 @@ public class Main {
                     input.nextLine();
                     String msg = input.nextLine();
                     n.sendMessage(dest, msg);
-                }
+                    break;
 
-                case 2 -> {
+                case 2:
                     n.initSnapshot();
-                }
+                    break;
 
-                case 3 -> {
+                case 3:
                     automaticSnapshot(n);
-                }
+                    break;
 
-                case 4 -> {
+                case 4:
                     end = true;
-                }
+                    break;
 
             }
         }
@@ -141,22 +176,31 @@ public class Main {
 
         while (!end) {
             System.out.println("Initialization phase");
-            String menu = """
-                    1. Notify neighbors
-                    2. Exit
-                    """;
-//            String menu = "1. Send message\n2. Require snapshot\n3. Pass\n4. Exit ";
+//            String menu = """
+//                    1. Notify neighbors
+//                    2. Exit
+//                    """;
+            String menu = "1. Notify neighbors\n2. Exit ";
             System.out.println(menu);
 
             System.out.println(t);
 
             int choice = input.nextInt();
 
+//            switch (choice) {
+//                case 1 -> {
+//                    ((UdpSender) t.getSender()).multicastOwnIP("tester");
+//                }
+//                case 2 -> end = true;
+//            }
+
             switch (choice) {
-                case 1 -> {
+                case 1:
                     ((UdpSender) t.getSender()).multicastOwnIP("tester");
-                }
-                case 2 -> end = true;
+                    break;
+                case 2:
+                    end = true;
+                    break;
             }
 
         }
