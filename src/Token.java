@@ -1,4 +1,3 @@
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -16,8 +15,8 @@ public class Token {
         return msg.contains("--");
     }
 
-    public Token(DatagramPacket packet) throws UnknownHostException {
-        String msg = new String(packet.getData(), 0, packet.getLength());
+    public Token(Packet packet) throws UnknownHostException {
+        String msg = packet.getMsg();
 //          if msg is not null, print message
 //            dp.getAddress().getHostAddress(), dp.getPort()
 
@@ -27,7 +26,7 @@ public class Token {
         timeStamp = Integer.parseInt(parts[1]);
 //        isEndToken = parts[2].equals("end");
 
-        srcIpAddr = packet.getAddress();
+        srcIpAddr = packet.getIpAddr();
     }
 
     public String getSerialized() {

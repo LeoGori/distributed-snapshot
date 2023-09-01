@@ -1,17 +1,20 @@
 import java.io.IOException;
 import java.net.*;
+import java.io.*;
 import java.util.*;
 
 public class ReceiverThread extends Thread implements Subject {
 
-    private Observer observer;
+    protected Observer observer;
 
-    private final int port;
+    protected Packet packet;
+
+    protected int port;
 //    private final Queue<Integer> messages;
 
-    private final boolean stop;
+    protected boolean stop;
 
-    private DatagramPacket datagramPacket;
+//    private DatagramPacket datagramPacket;
 
     public ReceiverThread() {
         this(12000);
@@ -21,51 +24,16 @@ public class ReceiverThread extends Thread implements Subject {
 
         this.port = port;
         this.stop = false;
-
         byte[] buf = new byte[256];
-        datagramPacket = new DatagramPacket(buf, buf.length);
+
     }
 
     public int getPort() {
         return port;
     }
 
-
-    public void run() {
-
-        DatagramSocket socket;
-        try {
-            socket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-
-        while (!stop) {
-
-//            datagramPacket = new DatagramPacket(buf, buf.length);
-            try {
-                socket.receive(datagramPacket);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-//            String msg = new String(dp.getData(), 0, dp.getLength());
-//          if msg is not null, print message
-//            dp.getAddress().getHostAddress(), dp.getPort()
-
-            try {
-                notifyObserver();
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
-            }
-
-//            System.out.println("Received: " + msg + " from " + dp.getAddress());
-            // print status
-
-//            System.out.println("Status: " + state);
-
-        }
-
-        socket.close();
+    public Packet getPacket() {
+        return packet;
     }
 
     @Override
@@ -89,9 +57,6 @@ public class ReceiverThread extends Thread implements Subject {
         }
     }
 
-    public DatagramPacket getDatagramPacket() {
-        return datagramPacket;
-    }
 
     //    public Queue<Integer> getStatus() {
 //        return messages;

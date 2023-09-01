@@ -1,28 +1,28 @@
+import java.io.IOException;
 import java.net.*;
-import java.util.Enumeration;
-import java.util.Collections;
-import java.util.Set;
 
 public class SnapshotNode extends Node implements Observer{
 
     private Snapshot snapshot;
 
-    public SnapshotNode() throws UnknownHostException, SocketException {
+    public SnapshotNode() throws IOException {
         super();
     }
 
     @Override
     public synchronized void update() {
-        DatagramPacket dp = receiverThread.getDatagramPacket();
+//        DatagramPacket dp = receiverThread.getDatagramPacket();
 
-        String msg = new String(dp.getData(), 0, dp.getLength());
+        Packet packet = receiverThread.getPacket();
+
+        String msg = packet.getMsg();
         Token token;
 
-        System.out.println("Received: " + msg + " from " + dp.getAddress());
+        System.out.println("Received: " + msg + " from " + packet.getIpAddr());
 
         if (Token.isToken(msg)) {
             try {
-                token = new Token(dp);
+                token = new Token(packet);
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
@@ -101,8 +101,8 @@ public class SnapshotNode extends Node implements Observer{
             }
         }
         else {
-            if (inputChannelManager.getBlockedChannels().contains(dp.getAddress())) {
-                snapshot.addChannelState(dp.getAddress(), Integer.parseInt(msg));
+            if (inputChannelManager.getBlockedChannels().contains(packet.getIpAddr())) {
+                snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
             }
             else {
                 state += Integer.parseInt(msg);

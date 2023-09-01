@@ -7,7 +7,7 @@ public class Main {
 
         System.out.println("Hello world!");
 
-        boolean isTester = false;
+        boolean isTester = true;
 
         if (isTester)
             testerMenu();
@@ -42,7 +42,7 @@ public class Main {
 
             switch (choice) {
                 case 1 -> {
-                    n.getSender().multicastOwnIP("hello");
+                    ((UdpSender) n.getSender()).multicastOwnIP("hello");
                 }
                 case 2 -> end = true;
             }
@@ -154,7 +154,7 @@ public class Main {
 
             switch (choice) {
                 case 1 -> {
-                    t.getSender().multicastOwnIP("tester");
+                    ((UdpSender) t.getSender()).multicastOwnIP("tester");
                 }
                 case 2 -> end = true;
             }

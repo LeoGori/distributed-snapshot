@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.*;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -5,15 +6,15 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class Node extends Neighbor {
-    protected final ReceiverThread receiverThread;
+    protected ReceiverThread receiverThread;
 
     protected final MultiCastReceiver multiReceiver;
 
-    protected final Sender sender;
+    protected Sender sender;
 
     protected ChannelManager inputChannelManager;
 
-    public Node() throws UnknownHostException, SocketException {
+    public Node() throws IOException {
         super();
         try {
             ipAddr = this.getInterfaces();
@@ -21,8 +22,8 @@ public class Node extends Neighbor {
             throw new RuntimeException(e);
         }
 
-        sender = new Sender(ipAddr);
-        this.receiverThread = new ReceiverThread(port);
+        sender = new TcpSender();
+        this.receiverThread = new TcpReceiverThread(port);
 
         receiverThread.register((Observer) this);
 
@@ -101,5 +102,6 @@ public class Node extends Neighbor {
     public HashSet<Neighbor> getChannels() {
         return inputChannelManager.getChannels();
     }
+
 
 }

@@ -1,9 +1,7 @@
-import java.net.DatagramPacket;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Tester extends Node implements Observer {
 
@@ -11,21 +9,25 @@ public class Tester extends Node implements Observer {
 
     private HashMap<InetAddress, Snapshot> lastSnapshot;
 
-    public Tester() throws UnknownHostException, SocketException {
+    public Tester() throws IOException {
+        super();
+
+        sender = new UdpSender(ipAddr);
+        this.receiverThread = new UdpReceiverThread(port);
+
         incrementalSnapshots = new HashMap<>();
         lastSnapshot = new HashMap();
     }
 
     public void update() throws UnknownHostException {
-        DatagramPacket dp = receiverThread.getDatagramPacket();
+        Packet p = receiverThread.getPacket();
 
-        String msg = new String(dp.getData(), 0, dp.getLength());
+        String msg = p.getMsg();
+        System.out.println("Received: " + msg + " from " + p.getIpAddr());
 
-        System.out.println("Received: " + msg + " from " + dp.getAddress());
+        Snapshot snapshot = new Snapshot(p);
 
-        Snapshot snapshot = new Snapshot(dp);
-
-        InetAddress senderAddress = dp.getAddress();
+        InetAddress senderAddress = p.getIpAddr();
         InetAddress initiator = snapshot.getInitiator();
 
         if (!incrementalSnapshots.keySet().contains(initiator)) {

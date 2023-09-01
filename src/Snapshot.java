@@ -22,9 +22,8 @@ public class Snapshot {
         borderList = new HashSet<>();
     }
 
-    public Snapshot(DatagramPacket packet) throws UnknownHostException {
-        String msg = new String(packet.getData(), 0, packet.getLength());
-
+    public Snapshot(Packet packet) throws UnknownHostException {
+        String msg = packet.getMsg();
         String[] parts = msg.split("-");
 
         initiator = InetAddress.getByName(parts[0].split(":")[1]);

@@ -5,35 +5,33 @@ import java.util.Queue;
 
 
 
-public class Sender extends Thread {
+public abstract class Sender extends Thread {
 
-    private Subject receiver;
+    protected Subject receiver;
 
-    private final DatagramSocket socket;
+    protected Queue<Packet> messages;
 
-    private Queue<DatagramPacket> messages;
+    protected InetAddress srcIpAddr;
 
-    private InetAddress srcIpAddr;
+    protected Boolean stop;
 
-    InetAddress multicastGroup;
+    protected int timeStamp;
 
-    private Boolean stop;
-
-    private int timeStamp;
+    public Sender() throws SocketException, UnknownHostException {
+        this(null);
+    }
 
     public Sender(InetAddress ipAddr) throws SocketException, UnknownHostException {
-        this.socket = new DatagramSocket();
+
         messages = new LinkedList<>();
         stop = false;
-        multicastGroup = InetAddress.getByName("239.0.0.0");
-//        multicast = false;
         this.srcIpAddr = ipAddr;
         timeStamp = 0;
     }
 
     public void run() {
 
-        int counter = 0;
+//        int counter = 0;
 
         while (!stop) {
 
@@ -62,52 +60,19 @@ public class Sender extends Thread {
 //        msg += "-" + String.valueOf(timeStamp);
 //        timeStamp ++;
 
-        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
+//        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
+
+        Packet packet = new Packet(msg, dest_ip, recv_port);
 
         System.out.println("Message added to the queue");
-        messages.add(dp);
+        messages.add(packet);
 
         System.out.println(messages);
         System.out.println(messages.isEmpty());
     }
 
-    public void multicastOwnIP(String msg) throws IOException {
 
-        byte[] buf;
-
-        MulticastSocket multisocket = new MulticastSocket(4446);
-        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, false);
-        multisocket.setInterface(srcIpAddr);
-        multisocket.joinGroup(multicastGroup);
-
-        buf = msg.getBytes();
-
-        DatagramPacket packet
-                = new DatagramPacket(buf, buf.length, multicastGroup, 4446);
-        multisocket.send(packet);
-//        socket.close();
-
-        System.out.println("Multicast message sent to group: " + packet.getAddress());
-    }
-
-    public synchronized void sendMessage() {
-        if (!messages.isEmpty()) {
-            System.out.println("Sending packet");
-            DatagramPacket dp = messages.poll();
-
-            if (dp != null) {
-                String msg = new String(dp.getData(), 0, dp.getLength());
-                InetAddress dest_ip = dp.getAddress();
-                String port = String.valueOf(dp.getPort());
-                System.out.println("sending " + msg + " to " + dest_ip.toString() + ":" + port);
-                try {
-                    socket.send(dp);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
+    public abstract void sendMessage();
 
     public void incrementTimeStamp() {
         timeStamp ++;
