@@ -133,8 +133,6 @@ public class Main {
 
     public static void automaticSnapshot(SnapshotNode n) throws InterruptedException {
 
-        boolean end = false;
-
         CommandReaderThread rct = new CommandReaderThread();
 
         rct.start();

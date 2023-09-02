@@ -33,6 +33,8 @@ public class TcpSender extends Sender {
                     throw new RuntimeException(e);
                 }
 
+                System.out.println("Connected to " + ipAddr.toString() + ":" + port);
+
                 try {
                     out = new PrintWriter(socket.getOutputStream(), true);
                 } catch (IOException e) {
