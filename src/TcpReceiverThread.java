@@ -13,10 +13,8 @@ public class TcpReceiverThread extends ReceiverThread {
     }
 
     public TcpReceiverThread(int port) throws IOException {
-        this.port = port;
-        this.stop = false;
+        super(port);
         serverSocket = new ServerSocket(port);
-
     }
 
     public int getPort() {

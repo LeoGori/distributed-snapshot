@@ -24,7 +24,7 @@ public class ReceiverThread extends Thread implements Subject {
 
         this.port = port;
         this.stop = false;
-        byte[] buf = new byte[256];
+        observer = null;
 
     }
 
