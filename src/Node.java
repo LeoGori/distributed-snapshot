@@ -40,7 +40,7 @@ public class Node extends Neighbor {
 
         for (NetworkInterface netint : Collections.list(interfaces)) {
             displayInterfaceInformation(netint);
-            if (netint.getName().equals("wlan0")) {
+            if (netint.getName().equals("enp0s3")) {
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
                 for (InetAddress inetAddress : Collections.list(inetAddresses)) {
                     if (inetAddress instanceof Inet4Address) {
