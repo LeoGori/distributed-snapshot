@@ -49,6 +49,7 @@ public class TcpReceiverThread extends ReceiverThread {
 
             try {
                 notifyObserver();
+                System.out.println("Notified observer");
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
