@@ -52,5 +52,13 @@ public class TcpReceiverThread extends ReceiverThread {
                 throw new RuntimeException(e);
             }
         }
+
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 }

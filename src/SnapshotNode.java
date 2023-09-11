@@ -115,11 +115,14 @@ public class SnapshotNode extends Node implements Observer{
         System.out.println("State: " + state);
     }
 
-    public void setTransmissionProtocol(String type) throws IOException {
+    public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
+
+        sender.join();
+        receiverThread.join();
+
         if (type.equals("udp")) {
             sender = new UdpSender(ipAddr);
             receiverThread = new UdpReceiverThread(port);
-
         }
         else if (type.equals("tcp")) {
             sender = new TcpSender(ipAddr);

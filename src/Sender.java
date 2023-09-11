@@ -44,6 +44,9 @@ public abstract class Sender extends Thread {
             this.sendMessage();
 
         }
+
+        this.garbageCollect();
+
     }
 
     public synchronized void addMessage(Neighbor dest, String msg) {
@@ -70,6 +73,8 @@ public abstract class Sender extends Thread {
         System.out.println(messages);
         System.out.println(messages.isEmpty());
     }
+
+    public abstract void garbageCollect();
 
 
     public abstract void sendMessage();

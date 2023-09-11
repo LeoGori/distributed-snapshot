@@ -59,4 +59,12 @@ public class TcpSender extends Sender {
         }
     }
 
+    public void garbageCollect() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

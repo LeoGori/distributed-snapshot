@@ -60,6 +60,7 @@ public class UdpReceiverThread extends ReceiverThread {
         }
 
         socket.close();
+
     }
 
 

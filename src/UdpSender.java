@@ -57,4 +57,12 @@ public class UdpSender extends Sender {
         }
     }
 
+    public void garbageCollect() {
+        try {
+            socket.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
