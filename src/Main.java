@@ -143,7 +143,8 @@ public class Main {
             System.out.println("Initialization phase");
             String menu = """
                     1. Notify neighbors
-                    2. Exit
+                    2. Switch transmission mode
+                    3. Exit
                     """;
 
             System.out.println(menu);
@@ -156,7 +157,15 @@ public class Main {
                 case 1 -> {
                     ((UdpSender) t.getSender()).multicastOwnIP("tester");
                 }
-                case 2 -> end = true;
+
+                case 2 -> {
+                    System.out.println("Please enter the transmission mode (udp/tcp):");
+                    input.nextLine();
+                    String mode = input.nextLine();
+                    t.setTransmissionProtocol(mode);
+                }
+
+                case 3 -> end = true;
             }
 
 

@@ -58,4 +58,23 @@ public class Tester extends Node implements Observer {
         return totalBalance == 0;
     }
 
+    public void setTransmissionProtocol(String type) throws IOException {
+        if (type.equals("udp")) {
+            sender = new UdpSender(ipAddr);
+            receiverThread = new UdpReceiverThread(port);
+
+        }
+        else if (type.equals("tcp")) {
+            sender = new TcpSender(ipAddr);
+            receiverThread = new TcpReceiverThread(port);
+        }
+        else {
+            throw new RuntimeException("Invalid sender type");
+        }
+        receiverThread.register(this);
+
+        sender.start();
+        receiverThread.start();
+    }
+
 }
