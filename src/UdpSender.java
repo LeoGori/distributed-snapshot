@@ -21,7 +21,7 @@ public class UdpSender extends Sender {
         byte[] buf;
 
         MulticastSocket multisocket = new MulticastSocket(4446);
-        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, true);
+        multisocket.setOption(StandardSocketOptions.IP_MULTICAST_LOOP, false);
         multisocket.setInterface(srcIpAddr);
         multisocket.joinGroup(multicastGroup);
 

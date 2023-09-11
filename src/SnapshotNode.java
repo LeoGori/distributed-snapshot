@@ -80,6 +80,8 @@ public class SnapshotNode extends Node implements Observer{
 
             }
 
+            System.out.println("Blocked channels: " + inputChannelManager.getBlockedChannels());
+
             // if it is the last token, end the snapshot
             if (inputChannelManager.getBlockedChannels().isEmpty()) {
 //                if (sender.getTimeStamp() < token.getTimeStamp())
