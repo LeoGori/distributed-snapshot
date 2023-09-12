@@ -68,13 +68,15 @@ public class Snapshot {
 
         StringBuilder s = new StringBuilder("init:" + initiator.getHostAddress());
         s.append("||s:" + state);
-        if(channelState != null) {
+        if(!channelState.isEmpty()) {
             for (InetAddress addr : channelState.keySet()) {
                 s.append("||").append(addr).append(":").append(channelState.get(addr));
             }
         }
-        for (Neighbor n : borderList) {
-            s.append("||be:" + n.getIpAddr().getHostAddress());
+        if (!borderList.isEmpty()) {
+            for (Neighbor n : borderList) {
+                s.append("||be:" + n.getIpAddr().getHostAddress());
+            }
         }
         return s.toString();
     }

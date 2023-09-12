@@ -107,13 +107,16 @@ public class Main {
 
         int upperbound = 10;
 
-        while (!rct.getEnd()) {
+        boolean end = false;
+
+        while (!end || n.isSnapshotInitialized()) {
 
             float randomFloat = rand.nextFloat();
             System.out.println(randomFloat);
 
             if (randomFloat < 0.2) {
                 n.initSnapshot();
+                end = true;
             }
             else {
 

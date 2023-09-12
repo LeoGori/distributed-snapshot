@@ -8,9 +8,12 @@ public class SnapshotNode extends Node implements Observer{
 
     private int state;
 
+    private boolean snapshotInitialized;
+
     public SnapshotNode() throws IOException {
         super();
         snapshot = null;
+        snapshotInitialized = false;
     }
 
     @Override
@@ -104,6 +107,8 @@ public class SnapshotNode extends Node implements Observer{
 
                 sender.addMessage(inputChannelManager.getTester(), snapshot.getSerialized());
 
+                snapshotInitialized = false;
+
 
 //                        Neighbor initiator = receiverThread.getInputChannelManager().getNeighbor(initiatorIP);
 //
@@ -159,6 +164,8 @@ public class SnapshotNode extends Node implements Observer{
             sender.setTimeStamp(sender.getTimeStamp() + 1);
             sender.addMessage(n, token);
         }
+
+        snapshotInitialized = true;
     }
 
     public void sendMessage(Neighbor n, String message) {
@@ -170,6 +177,10 @@ public class SnapshotNode extends Node implements Observer{
 
     private synchronized void updateState(int value) {
         state += value;
+    }
+
+    public boolean isSnapshotInitialized() {
+        return snapshotInitialized;
     }
 
 //    public Vector<int> getStatus() {
