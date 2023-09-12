@@ -73,10 +73,6 @@ public class Node extends Neighbor {
         return receiverThread.getPort();
     }
 
-    public void sendMessage(Neighbor n, String message) {
-        sender.addMessage(n, message);
-    }
-
 
     @Override
     public String toString() {

@@ -26,6 +26,8 @@ public class Snapshot {
         String msg = packet.getMsg();
         String[] parts = msg.split("-");
 
+        channelState = new HashMap<>();
+        borderList = new HashSet<>();
         initiator = InetAddress.getByName(parts[0].split(":")[1]);
         state = Integer.parseInt(parts[1].split(":")[1]);
 

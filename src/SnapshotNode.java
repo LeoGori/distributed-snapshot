@@ -6,6 +6,8 @@ public class SnapshotNode extends Node implements Observer{
 
     private Snapshot snapshot;
 
+    private int state;
+
     public SnapshotNode() throws IOException {
         super();
         snapshot = null;
@@ -156,6 +158,13 @@ public class SnapshotNode extends Node implements Observer{
             sender.setTimeStamp(sender.getTimeStamp() + 1);
             sender.addMessage(n, token);
         }
+    }
+
+    public void sendMessage(Neighbor n, String message) {
+
+        int value = Integer.parseInt(message);
+        state += value;
+        sender.addMessage(n, message);
     }
 
 //    public Vector<int> getStatus() {

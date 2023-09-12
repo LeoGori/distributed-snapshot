@@ -2,7 +2,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class Neighbor {
-    protected int state;
 
     protected InetAddress ipAddr;
 
@@ -13,7 +12,11 @@ public class Neighbor {
     }
 
     public Neighbor() throws UnknownHostException {
-        this.state = 0;
+        this.port = 12000;
+    }
+
+    public Neighbor(String ipAddr) throws UnknownHostException {
+        this.ipAddr = InetAddress.getByName(ipAddr);
         this.port = 12000;
     }
 
@@ -61,23 +64,10 @@ public class Neighbor {
         return ipPart1 + ipPart2 + ipPart3 + ipPart4 + this.port;
     }
 
-    public Neighbor(String ipAddr) throws UnknownHostException {
-        this.state = 0;
-        this.ipAddr = InetAddress.getByName(ipAddr);
-        this.port = 12000;
-    }
-
     public void setPort(int port) {
         this.port = port;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
 
     public InetAddress getIpAddr() {
         return ipAddr;
