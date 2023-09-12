@@ -14,7 +14,7 @@ public class CommandReaderThread extends Thread {
 
     public void run() {
 
-        while (true) {
+        while (!end) {
 
             String command = scanner.nextLine();
 
@@ -23,10 +23,8 @@ public class CommandReaderThread extends Thread {
             }
         }
 
-    }
-
-    public void closeScanner() {
         scanner.close();
+
     }
 
     public boolean getEnd() {
