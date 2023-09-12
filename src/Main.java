@@ -99,9 +99,9 @@ public class Main {
 
     public static void automaticSnapshot(SnapshotNode n) throws InterruptedException {
 
-        CommandReaderThread rct = new CommandReaderThread();
+//        CommandReaderThread rct = new CommandReaderThread();
 
-        rct.start();
+//        rct.start();
 
         Random rand = new Random();
 
@@ -138,7 +138,7 @@ public class Main {
             Thread.sleep(2500);
         }
 
-        rct.interrupt();
+//        rct.interrupt();
         System.out.println("Exiting automatic snapshot");
 
     }
