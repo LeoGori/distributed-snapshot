@@ -45,8 +45,6 @@ public class ChannelManager {
             if (n.getIpAddr().equals(tokenSender)) {
                 System.out.println("Found");
                 firstTokenSender = n;
-                channels.remove(n);
-                blockedChannels.remove(n);
             }
         }
     }
@@ -65,7 +63,6 @@ public class ChannelManager {
 
     public synchronized void addBorder(Neighbor neighbor) {
         borderList.add(neighbor);
-        channels.remove(neighbor);
     }
 
     public synchronized void freeChannel(InetAddress ipAddr) {
@@ -84,7 +81,7 @@ public class ChannelManager {
 
         Neighbor neighbor = null;
         for (Neighbor n : channels)
-            if (n.getIpAddr() == ipAddr)
+            if (n.getIpAddr().equals(ipAddr))
                 neighbor = n;
 
         if (neighbor != null) {
@@ -118,7 +115,7 @@ public class ChannelManager {
 
     public Neighbor getNeighbor(InetAddress ipAddr) {
         for (Neighbor n: channels)
-            if (n.getIpAddr() == ipAddr)
+            if (n.getIpAddr().equals(ipAddr))
                 return n;
         return null;
     }
