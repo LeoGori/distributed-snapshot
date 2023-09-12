@@ -131,7 +131,7 @@ public class Main {
         }
     }
 
-    public static void testerMenu() throws IOException {
+    public static void testerMenu() throws IOException, InterruptedException {
 
         Tester t = new Tester();
 

@@ -23,14 +23,15 @@ public class TcpReceiverThread extends ReceiverThread {
 
     public void run() {
 
-        while (!stop) {
+        while (!serverSocket.isClosed()){
 
 //            datagramPacket = new DatagramPacket(buf, buf.length);
             Socket clientSocket;
             try {
                 clientSocket = serverSocket.accept();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+//                throw new RuntimeException(e);
+                break;
             }
 
             System.out.println("Accepted connection from " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort());
@@ -53,12 +54,9 @@ public class TcpReceiverThread extends ReceiverThread {
             }
         }
 
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    }
 
-
+    public void closeSocket() throws IOException {
+        serverSocket.close();
     }
 }

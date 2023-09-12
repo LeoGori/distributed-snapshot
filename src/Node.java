@@ -22,8 +22,8 @@ public class Node extends Neighbor {
             throw new RuntimeException(e);
         }
 
-        sender = new UdpSender(ipAddr);
-        this.receiverThread = new UdpReceiverThread(port);
+        sender = new TcpSender(ipAddr);
+        this.receiverThread = new TcpReceiverThread(port);
 
         receiverThread.register((Observer) this);
 
@@ -102,6 +102,5 @@ public class Node extends Neighbor {
     public HashSet<Neighbor> getChannels() {
         return inputChannelManager.getChannels();
     }
-
 
 }

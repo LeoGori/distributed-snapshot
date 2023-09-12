@@ -7,15 +7,20 @@ public class UdpReceiverThread extends ReceiverThread {
 
     private Packet packet;
 
+    DatagramSocket socket;
+
     public UdpReceiverThread() {
         this(12000);
     }
 
     public UdpReceiverThread(int port) {
-
-        this.port = port;
-        this.stop = false;
+        super(port);
         packet = null;
+        try {
+            socket = new DatagramSocket(port);
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public int getPort() {
@@ -24,21 +29,15 @@ public class UdpReceiverThread extends ReceiverThread {
 
     public void run() {
 
-        DatagramSocket socket;
-        try {
-            socket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-
-        while (!stop) {
+        while (!socket.isClosed()) {
             byte[] buf = new byte[256];
             DatagramPacket datagramPacket = new DatagramPacket(buf, buf.length);
 //            datagramPacket = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(datagramPacket);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+//                throw new RuntimeException(e);
+                break;
             }
 //            String msg = new String(dp.getData(), 0, dp.getLength());
 //          if msg is not null, print message
@@ -59,8 +58,10 @@ public class UdpReceiverThread extends ReceiverThread {
 
         }
 
-        socket.close();
+    }
 
+    public void closeSocket() {
+        socket.close();
     }
 
 

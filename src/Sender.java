@@ -91,4 +91,8 @@ public abstract class Sender extends Thread {
         timeStamp = ts;
     }
 
+    public void setStop(Boolean stop) {
+        this.stop = stop;
+    }
+
 }

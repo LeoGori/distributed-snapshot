@@ -8,6 +8,7 @@ public class SnapshotNode extends Node implements Observer{
 
     public SnapshotNode() throws IOException {
         super();
+        snapshot = null;
     }
 
     @Override
@@ -117,8 +118,8 @@ public class SnapshotNode extends Node implements Observer{
 
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
 
-        sender.join();
-        receiverThread.join();
+        sender.interrupt();
+        receiverThread.interrupt();
 
         if (type.equals("udp")) {
             sender = new UdpSender(ipAddr);

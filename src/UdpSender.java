@@ -60,6 +60,7 @@ public class UdpSender extends Sender {
     public void garbageCollect() {
         try {
             socket.close();
+            System.out.println("Closed UDP sender socket");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

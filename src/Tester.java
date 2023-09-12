@@ -12,9 +12,6 @@ public class Tester extends Node implements Observer {
     public Tester() throws IOException {
         super();
 
-        sender = new UdpSender(ipAddr);
-        this.receiverThread = new UdpReceiverThread(port);
-
         incrementalSnapshots = new HashMap<>();
         lastSnapshot = new HashMap();
     }
@@ -58,11 +55,15 @@ public class Tester extends Node implements Observer {
         return totalBalance == 0;
     }
 
-    public void setTransmissionProtocol(String type) throws IOException {
+    public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
+
+        sender.interrupt();
+        receiverThread.closeSocket();
+        receiverThread.interrupt();
+
         if (type.equals("udp")) {
             sender = new UdpSender(ipAddr);
             receiverThread = new UdpReceiverThread(port);
-
         }
         else if (type.equals("tcp")) {
             sender = new TcpSender(ipAddr);

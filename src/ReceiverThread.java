@@ -3,29 +3,21 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class ReceiverThread extends Thread implements Subject {
+public abstract class ReceiverThread extends Thread implements Subject {
 
     protected Observer observer;
 
     protected Packet packet;
 
     protected int port;
-//    private final Queue<Integer> messages;
-
-    protected boolean stop;
-
-//    private DatagramPacket datagramPacket;
 
     public ReceiverThread() {
         this(12000);
     }
 
     public ReceiverThread(int port) {
-
         this.port = port;
-        this.stop = false;
         observer = null;
-
     }
 
     public int getPort() {
@@ -56,6 +48,8 @@ public class ReceiverThread extends Thread implements Subject {
             observer.update();
         }
     }
+
+    public abstract void closeSocket() throws IOException;
 
 
     //    public Queue<Integer> getStatus() {
