@@ -119,6 +119,7 @@ public class SnapshotNode extends Node implements Observer{
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
 
         sender.interrupt();
+        receiverThread.closeSocket();
         receiverThread.interrupt();
 
         if (type.equals("udp")) {

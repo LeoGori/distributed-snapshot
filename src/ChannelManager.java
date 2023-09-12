@@ -72,7 +72,7 @@ public class ChannelManager {
 
         Neighbor neighbor = null;
         for (Neighbor n : channels)
-            if (n.getIpAddr() == ipAddr)
+            if (n.getIpAddr().equals(ipAddr))
                 neighbor = n;
 
         if (neighbor != null) {

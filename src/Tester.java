@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Tester extends Node implements Observer {
 
@@ -34,7 +37,19 @@ public class Tester extends Node implements Observer {
         incrementalSnapshots.get(initiator).put(senderAddress, snapshot);
 
         for (InetAddress init : incrementalSnapshots.keySet()) {
-            if (incrementalSnapshots.get(init).keySet().size() == inputChannelManager.getChannels().size()) {
+
+            // generate set of ipAddresses from the list of neighbors of input channel manager
+
+            Set<InetAddress> channels = inputChannelManager.getChannels().stream()
+                    .map(Neighbor::getIpAddr)
+                    .collect(Collectors.toSet());
+
+//            System.out.println(incrementalSnapshots);
+
+            System.out.println(channels);
+            System.out.println(incrementalSnapshots.get(init).keySet());
+
+            if (incrementalSnapshots.get(init).keySet() == channels) {
                 System.out.println(incrementalSnapshots.get(init));
                 lastSnapshot = incrementalSnapshots.get(init);
 
@@ -56,6 +71,9 @@ public class Tester extends Node implements Observer {
     }
 
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
+
+        inputChannelManager.setChannels(multiReceiver.getSenders());
+        inputChannelManager.setTester(multiReceiver.getTester());
 
         sender.interrupt();
         receiverThread.closeSocket();
