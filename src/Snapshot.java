@@ -83,13 +83,17 @@ public class Snapshot {
     public String toString() {
         StringBuilder string = new StringBuilder("initiator: " + initiator.getHostAddress() + "\n");
         string.append(new StringBuilder("state: " + state + "\n"));
-        string.append("channel state: \n");
-        for (InetAddress addr : channelState.keySet()) {
-            string.append("Node ").append(addr).append(":").append(channelState.get(addr)).append("\n");
+        if (!channelState.keySet().isEmpty()) {
+            string.append("channel state: \n");
+            for (InetAddress addr : channelState.keySet()) {
+                string.append("Node ").append(addr).append(":").append(channelState.get(addr)).append("\n");
+            }
         }
-        string.append("Border list: \n");
-        for (Neighbor n : borderList) {
-            string.append("border element: " + n.getIpAddr().getHostAddress() + "\n");
+        if (!borderList.isEmpty()) {
+            string.append("Border list: \n");
+            for (Neighbor n : borderList) {
+                string.append("border element: " + n.getIpAddr().getHostAddress() + "\n");
+            }
         }
         return string.toString();
     }

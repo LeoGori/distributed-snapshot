@@ -109,7 +109,10 @@ public class Main {
 
         while (!rct.getEnd()) {
 
-            if (rand.nextFloat() < 0.1) {
+            float randomFloat = rand.nextFloat();
+            System.out.println(randomFloat);
+
+            if (randomFloat < 0.1) {
                 n.initSnapshot();
             }
             else {
@@ -120,8 +123,9 @@ public class Main {
 
                 Neighbor dest = n.getNeighbor(randomNeighbor);
 
-                int randomMessage = rand.nextInt(upperbound);
-                randomMessage -= upperbound / 2;
+                int randomMessage = rand.nextInt(upperbound) - upperbound / 2;
+
+                System.out.println(randomMessage);
 
                 String msg = String.valueOf(randomMessage);
                 n.sendMessage(dest, msg);
