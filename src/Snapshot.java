@@ -24,7 +24,7 @@ public class Snapshot {
 
     public Snapshot(Packet packet) throws UnknownHostException {
         String msg = packet.getMsg();
-        String[] parts = msg.split("-");
+        String[] parts = msg.split("\\|\\|");
 
         channelState = new HashMap<>();
         borderList = new HashSet<>();
@@ -67,14 +67,14 @@ public class Snapshot {
     public String getSerialized() {
 
         StringBuilder s = new StringBuilder("init:" + initiator.getHostAddress());
-        s.append("-s:" + state);
+        s.append("||s:" + state);
         if(channelState != null) {
             for (InetAddress addr : channelState.keySet()) {
-                s.append("-").append(addr).append(":").append(channelState.get(addr));
+                s.append("||").append(addr).append(":").append(channelState.get(addr));
             }
         }
         for (Neighbor n : borderList) {
-            s.append("-be:" + n.getIpAddr().getHostAddress());
+            s.append("||be:" + n.getIpAddr().getHostAddress());
         }
         return s.toString();
     }
