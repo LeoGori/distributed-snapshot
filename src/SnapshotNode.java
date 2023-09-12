@@ -147,6 +147,7 @@ public class SnapshotNode extends Node implements Observer{
         System.out.println("Initiating snapshot");
 
         snapshot = new Snapshot(state);
+        snapshot.setInitiator(ipAddr);
         inputChannelManager.setFirstInitiator(ipAddr);
         inputChannelManager.blockAllChannels();
 
