@@ -114,7 +114,7 @@ public class SnapshotNode extends Node implements Observer{
                 snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
             }
             else {
-                state += Integer.parseInt(msg);
+                updateState(Integer.parseInt(msg));
             }
         }
 
@@ -163,8 +163,12 @@ public class SnapshotNode extends Node implements Observer{
     public void sendMessage(Neighbor n, String message) {
 
         int value = Integer.parseInt(message);
-        state -= value;
+        updateState(-value);
         sender.addMessage(n, message);
+    }
+
+    private synchronized void updateState(int value) {
+        state += value;
     }
 
 //    public Vector<int> getStatus() {
