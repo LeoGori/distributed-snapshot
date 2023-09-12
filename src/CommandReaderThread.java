@@ -16,8 +16,8 @@ public class CommandReaderThread extends Thread {
 
         while (!end) {
 
-            String command = scanner.nextLine();
             scanner.nextLine();
+            String command = scanner.nextLine();
 
             if (command.equals("q")) {
                 end = true;
