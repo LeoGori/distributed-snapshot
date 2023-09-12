@@ -163,7 +163,7 @@ public class SnapshotNode extends Node implements Observer{
     public void sendMessage(Neighbor n, String message) {
 
         int value = Integer.parseInt(message);
-        state += value;
+        state -= value;
         sender.addMessage(n, message);
     }
 
