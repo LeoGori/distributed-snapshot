@@ -4,13 +4,15 @@ public class CommandReaderThread extends Thread {
 
     private boolean end;
 
+    private Scanner scanner;
+
     public CommandReaderThread() {
+
         this.end = false;
+        this.scanner = new Scanner(System.in);
     }
 
     public void run() {
-
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
 
@@ -21,6 +23,10 @@ public class CommandReaderThread extends Thread {
             }
         }
 
+    }
+
+    public void closeScanner() {
+        scanner.close();
     }
 
     public boolean getEnd() {

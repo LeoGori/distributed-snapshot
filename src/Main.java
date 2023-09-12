@@ -131,9 +131,10 @@ public class Main {
                 n.sendMessage(dest, msg);
             }
 
-            Thread.sleep(5000);
+            Thread.sleep(2500);
         }
 
+        rct.closeScanner();
         rct.interrupt();
         System.out.println("Exiting automatic snapshot");
 
