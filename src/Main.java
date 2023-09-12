@@ -118,6 +118,7 @@ public class Main {
             else {
 
                 int numberOfNeighbors = n.getChannels().size();
+                System.out.println(numberOfNeighbors);
 
                 int randomNeighbor = rand.nextInt(numberOfNeighbors);
 
