@@ -112,7 +112,7 @@ public class Main {
             float randomFloat = rand.nextFloat();
             System.out.println(randomFloat);
 
-            if (randomFloat < 0.1) {
+            if (randomFloat < 0.2) {
                 n.initSnapshot();
             }
             else {
@@ -133,6 +133,10 @@ public class Main {
 
             Thread.sleep(5000);
         }
+
+        rct.interrupt();
+        System.out.println("Exiting automatic snapshot");
+
     }
 
     public static void testerMenu() throws IOException, InterruptedException {
