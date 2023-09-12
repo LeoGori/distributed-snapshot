@@ -92,7 +92,8 @@ public class SnapshotNode extends Node implements Observer{
                 sender.incrementTimeStamp();
                 String endToken = token.getSerialized();
 
-                sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
+                if (inputChannelManager.getFirstInitiator() != ipAddr)
+                    sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
 
                 snapshot.setBorderList(inputChannelManager.getBorderList());
 
