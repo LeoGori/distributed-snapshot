@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class Tester extends Node implements Observer {
 
-    private HashMap<InetAddress, HashMap<InetAddress, Snapshot>> incrementalSnapshots;
+    private HashMap<String, HashMap<InetAddress, Snapshot>> incrementalSnapshots;
 
     private HashMap<InetAddress, Snapshot> lastSnapshot;
 
@@ -47,12 +47,13 @@ public class Tester extends Node implements Observer {
         }
 
         if (!incrementalSnapshots.keySet().contains(inits)) {
-            incrementalSnapshots.put(initiator, new HashMap<>());
+            incrementalSnapshots.put(inits, new HashMap<>());
+            System.out.println("added incremental snapshot on key " + inits);
         }
 
-        incrementalSnapshots.get(initiator).put(senderAddress, snapshot);
+        incrementalSnapshots.get(inits).put(senderAddress, snapshot);
 
-        for (InetAddress init : incrementalSnapshots.keySet()) {
+        for (String init : incrementalSnapshots.keySet()) {
 
             // generate set of ipAddresses from the list of neighbors of input channel manager
 
