@@ -166,20 +166,23 @@ public class SnapshotNode extends Node implements Observer{
 
     public void initSnapshot() {
 
-        System.out.println("Initiating snapshot");
+        if (inputChannelManager.getFirstInitiator() == null) {
 
-        snapshot = new Snapshot(state);
-        snapshot.setInitiator(ipAddr);
-        inputChannelManager.setFirstInitiator(ipAddr);
-        inputChannelManager.blockAllChannels();
+            System.out.println("Initiating snapshot");
 
-        for (Neighbor n : inputChannelManager.getChannels()) {
-            String token = ipAddr.getHostAddress() + "--" + String.valueOf(sender.getTimeStamp());
-            sender.setTimeStamp(sender.getTimeStamp() + 1);
-            sender.addMessage(n, token);
+            snapshot = new Snapshot(state);
+            snapshot.setInitiator(ipAddr);
+            inputChannelManager.setFirstInitiator(ipAddr);
+            inputChannelManager.blockAllChannels();
+
+            for (Neighbor n : inputChannelManager.getChannels()) {
+                String token = ipAddr.getHostAddress() + "--" + String.valueOf(sender.getTimeStamp());
+                sender.setTimeStamp(sender.getTimeStamp() + 1);
+                sender.addMessage(n, token);
+            }
+
+            snapshotInProgress = true;
         }
-
-        snapshotInProgress = true;
     }
 
     public void sendMessage(Neighbor n, String message) {

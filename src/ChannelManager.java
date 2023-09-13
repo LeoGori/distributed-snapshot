@@ -25,6 +25,7 @@ public class ChannelManager {
         this.channels = channels;
         borderList = new HashSet<>();
         firstInitiator = null;
+        firstTokenSender = null;
     }
 
     public void setChannels(HashSet<Neighbor> channels) {
