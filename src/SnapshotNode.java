@@ -131,8 +131,6 @@ public class SnapshotNode extends Node implements Observer{
                     updateState(Integer.parseInt(msg));
                 }
             }
-
-            System.out.println("State: " + state);
         }
         else {
             int value = ((Sender) subject).getLastValue();
@@ -140,6 +138,7 @@ public class SnapshotNode extends Node implements Observer{
             updateState(-value);
 
         }
+        System.out.println("State: " + state);
     }
 
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {

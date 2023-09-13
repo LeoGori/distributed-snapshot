@@ -19,7 +19,7 @@ public class TcpSender extends Sender {
 
     public synchronized void sendMessage() throws UnknownHostException {
         if (!messages.isEmpty()) {
-            System.out.println("Sending packet");
+//            System.out.println("Sending packet");
             Packet p = messages.poll();
 
             if (p != null) {
@@ -33,7 +33,7 @@ public class TcpSender extends Sender {
                     throw new RuntimeException(e);
                 }
 
-                System.out.println("Connected to " + ipAddr + ":" + port);
+//                System.out.println("Connected to " + ipAddr + ":" + port);
 
                 String msg = p.getMsg();
 

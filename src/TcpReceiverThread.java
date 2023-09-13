@@ -34,7 +34,7 @@ public class TcpReceiverThread extends ReceiverThread {
                 break;
             }
 
-            System.out.println("Accepted connection from " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort());
+//            System.out.println("Accepted connection from " + clientSocket.getInetAddress().toString() + ":" + clientSocket.getPort());
 
 
             try {
@@ -43,12 +43,11 @@ public class TcpReceiverThread extends ReceiverThread {
                 throw new RuntimeException(e);
             }
 
-            System.out.println("Received: " + packet.getMsg() + " from " + packet.getIpAddr());
+//            System.out.println("Received: " + packet.getMsg() + " from " + packet.getIpAddr());
 
 
             try {
                 notifyObserver();
-                System.out.println("Notified observer");
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
