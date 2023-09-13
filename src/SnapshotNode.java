@@ -20,6 +20,8 @@ public class SnapshotNode extends Node implements Observer{
     public synchronized void update(Subject subject) {
 //        DatagramPacket dp = receiverThread.getDatagramPacket();
 
+        System.out.println(subject.getClass() + " notified the observer");
+
         if (subject instanceof ReceiverThread) {
 
             Packet packet = receiverThread.getPacket();
@@ -136,7 +138,6 @@ public class SnapshotNode extends Node implements Observer{
             int value = ((Sender) subject).getLastValue();
             System.out.println("updating state after sending message");
             updateState(-value);
-
         }
         System.out.println("State: " + state);
     }
