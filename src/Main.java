@@ -109,14 +109,13 @@ public class Main {
 
         boolean end = false;
 
-        while (!end || n.isSnapshotInitialized()) {
+        while (!end || n.isSnapshotInProgress()) {
 
             float randomFloat = rand.nextFloat();
             System.out.println(randomFloat);
 
             if (randomFloat < 0.2) {
                 n.initSnapshot();
-                end = true;
             }
             else {
 
@@ -133,6 +132,10 @@ public class Main {
 
                 String msg = String.valueOf(randomMessage);
                 n.sendMessage(dest, msg);
+            }
+
+            if (n.isSnapshotInProgress() && !end) {
+                end = true;
             }
 
             Thread.sleep(2500);
