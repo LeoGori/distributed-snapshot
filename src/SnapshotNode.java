@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 
 
 public class SnapshotNode extends Node implements Observer{
@@ -62,12 +63,16 @@ public class SnapshotNode extends Node implements Observer{
 
                     sender.incrementTimeStamp();
 
+                    ArrayList<String> shareTokens = new ArrayList<>();
+                    ArrayList<Neighbor> neighbors = new ArrayList<>();
+
                     for (Neighbor neighbor : inputChannelManager.getFreeChannels()) {
                         token.setTimeStamp(sender.getTimeStamp());
                         sender.incrementTimeStamp();
-                        String shareToken = token.getSerialized();
-                        sender.addMessage(neighbor, shareToken);
+                        shareTokens.add(token.getSerialized());
+                        neighbors.add(neighbor);
                     }
+                    sender.addMessage(neighbors, shareTokens);
                     // if it is not the first token to be sent
                 } else {
                     // if the token is the same of the first initiator
@@ -87,9 +92,12 @@ public class SnapshotNode extends Node implements Observer{
 
                         token.setTimeStamp(token.getTimeStamp() + 1);
 
-                        String endToken = token.getSerialized();
+                        ArrayList<String> endToken = new ArrayList<>();
+                        endToken.add(token.getSerialized());
 
-                        Neighbor tokenSender = inputChannelManager.getNeighbor(token.getSrcIpAddr());
+                        ArrayList<Neighbor> tokenSender = new ArrayList<>();
+                        tokenSender.add(inputChannelManager.getNeighbor(token.getSrcIpAddr()));
+
                         sender.addMessage(tokenSender, endToken);
 
 //                    sender.incrementTimeStamp();
@@ -106,25 +114,33 @@ public class SnapshotNode extends Node implements Observer{
 
                     token.setTimeStamp(sender.getTimeStamp());
                     sender.incrementTimeStamp();
-                    String endToken = token.getSerialized();
+
+
+                    ArrayList<String> endToken = new ArrayList<>();
+                    endToken.add(token.getSerialized());
+
+                    ArrayList<Neighbor> tokenSender = new ArrayList<>();
+                    tokenSender.add(inputChannelManager.getFirstTokenSender());
 
                     if (inputChannelManager.getFirstInitiator() != ipAddr)
-                        sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
+                        sender.addMessage(tokenSender, endToken);
 
                     System.out.println("Ending snapshot");
 
                     snapshot.setBorderList(inputChannelManager.getBorderList());
 
-                    sender.addMessage(inputChannelManager.getTester(), snapshot.getSerialized());
+                    ArrayList<String> serializedSnapshot = new ArrayList<>();
+                    endToken.add(snapshot.getSerialized());
+
+                    ArrayList<Neighbor> tester = new ArrayList<>();
+                    tokenSender.add(inputChannelManager.getTester());
+
+                    sender.addMessage(tester, serializedSnapshot);
 
                     snapshotInProgress = false;
 
                     inputChannelManager.removeInitiator();
 
-
-//                        Neighbor initiator = receiverThread.getInputChannelManager().getNeighbor(initiatorIP);
-//
-//                        sender.addMessage(initiator, receiverThread.getSnapshot());
                 }
             } else {
                 if (inputChannelManager.getBlockedChannels().contains(packet.getIpAddr())) {
@@ -179,10 +195,18 @@ public class SnapshotNode extends Node implements Observer{
             inputChannelManager.setFirstInitiator(ipAddr);
             inputChannelManager.blockAllChannels();
 
+            ArrayList<String> startTokens = new ArrayList<>();
+
+            ArrayList<Neighbor> neighbors = new ArrayList<>();
+
             for (Neighbor n : inputChannelManager.getChannels()) {
                 String token = ipAddr.getHostAddress() + "--" + sender.getTimeStamp();
                 sender.setTimeStamp(sender.getTimeStamp() + 1);
-                sender.addMessage(n, token);
+
+                startTokens.add(token);
+                neighbors.add(n);
+
+                sender.addMessage(neighbors, startTokens);
             }
 
             snapshotInProgress = true;
@@ -191,7 +215,13 @@ public class SnapshotNode extends Node implements Observer{
 
     public void sendMessage(Neighbor n, String message) {
 
-        sender.addMessage(n, message);
+        ArrayList<String> msg = new ArrayList<>();
+        ArrayList<Neighbor> neighbor = new ArrayList<>();
+
+        msg.add(message);
+        neighbor.add(n);
+
+        sender.addMessage(neighbor, msg);
     }
 
     private synchronized void updateState(int value) {

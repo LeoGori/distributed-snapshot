@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -58,26 +59,33 @@ public abstract class Sender extends Thread implements Subject {
 
     }
 
-    public synchronized void addMessage(Neighbor dest, String msg) {
+    public synchronized void addMessage(ArrayList<Neighbor> dest, ArrayList<String> msg) {
 
-        InetAddress dest_ip = dest.getIpAddr();
-        int recv_port = dest.getPort();
+        assert dest.size() == msg.size();
+
+        for (int i = 0; i < msg.size(); i++) {
+
+            InetAddress dest_ip = dest.get(i).getIpAddr();
+            int recv_port = dest.get(i).getPort();
 //            System.out.println("messages : " + messages);
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
 //        msg += "-" + String.valueOf(timeStamp);
 //        timeStamp ++;
 
 //        DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, recv_port);
 
-        Packet packet = new Packet(msg, dest_ip, recv_port);
+
+            Packet packet = new Packet(msg.get(i), dest_ip, recv_port);
 
 //        System.out.println("Message added to the queue");
-        messages.add(packet);
+            messages.add(packet);
+
+        }
 
 //        System.out.println(messages);
 //        System.out.println(messages.isEmpty());
