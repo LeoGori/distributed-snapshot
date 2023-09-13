@@ -130,7 +130,7 @@ public class SnapshotNode extends Node implements Observer{
                     snapshot.setBorderList(inputChannelManager.getBorderList());
 
                     ArrayList<String> serializedSnapshot = new ArrayList<>();
-                    endToken.add(snapshot.getSerialized());
+                    serializedSnapshot.add(snapshot.getSerialized());
 
                     ArrayList<Neighbor> tester = new ArrayList<>();
                     tester.add(inputChannelManager.getTester());
