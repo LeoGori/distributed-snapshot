@@ -128,5 +128,9 @@ public class ChannelManager {
         return tester;
     }
 
+    public void removeInitiator() {
+        firstInitiator = null;
+    }
+
 
 }
