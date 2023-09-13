@@ -44,15 +44,15 @@ public class SnapshotNode extends Node implements Observer{
 
                     snapshot = new Snapshot(state);
 
-                    inputChannelManager.setFirstInitiator(token.getInitiator());
-                    snapshot.setInitiator(token.getInitiator());
-
-                    inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
-
                     System.out.println("First initiator: " + inputChannelManager.getFirstInitiator().getHostAddress());
                     System.out.println("First token sender: " + inputChannelManager.getFirstTokenSender().getIpAddr().getHostAddress());
 
                     inputChannelManager.blockAllChannels();
+
+                    inputChannelManager.setFirstInitiator(token.getInitiator());
+                    snapshot.setInitiator(token.getInitiator());
+
+                    inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
 
                     if (sender.getTimeStamp() < token.getTimeStamp())
                         sender.setTimeStamp(token.getTimeStamp());
