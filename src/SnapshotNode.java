@@ -40,6 +40,8 @@ public class SnapshotNode extends Node implements Observer{
                 if (inputChannelManager.getFirstInitiator() == null) {
                     System.out.println("Blocking all channels");
 
+                    snapshotInProgress = true;
+
                     snapshot = new Snapshot(state);
 
                     inputChannelManager.setFirstInitiator(token.getInitiator());
