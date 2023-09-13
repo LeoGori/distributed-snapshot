@@ -160,6 +160,7 @@ public class SnapshotNode extends Node implements Observer{
             throw new RuntimeException("Invalid sender type");
         }
         receiverThread.register(this);
+        sender.register(this);
 
         sender.start();
         receiverThread.start();

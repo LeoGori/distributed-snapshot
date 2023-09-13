@@ -10,7 +10,6 @@ public class Token {
     private InetAddress initiator;
 
     public static Boolean isToken(String msg) {
-        System.out.println(msg);
         return msg.contains("--") || msg.contains("||");
     }
 
