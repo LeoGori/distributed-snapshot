@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Collections;
+
 
 public class Snapshot {
 
@@ -66,7 +68,21 @@ public class Snapshot {
 
     public String getSerialized() {
 
-        StringBuilder s = new StringBuilder("init:" + initiator.getHostAddress());
+        String init;
+        if (!borderList.isEmpty()){
+            ArrayList<String> initiators = new ArrayList<>();
+            initiators.add(initiator.getHostAddress());
+            for (Neighbor n : borderList) {
+                initiators.add(n.getIpAddr().getHostAddress());
+            }
+            Collections.sort(initiators);
+            init = String.join("-", initiators);
+        }
+        else{
+            init = initiator.getHostAddress();
+        }
+
+        StringBuilder s = new StringBuilder("init:" + init);
         s.append("||s:" + state);
         if(!channelState.isEmpty()) {
             for (InetAddress addr : channelState.keySet()) {
