@@ -10,7 +10,7 @@ public class Token {
     private InetAddress initiator;
 
     public static Boolean isToken(String msg) {
-        return msg.contains("--");
+        return msg.contains("--") || msg.contains("||");
     }
 
     public Token(Packet packet) throws UnknownHostException {

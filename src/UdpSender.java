@@ -48,7 +48,10 @@ public class UdpSender extends Sender {
 
                 DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, p.getPort());
 
-                notifyObserver();
+                if (!Token.isToken(msg)) {
+                    lastValue = Integer.parseInt(msg);
+                    notifyObserver();
+                }
 
                 try {
                     socket.send(dp);
