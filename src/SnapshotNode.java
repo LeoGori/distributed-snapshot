@@ -77,7 +77,7 @@ public class SnapshotNode extends Node implements Observer{
                         inputChannelManager.freeChannel(token.getSrcIpAddr());
 
                         System.out.println("Received concurrent token " + token.getInitiator().getHostAddress() +
-                                "while first initiator is " + inputChannelManager.getFirstInitiator().getHostAddress());
+                                " while first initiator is " + inputChannelManager.getFirstInitiator().getHostAddress());
 
 //                    if (sender.getTimeStamp() < token.getTimeStamp())
 //                        sender.setTimeStamp(token.getTimeStamp() + 1);
@@ -164,8 +164,7 @@ public class SnapshotNode extends Node implements Observer{
         receiverThread.start();
     }
 
-    public void initSnapshot() {
-
+    public synchronized void initSnapshot() {
 
         System.out.println(inputChannelManager.getFirstInitiator());
 
@@ -179,7 +178,7 @@ public class SnapshotNode extends Node implements Observer{
             inputChannelManager.blockAllChannels();
 
             for (Neighbor n : inputChannelManager.getChannels()) {
-                String token = ipAddr.getHostAddress() + "--" + String.valueOf(sender.getTimeStamp());
+                String token = ipAddr.getHostAddress() + "--" + sender.getTimeStamp();
                 sender.setTimeStamp(sender.getTimeStamp() + 1);
                 sender.addMessage(n, token);
             }
