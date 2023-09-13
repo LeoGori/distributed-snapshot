@@ -166,6 +166,9 @@ public class SnapshotNode extends Node implements Observer{
 
     public void initSnapshot() {
 
+
+        System.out.println(inputChannelManager.getFirstInitiator().getHostAddress());
+
         if (inputChannelManager.getFirstInitiator() == null) {
 
             System.out.println("Initiating snapshot");
