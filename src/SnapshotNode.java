@@ -133,7 +133,7 @@ public class SnapshotNode extends Node implements Observer{
                     endToken.add(snapshot.getSerialized());
 
                     ArrayList<Neighbor> tester = new ArrayList<>();
-                    tokenSender.add(inputChannelManager.getTester());
+                    tester.add(inputChannelManager.getTester());
 
                     sender.addMessage(tester, serializedSnapshot);
 
