@@ -76,6 +76,8 @@ public class SnapshotNode extends Node implements Observer{
                         inputChannelManager.addBorder(token.getSrcIpAddr());
                         inputChannelManager.freeChannel(token.getSrcIpAddr());
 
+                        System.out.println("Received concurrent token " + token.getInitiator().getHostAddress());
+
 //                    if (sender.getTimeStamp() < token.getTimeStamp())
 //                        sender.setTimeStamp(token.getTimeStamp() + 1);
 
