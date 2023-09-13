@@ -46,6 +46,7 @@ public class ChannelManager {
             if (n.getIpAddr().equals(tokenSender)) {
                 System.out.println("Found");
                 firstTokenSender = n;
+                blockedChannels.remove(n);
             }
         }
     }
