@@ -138,7 +138,7 @@ public class Main {
                 end = true;
             }
 
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         }
 
 //        rct.interrupt();
