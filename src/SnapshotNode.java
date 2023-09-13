@@ -33,6 +33,13 @@ public class SnapshotNode extends Node implements Observer{
             System.out.println("Received: " + msg + " from " + packet.getIpAddr());
 
             if (Token.isToken(msg)) {
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
                 try {
                     token = new Token(packet);
                 } catch (UnknownHostException e) {
