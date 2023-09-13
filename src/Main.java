@@ -5,8 +5,6 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        System.out.println("Hello world!");
-
         boolean isTester = false;
 
         if (isTester)
@@ -137,6 +135,8 @@ public class Main {
             }
 
             if (n.isSnapshotInProgress() && !end) {
+
+                System.out.println("Snapshot in progress (end= " + end + ", SiP= " + n.isSnapshotInProgress());
                 end = true;
                 snapshotProbability = 0;
             }
