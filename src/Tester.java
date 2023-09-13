@@ -1,8 +1,7 @@
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -30,7 +29,24 @@ public class Tester extends Node implements Observer {
         InetAddress senderAddress = p.getIpAddr();
         InetAddress initiator = snapshot.getInitiator();
 
-        if (!incrementalSnapshots.keySet().contains(initiator)) {
+        HashSet<Neighbor> borderList = snapshot.getBorderList();
+
+
+        String inits;
+        if (!borderList.isEmpty()){
+            ArrayList<String> initiators = new ArrayList<>();
+            initiators.add(initiator.getHostAddress());
+            for (Neighbor n : borderList) {
+                initiators.add(n.getIpAddr().getHostAddress());
+            }
+            Collections.sort(initiators);
+            inits = String.join("-", initiators);
+        }
+        else{
+            inits = initiator.getHostAddress();
+        }
+
+        if (!incrementalSnapshots.keySet().contains(inits)) {
             incrementalSnapshots.put(initiator, new HashMap<>());
         }
 

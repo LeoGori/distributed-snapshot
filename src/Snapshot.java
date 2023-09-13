@@ -68,21 +68,8 @@ public class Snapshot {
 
     public String getSerialized() {
 
-        String init;
-        if (!borderList.isEmpty()){
-            ArrayList<String> initiators = new ArrayList<>();
-            initiators.add(initiator.getHostAddress());
-            for (Neighbor n : borderList) {
-                initiators.add(n.getIpAddr().getHostAddress());
-            }
-            Collections.sort(initiators);
-            init = String.join("-", initiators);
-        }
-        else{
-            init = initiator.getHostAddress();
-        }
 
-        StringBuilder s = new StringBuilder("init:" + init);
+        StringBuilder s = new StringBuilder("init:" + initiator.getHostAddress());
         s.append("||s:" + state);
         if(!channelState.isEmpty()) {
             for (InetAddress addr : channelState.keySet()) {
@@ -141,5 +128,9 @@ public class Snapshot {
             }
         }
         return balance;
+    }
+
+    public HashSet<Neighbor> getBorderList() {
+        return borderList;
     }
 }
