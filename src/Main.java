@@ -114,7 +114,7 @@ public class Main {
             float randomFloat = rand.nextFloat();
 //            System.out.println(randomFloat);
 
-            if (randomFloat < snapshotProbability) {
+            if (randomFloat < snapshotProbability ) {
                 n.initSnapshot();
             }
             else {
@@ -135,11 +135,12 @@ public class Main {
             }
 
             if (n.isSnapshotInProgress() && !end) {
-
-                System.out.println("Snapshot in progress (end= " + end + ", SiP= " + n.isSnapshotInProgress());
+                System.out.println("Snapshot in progress (end= " + end + ", SiP= " + n.isSnapshotInProgress() + ")");
                 end = true;
-                snapshotProbability = 0;
+                snapshotProbability = 0.0F;
             }
+
+
 
             Thread.sleep(2500);
         }
