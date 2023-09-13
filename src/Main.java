@@ -36,7 +36,7 @@ public class Main {
 
             int choice = input.nextInt();
 
-            System.out.println(n.getClass());
+//            System.out.println(n.getClass());
 
             switch (choice) {
                 case 1 -> {
@@ -128,7 +128,7 @@ public class Main {
 
                 int randomMessage = rand.nextInt(upperbound) - upperbound / 2;
 
-                System.out.println(randomMessage);
+//                System.out.println(randomMessage);
 
                 String msg = String.valueOf(randomMessage);
                 n.sendMessage(dest, msg);

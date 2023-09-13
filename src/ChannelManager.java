@@ -42,9 +42,9 @@ public class ChannelManager {
 
     public void setFirstTokenSender(InetAddress tokenSender) {
         for (Neighbor n : channels) {
-            System.out.println(n.getIpAddr().getHostAddress() + " " + tokenSender.getHostAddress());
+//            System.out.println(n.getIpAddr().getHostAddress() + " " + tokenSender.getHostAddress());
             if (n.getIpAddr().equals(tokenSender)) {
-                System.out.println("Found");
+//                System.out.println("Found");
                 firstTokenSender = n;
                 blockedChannels.remove(n);
             }

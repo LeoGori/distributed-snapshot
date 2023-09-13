@@ -184,8 +184,6 @@ public class SnapshotNode extends Node implements Observer{
 
     public synchronized void initSnapshot() {
 
-        System.out.println(inputChannelManager.getFirstInitiator());
-
         if (inputChannelManager.getFirstInitiator() == null) {
 
             System.out.println("Initiating snapshot");

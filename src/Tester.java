@@ -63,8 +63,8 @@ public class Tester extends Node implements Observer {
 
 //            System.out.println(incrementalSnapshots);
 
-            System.out.println(channels);
-            System.out.println(incrementalSnapshots.get(init).keySet());
+//            System.out.println(channels);
+//            System.out.println(incrementalSnapshots.get(init).keySet());
 
             if (incrementalSnapshots.get(init).keySet().equals(channels)) {
                 System.out.println(incrementalSnapshots.get(init));

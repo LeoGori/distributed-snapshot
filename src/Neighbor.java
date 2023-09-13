@@ -54,7 +54,7 @@ public class Neighbor {
         // it depends on how you implement
         // hashCode() method.
         String ip = ipAddr.getHostAddress();
-        System.out.println(ip);
+//        System.out.println(ip);
         String[] ipParts = ip.split("\\.");
         int ipPart1 = Integer.parseInt(ipParts[0]);
         int ipPart2 = Integer.parseInt(ipParts[1]);

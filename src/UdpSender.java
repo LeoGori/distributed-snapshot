@@ -37,7 +37,7 @@ public class UdpSender extends Sender {
 
     public synchronized void sendMessage() throws UnknownHostException {
         if (!messages.isEmpty()) {
-            System.out.println("Sending packet");
+
             Packet p = messages.poll();
 
             if (p != null) {
