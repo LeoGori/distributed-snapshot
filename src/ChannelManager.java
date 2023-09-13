@@ -107,6 +107,7 @@ public class ChannelManager {
     public HashSet<Neighbor> getFreeChannels() {
         HashSet<Neighbor> freeChannels = new HashSet<>(channels);
         freeChannels.removeAll(blockedChannels);
+        freeChannels.remove(firstTokenSender);
         return freeChannels;
     }
 
