@@ -76,11 +76,11 @@ public abstract class Sender extends Thread implements Subject {
 
         Packet packet = new Packet(msg, dest_ip, recv_port);
 
-        System.out.println("Message added to the queue");
+//        System.out.println("Message added to the queue");
         messages.add(packet);
 
-        System.out.println(messages);
-        System.out.println(messages.isEmpty());
+//        System.out.println(messages);
+//        System.out.println(messages.isEmpty());
     }
 
     public abstract void garbageCollect();

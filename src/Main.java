@@ -112,7 +112,7 @@ public class Main {
         while (!end || n.isSnapshotInProgress()) {
 
             float randomFloat = rand.nextFloat();
-            System.out.println(randomFloat);
+//            System.out.println(randomFloat);
 
             if (randomFloat < 0.2) {
                 n.initSnapshot();
@@ -120,7 +120,7 @@ public class Main {
             else {
 
                 int numberOfNeighbors = n.getChannels().size();
-                System.out.println(numberOfNeighbors);
+//                System.out.println(numberOfNeighbors);
 
                 int randomNeighbor = rand.nextInt(numberOfNeighbors);
 

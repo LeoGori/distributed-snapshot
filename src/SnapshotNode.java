@@ -134,7 +134,7 @@ public class SnapshotNode extends Node implements Observer{
         }
         else {
             int value = ((Sender) subject).getLastValue();
-
+            System.out.println("updating state after sending message");
             updateState(-value);
 
         }
