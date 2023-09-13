@@ -69,6 +69,7 @@ public class Tester extends Node implements Observer {
             if (incrementalSnapshots.get(init).keySet().equals(channels)) {
                 System.out.println(incrementalSnapshots.get(init));
                 lastSnapshot = incrementalSnapshots.get(init);
+                incrementalSnapshots.remove(init);
 
                 if (checkConsistency()) {
                     System.out.println("Consistent snapshot");
