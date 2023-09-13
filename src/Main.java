@@ -108,13 +108,15 @@ public class Main {
         int upperbound = 10;
 
         boolean end = false;
+        float snapshotProbability = 0.2F;
+
 
         while (!end || n.isSnapshotInProgress()) {
 
             float randomFloat = rand.nextFloat();
 //            System.out.println(randomFloat);
 
-            if (randomFloat < 0.2) {
+            if (randomFloat < snapshotProbability) {
                 n.initSnapshot();
             }
             else {
@@ -136,6 +138,7 @@ public class Main {
 
             if (n.isSnapshotInProgress() && !end) {
                 end = true;
+                snapshotProbability = 0;
             }
 
             Thread.sleep(2500);
