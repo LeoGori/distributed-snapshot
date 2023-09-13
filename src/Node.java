@@ -26,6 +26,7 @@ public class Node extends Neighbor {
         this.receiverThread = new UdpReceiverThread(port);
 
         receiverThread.register((Observer) this);
+        sender.register((Observer) this);
 
         sender.start();
         this.receiverThread.start();

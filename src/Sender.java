@@ -5,7 +5,7 @@ import java.util.Queue;
 
 
 
-public abstract class Sender extends Thread {
+public abstract class Sender extends Thread implements Subject {
 
     protected Subject receiver;
 
@@ -15,7 +15,11 @@ public abstract class Sender extends Thread {
 
     protected Boolean stop;
 
+    protected Observer observer;
+
     protected int timeStamp;
+
+    protected int lastValue;
 
     public Sender() throws SocketException, UnknownHostException {
         this(null);
@@ -27,6 +31,7 @@ public abstract class Sender extends Thread {
         stop = false;
         this.srcIpAddr = ipAddr;
         timeStamp = 0;
+        observer = null;
     }
 
     public void run() {
@@ -41,7 +46,11 @@ public abstract class Sender extends Thread {
 //                counter = 0;
 //            }
 
-            this.sendMessage();
+            try {
+                this.sendMessage();
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
 
         }
 
@@ -77,7 +86,7 @@ public abstract class Sender extends Thread {
     public abstract void garbageCollect();
 
 
-    public abstract void sendMessage();
+    public abstract void sendMessage() throws UnknownHostException;
 
     public void incrementTimeStamp() {
         timeStamp ++;
@@ -93,6 +102,31 @@ public abstract class Sender extends Thread {
 
     public void setStop(Boolean stop) {
         this.stop = stop;
+    }
+
+    @Override
+    public void register(Observer o) {
+        if (observer == null) {
+            observer = o;
+        }
+    }
+
+    @Override
+    public void unregister(Observer o) {
+        if (observer != null) {
+            observer = null;
+        }
+    }
+
+    @Override
+    public void notifyObserver() throws UnknownHostException {
+        if (observer != null) {
+            observer.update(this);
+        }
+    }
+
+    public int getLastValue() {
+        return lastValue;
     }
 
 }

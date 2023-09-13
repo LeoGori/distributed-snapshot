@@ -45,7 +45,7 @@ public abstract class ReceiverThread extends Thread implements Subject {
     @Override
     public void notifyObserver() throws UnknownHostException {
         if (observer != null) {
-            observer.update();
+            observer.update(this);
         }
     }
 

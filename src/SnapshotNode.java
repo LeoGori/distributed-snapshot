@@ -17,114 +17,121 @@ public class SnapshotNode extends Node implements Observer{
     }
 
     @Override
-    public synchronized void update() {
+    public synchronized void update(Subject subject) {
 //        DatagramPacket dp = receiverThread.getDatagramPacket();
 
-        Packet packet = receiverThread.getPacket();
+        if (subject instanceof ReceiverThread) {
 
-        String msg = packet.getMsg();
-        Token token;
+            Packet packet = receiverThread.getPacket();
 
-        System.out.println("Received: " + msg + " from " + packet.getIpAddr());
+            String msg = packet.getMsg();
+            Token token;
 
-        if (Token.isToken(msg)) {
-            try {
-                token = new Token(packet);
-            } catch (UnknownHostException e) {
-                throw new RuntimeException(e);
-            }
+            System.out.println("Received: " + msg + " from " + packet.getIpAddr());
 
-            // if it is the first token to be sent
-            if (inputChannelManager.getFirstInitiator() == null) {
-                System.out.println("Blocking all channels");
-
-                snapshot = new Snapshot(state);
-
-                inputChannelManager.setFirstInitiator(token.getInitiator());
-                snapshot.setInitiator(token.getInitiator());
-
-                inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
-
-                System.out.println("First initiator: " + inputChannelManager.getFirstInitiator().getHostAddress());
-                System.out.println("First token sender: " + inputChannelManager.getFirstTokenSender().getIpAddr().getHostAddress());
-
-                inputChannelManager.blockAllChannels();
-
-                if (sender.getTimeStamp() < token.getTimeStamp())
-                    sender.setTimeStamp(token.getTimeStamp());
-
-                sender.incrementTimeStamp();
-
-                for (Neighbor neighbor : inputChannelManager.getFreeChannels()) {
-                    token.setTimeStamp(sender.getTimeStamp());
-                    sender.incrementTimeStamp();
-                    String shareToken = token.getSerialized();
-                    sender.addMessage(neighbor, shareToken);
+            if (Token.isToken(msg)) {
+                try {
+                    token = new Token(packet);
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(e);
                 }
-            // if it is not the first token to be sent
-            } else {
-                // if the token is the same of the first initiator
-                if (inputChannelManager.getFirstInitiator().equals(token.getInitiator())) {
-                    inputChannelManager.freeChannel(token.getSrcIpAddr());
 
-                // if the token of a concurrent snapshot is received
+                // if it is the first token to be sent
+                if (inputChannelManager.getFirstInitiator() == null) {
+                    System.out.println("Blocking all channels");
+
+                    snapshot = new Snapshot(state);
+
+                    inputChannelManager.setFirstInitiator(token.getInitiator());
+                    snapshot.setInitiator(token.getInitiator());
+
+                    inputChannelManager.setFirstTokenSender(token.getSrcIpAddr());
+
+                    System.out.println("First initiator: " + inputChannelManager.getFirstInitiator().getHostAddress());
+                    System.out.println("First token sender: " + inputChannelManager.getFirstTokenSender().getIpAddr().getHostAddress());
+
+                    inputChannelManager.blockAllChannels();
+
+                    if (sender.getTimeStamp() < token.getTimeStamp())
+                        sender.setTimeStamp(token.getTimeStamp());
+
+                    sender.incrementTimeStamp();
+
+                    for (Neighbor neighbor : inputChannelManager.getFreeChannels()) {
+                        token.setTimeStamp(sender.getTimeStamp());
+                        sender.incrementTimeStamp();
+                        String shareToken = token.getSerialized();
+                        sender.addMessage(neighbor, shareToken);
+                    }
+                    // if it is not the first token to be sent
                 } else {
-                    inputChannelManager.addBorder(token.getSrcIpAddr());
-                    inputChannelManager.freeChannel(token.getSrcIpAddr());
+                    // if the token is the same of the first initiator
+                    if (inputChannelManager.getFirstInitiator().equals(token.getInitiator())) {
+                        inputChannelManager.freeChannel(token.getSrcIpAddr());
+
+                        // if the token of a concurrent snapshot is received
+                    } else {
+                        inputChannelManager.addBorder(token.getSrcIpAddr());
+                        inputChannelManager.freeChannel(token.getSrcIpAddr());
 
 //                    if (sender.getTimeStamp() < token.getTimeStamp())
 //                        sender.setTimeStamp(token.getTimeStamp() + 1);
 
-                    token.setTimeStamp(token.getTimeStamp() + 1);
+                        token.setTimeStamp(token.getTimeStamp() + 1);
 
-                    String endToken = token.getSerialized();
+                        String endToken = token.getSerialized();
 
-                    Neighbor tokenSender = inputChannelManager.getNeighbor(token.getSrcIpAddr());
-                    sender.addMessage(tokenSender, endToken);
+                        Neighbor tokenSender = inputChannelManager.getNeighbor(token.getSrcIpAddr());
+                        sender.addMessage(tokenSender, endToken);
 
 //                    sender.incrementTimeStamp();
+                    }
+
                 }
 
-            }
+                System.out.println("Blocked channels: " + inputChannelManager.getBlockedChannels());
 
-            System.out.println("Blocked channels: " + inputChannelManager.getBlockedChannels());
-
-            // if it is the last token, end the snapshot
-            if (inputChannelManager.getBlockedChannels().isEmpty()) {
+                // if it is the last token, end the snapshot
+                if (inputChannelManager.getBlockedChannels().isEmpty()) {
 //                if (sender.getTimeStamp() < token.getTimeStamp())
 //                    sender.setTimeStamp(token.getTimeStamp() + 1);
 
-                token.setTimeStamp(sender.getTimeStamp());
-                sender.incrementTimeStamp();
-                String endToken = token.getSerialized();
+                    token.setTimeStamp(sender.getTimeStamp());
+                    sender.incrementTimeStamp();
+                    String endToken = token.getSerialized();
 
-                if (inputChannelManager.getFirstInitiator() != ipAddr)
-                    sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
+                    if (inputChannelManager.getFirstInitiator() != ipAddr)
+                        sender.addMessage(inputChannelManager.getFirstTokenSender(), endToken);
 
-                System.out.println("Ending snapshot");
+                    System.out.println("Ending snapshot");
 
-                snapshot.setBorderList(inputChannelManager.getBorderList());
+                    snapshot.setBorderList(inputChannelManager.getBorderList());
 
-                sender.addMessage(inputChannelManager.getTester(), snapshot.getSerialized());
+                    sender.addMessage(inputChannelManager.getTester(), snapshot.getSerialized());
 
-                snapshotInitialized = false;
+                    snapshotInitialized = false;
 
 
 //                        Neighbor initiator = receiverThread.getInputChannelManager().getNeighbor(initiatorIP);
 //
 //                        sender.addMessage(initiator, receiverThread.getSnapshot());
+                }
+            } else {
+                if (inputChannelManager.getBlockedChannels().contains(packet.getIpAddr())) {
+                    snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
+                } else {
+                    updateState(Integer.parseInt(msg));
+                }
             }
+
+            System.out.println("State: " + state);
         }
         else {
-            if (inputChannelManager.getBlockedChannels().contains(packet.getIpAddr())) {
-                snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
-            }
-            else {
-                updateState(Integer.parseInt(msg));
-            }
-        }
+            int value = ((Sender) subject).getLastValue();
 
-        System.out.println("State: " + state);
+            updateState(-value);
+
+        }
     }
 
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
@@ -170,8 +177,6 @@ public class SnapshotNode extends Node implements Observer{
 
     public void sendMessage(Neighbor n, String message) {
 
-        int value = Integer.parseInt(message);
-        updateState(-value);
         sender.addMessage(n, message);
     }
 

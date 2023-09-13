@@ -35,7 +35,7 @@ public class UdpSender extends Sender {
         System.out.println("Multicast message sent to group: " + packet.getAddress());
     }
 
-    public synchronized void sendMessage() {
+    public synchronized void sendMessage() throws UnknownHostException {
         if (!messages.isEmpty()) {
             System.out.println("Sending packet");
             Packet p = messages.poll();
@@ -47,6 +47,8 @@ public class UdpSender extends Sender {
                 System.out.println("sending " + msg + " to " + dest_ip.toString() + ":" + port + " through UDP");
 
                 DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), dest_ip, p.getPort());
+
+                notifyObserver();
 
                 try {
                     socket.send(dp);

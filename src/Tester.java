@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ public class Tester extends Node implements Observer {
         lastSnapshot = new HashMap();
     }
 
-    public void update() throws UnknownHostException {
+    public void update(Subject subject) throws UnknownHostException {
         Packet p = receiverThread.getPacket();
 
         String msg = p.getMsg();
@@ -91,6 +90,7 @@ public class Tester extends Node implements Observer {
             throw new RuntimeException("Invalid sender type");
         }
         receiverThread.register(this);
+        sender.register(this);
 
         sender.start();
         receiverThread.start();

@@ -17,7 +17,7 @@ public class TcpSender extends Sender {
         this(null);
     }
 
-    public synchronized void sendMessage() {
+    public synchronized void sendMessage() throws UnknownHostException {
         if (!messages.isEmpty()) {
             System.out.println("Sending packet");
             Packet p = messages.poll();
@@ -33,7 +33,14 @@ public class TcpSender extends Sender {
                     throw new RuntimeException(e);
                 }
 
-                System.out.println("Connected to " + ipAddr.toString() + ":" + port);
+                System.out.println("Connected to " + ipAddr + ":" + port);
+
+                String msg = p.getMsg();
+
+                if (!Token.isToken(msg)) {
+                    lastValue = Integer.parseInt(msg);
+                    notifyObserver();
+                }
 
                 try {
                     out = new PrintWriter(socket.getOutputStream(), true);
@@ -41,9 +48,7 @@ public class TcpSender extends Sender {
                     throw new RuntimeException(e);
                 }
 
-                String msg = p.getMsg();
-
-                System.out.println("sending " + msg + " to " + ipAddr.toString() + ":" + port + " through TCP");
+                System.out.println("sending " + msg + " to " + ipAddr + ":" + port + " through TCP");
 
                 out.println(msg);
 
