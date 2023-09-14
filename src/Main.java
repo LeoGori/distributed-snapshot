@@ -52,7 +52,7 @@ public class Main {
 
         ((UdpSender)n.getSender()).multicastOwnIP("hello");
 
-//        end = false;
+        end = false;
 
         n.setChannels();
         n.setTransmissionProtocol("tcp");
