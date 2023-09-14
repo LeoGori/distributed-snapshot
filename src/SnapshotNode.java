@@ -51,7 +51,7 @@ public class SnapshotNode extends Node implements Observer{
                     // and propagate the snapshot to all channels except the first token sender
                     if (channelManager.getFirstInitiator() == null) {
 
-                        snapshotInProgress = true;
+                        snapshotInProgress = !isSnapshotInProgress();
 
                         snapshot = new Snapshot(state);
 
@@ -147,7 +147,7 @@ public class SnapshotNode extends Node implements Observer{
 
                         sender.addMessage(tester, serializedSnapshot);
 
-                        snapshotInProgress = false;
+                        snapshotInProgress = !isSnapshotInProgress();
 
                         if (isAutomaticModeOn())
                             automaticModeOn = !isAutomaticModeOn();
@@ -208,7 +208,7 @@ public class SnapshotNode extends Node implements Observer{
                 }
                 sender.addMessage(neighbors, startTokens);
 
-                snapshotInProgress = true;
+                snapshotInProgress = !isSnapshotInProgress();
             }
         }
     }
@@ -257,7 +257,7 @@ public class SnapshotNode extends Node implements Observer{
         state += value;
     }
 
-    public boolean isSnapshotInProgress() {
+    public synchronized boolean isSnapshotInProgress() {
         return snapshotInProgress;
     }
 

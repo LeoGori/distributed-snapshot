@@ -129,6 +129,7 @@ public class Main {
 
             if (randomFloat < snapshotProbability ) {
                 n.initSnapshot();
+                snapshotProbability = 0.0F;
             }
             else {
 
@@ -150,7 +151,6 @@ public class Main {
             if (n.isSnapshotInProgress() && !end) {
 //                System.out.println("Snapshot in progress (end= " + end + ", SiP= " + n.isSnapshotInProgress() + ")");
                 end = true;
-                snapshotProbability = 0.0F;
             }
 
             Thread.sleep(10000);
