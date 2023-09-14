@@ -204,9 +204,8 @@ public class SnapshotNode extends Node implements Observer{
 
                 startTokens.add(token);
                 neighbors.add(n);
-
-                sender.addMessage(neighbors, startTokens);
             }
+            sender.addMessage(neighbors, startTokens);
 
             snapshotInProgress = true;
         }
