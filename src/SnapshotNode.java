@@ -154,6 +154,7 @@ public class SnapshotNode extends Node implements Observer{
 
 
                         channelManager.resetChannels();
+                        ((TcpSender)sender).reset();
 
                         updateState(snapshot.getChannelsTotalState());
 
