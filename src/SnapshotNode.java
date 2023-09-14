@@ -92,7 +92,7 @@ public class SnapshotNode extends Node implements Observer{
 
                             // if the token of a concurrent snapshot is received
                         } else {
-                            channelManager.addBorder(token.getSrcIpAddr());
+                            channelManager.addBorder(token.getInitiator());
                             channelManager.freeChannel(token.getSrcIpAddr());
 
                             System.out.println("Received concurrent token " + token.getInitiator().getHostAddress() +
