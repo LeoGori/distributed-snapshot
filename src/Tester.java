@@ -31,9 +31,8 @@ public class Tester extends Node implements Observer {
 
         HashSet<Neighbor> borderList = snapshot.getBorderList();
 
-
         String inits;
-        if (!borderList.isEmpty()){
+        if (!borderList.isEmpty()) {
             ArrayList<String> initiators = new ArrayList<>();
             initiators.add(initiator.getHostAddress());
             for (Neighbor n : borderList) {
@@ -41,8 +40,7 @@ public class Tester extends Node implements Observer {
             }
             Collections.sort(initiators);
             inits = String.join("-", initiators);
-        }
-        else{
+        } else {
             inits = initiator.getHostAddress();
         }
 
@@ -53,31 +51,33 @@ public class Tester extends Node implements Observer {
 
         incrementalSnapshots.get(inits).put(senderAddress, snapshot);
 
-        for (String init : incrementalSnapshots.keySet()) {
+        assert incrementalSnapshots.keySet().size() <= 1;
 
-            // generate set of ipAddresses from the list of neighbors of input channel manager
+        String init = incrementalSnapshots.keySet().iterator().next();
 
-            Set<InetAddress> channels = channelManager.getChannels().stream()
-                    .map(Neighbor::getIpAddr)
-                    .collect(Collectors.toSet());
+        // generate set of ipAddresses from the list of neighbors of input channel manager
+
+        Set<InetAddress> channels = channelManager.getChannels().stream()
+                .map(Neighbor::getIpAddr)
+                .collect(Collectors.toSet());
 
 //            System.out.println(incrementalSnapshots);
 
 //            System.out.println(channels);
 //            System.out.println(incrementalSnapshots.get(init).keySet());
 
-            if (incrementalSnapshots.get(init).keySet().equals(channels)) {
-                System.out.println(incrementalSnapshots.get(init));
-                lastSnapshot = incrementalSnapshots.get(init);
+        if (incrementalSnapshots.get(init).keySet().equals(channels)) {
+            System.out.println(incrementalSnapshots.get(init));
+            lastSnapshot = incrementalSnapshots.get(init);
+//                incrementalSnapshots.remove(init);
 
-                if (checkConsistency()) {
-                    System.out.println("Consistent snapshot");
-                } else {
-                    System.out.println("Inconsistent snapshot");
-                }
+            if (checkConsistency()) {
+                System.out.println("Consistent snapshot");
+            } else {
+                System.out.println("Inconsistent snapshot");
             }
+            incrementalSnapshots.clear();
         }
-        incrementalSnapshots.clear();
     }
 
     public boolean checkConsistency() {
