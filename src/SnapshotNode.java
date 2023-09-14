@@ -11,14 +11,14 @@ public class SnapshotNode extends Node implements Observer{
 
     private int state;
 
-    private boolean snapshotInProgress;
+//    private boolean snapshotInProgress;
 
     private boolean automaticModeOn;
 
     public SnapshotNode() throws IOException {
         super();
         snapshot = null;
-        snapshotInProgress = false;
+//        snapshotInProgress = false;
         automaticModeOn = false;
     }
 
@@ -51,7 +51,7 @@ public class SnapshotNode extends Node implements Observer{
                     // and propagate the snapshot to all channels except the first token sender
                     if (channelManager.getFirstInitiator() == null) {
 
-                        snapshotInProgress = !isSnapshotInProgress();
+//                        snapshotInProgress = !isSnapshotInProgress();
 
                         snapshot = new Snapshot(state);
 
@@ -147,7 +147,7 @@ public class SnapshotNode extends Node implements Observer{
 
                         sender.addMessage(tester, serializedSnapshot);
 
-                        snapshotInProgress = !isSnapshotInProgress();
+//                        snapshotInProgress = !isSnapshotInProgress();
 
                         if (isAutomaticModeOn())
                             automaticModeOn = !isAutomaticModeOn();
@@ -208,7 +208,7 @@ public class SnapshotNode extends Node implements Observer{
                 }
                 sender.addMessage(neighbors, startTokens);
 
-                snapshotInProgress = !isSnapshotInProgress();
+//                snapshotInProgress = !isSnapshotInProgress();
             }
         }
 
@@ -258,9 +258,9 @@ public class SnapshotNode extends Node implements Observer{
         state += value;
     }
 
-    public synchronized boolean isSnapshotInProgress() {
-        return snapshotInProgress;
-    }
+//    public synchronized boolean isSnapshotInProgress() {
+//        return snapshotInProgress;
+//    }
 
     // synchronized for allowing main and snaphshot node to acess it
     public synchronized boolean isAutomaticModeOn() {
