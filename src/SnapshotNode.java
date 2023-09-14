@@ -101,15 +101,15 @@ public class SnapshotNode extends Node implements Observer{
 //                    if (sender.getTimeStamp() < token.getTimeStamp())
 //                        sender.setTimeStamp(token.getTimeStamp() + 1);
 
-                            token.setTimeStamp(token.getTimeStamp() + 1);
-
-                            ArrayList<String> endToken = new ArrayList<>();
-                            endToken.add(token.getSerialized());
-
-                            ArrayList<Neighbor> tokenSender = new ArrayList<>();
-                            tokenSender.add(channelManager.getNeighbor(token.getSrcIpAddr()));
-
-                            sender.addMessage(tokenSender, endToken);
+//                            token.setTimeStamp(token.getTimeStamp() + 1);
+//
+//                            ArrayList<String> endToken = new ArrayList<>();
+//                            endToken.add(token.getSerialized());
+//
+//                            ArrayList<Neighbor> tokenSender = new ArrayList<>();
+//                            tokenSender.add(channelManager.getNeighbor(token.getSrcIpAddr()));
+//
+//                            sender.addMessage(tokenSender, endToken);
 
 //                    sender.incrementTimeStamp();
                         }
