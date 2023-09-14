@@ -211,6 +211,12 @@ public class SnapshotNode extends Node implements Observer{
                 snapshotInProgress = !isSnapshotInProgress();
             }
         }
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
