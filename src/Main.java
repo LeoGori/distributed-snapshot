@@ -25,7 +25,7 @@ public class Main {
 
         System.out.println("Waiting for tester to bind");
 
-        while (!n.isTesterBound()) {
+        while (!end) {
 //            System.out.println("Initialization phase");
 //            String menu = """
 //                    1. Notify neighbors
@@ -46,11 +46,13 @@ public class Main {
 //                }
 //                case 2 -> end = true;
 //            }
+            if(n.isTesterBound())
+                end = true;
         }
 
         ((UdpSender)n.getSender()).multicastOwnIP("hello");
 
-        end = false;
+//        end = false;
 
         n.setChannels();
         n.setTransmissionProtocol("tcp");
