@@ -65,7 +65,7 @@ public class SnapshotNode extends Node implements Observer{
                     ArrayList<String> shareTokens = new ArrayList<>();
                     ArrayList<Neighbor> neighbors = new ArrayList<>();
 
-                    for (Neighbor neighbor : inputChannelManager.getChannels()) {
+                    for (Neighbor neighbor : inputChannelManager.getFreeChannels()) {
                         token.setTimeStamp(sender.getTimeStamp());
                         sender.incrementTimeStamp();
                         shareTokens.add(token.getSerialized());
@@ -139,7 +139,7 @@ public class SnapshotNode extends Node implements Observer{
 
                     snapshotInProgress = false;
 
-                    inputChannelManager.removeInitiator();
+                    inputChannelManager.resetChannels();
 
                 }
             } else {

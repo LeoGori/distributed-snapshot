@@ -75,7 +75,7 @@ public class Neighbor {
 
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port + "\n");
+        StringBuilder string = new StringBuilder("Node " + " at " + ipAddr + ":" + port);
         return string.toString();
     }
 
