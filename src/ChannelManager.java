@@ -47,9 +47,9 @@ public class ChannelManager {
 //                System.out.println("Found");
                 firstTokenSender = n;
 //                blockedChannels.remove(n);
-                channels.remove(n);
             }
         }
+        channels.remove(firstTokenSender);
     }
 
     public Neighbor getFirstTokenSender() {
@@ -98,7 +98,10 @@ public class ChannelManager {
     }
 
     public HashSet<Neighbor> getChannels() {
-        return channels;
+        HashSet<Neighbor> allChannels = new HashSet<>();
+        allChannels.add(firstTokenSender);
+        allChannels.addAll(channels);
+        return allChannels;
     }
 
     public HashSet<Neighbor> getBlockedChannels() {
@@ -108,7 +111,7 @@ public class ChannelManager {
     public HashSet<Neighbor> getFreeChannels() {
         HashSet<Neighbor> freeChannels = new HashSet<>(channels);
         freeChannels.removeAll(blockedChannels);
-        freeChannels.remove(firstTokenSender);
+//        freeChannels.remove(firstTokenSender);
         return freeChannels;
     }
 
