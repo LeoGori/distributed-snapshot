@@ -5,7 +5,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        boolean isTester = false;
+        boolean isTester = true;
 
         if (isTester)
             testerMenu();
@@ -19,34 +19,36 @@ public class Main {
 
         SnapshotNode n = new SnapshotNode();
 
-        boolean end = false;
+//        boolean end = false;
 
         Scanner input = new Scanner(System.in);
 
-        while (!end) {
+        System.out.println("Waiting for tester to bind");
+
+        while (!n.isTesterBound()) {
 //            System.out.println("Initialization phase");
-            String menu = """
-                    1. Notify neighbors
-                    2. Exit
-                    """;
+//            String menu = """
+//                    1. Notify neighbors
+//                    2. Exit
+//                    """;
+//
+//            System.out.println(menu);
+//
+//            System.out.println(n);
 
-            System.out.println(menu);
-
-            System.out.println(n);
-
-            int choice = input.nextInt();
+//            int choice = input.nextInt();
 
 //            System.out.println(n.getClass());
 
-            switch (choice) {
-                case 1 -> {
-                    ((UdpSender) n.getSender()).multicastOwnIP("hello");
-                }
-                case 2 -> end = true;
-            }
-
-
+//            switch (choice) {
+//                case 1 -> {
+//                    ((UdpSender) n.getSender()).multicastOwnIP("hello");
+//                }
+//                case 2 -> end = true;
+//            }
         }
+
+        ((UdpSender)n.getSender()).multicastOwnIP("hello");
 
         end = false;
 

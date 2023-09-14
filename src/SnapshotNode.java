@@ -238,9 +238,16 @@ public class SnapshotNode extends Node implements Observer{
         return snapshotInProgress;
     }
 
+    // synchronized for allowing main and snaphshot node to acess it
     public synchronized boolean isAutomaticModeOn() {
         return automaticModeOn;
     }
+
+    public boolean isTesterBound() {
+        return inputChannelManager.isTesterBound();
+    }
+
+
 
 //    public Vector<int> getStatus() {
 //        int status = receiverThread.getStatus();

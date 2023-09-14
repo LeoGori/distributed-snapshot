@@ -16,6 +16,8 @@ public class ChannelManager {
 
     private Neighbor tester;
 
+    private boolean isTesterBound;
+
     public ChannelManager() {
         this(new HashSet<>());
     }
@@ -26,6 +28,7 @@ public class ChannelManager {
         borderList = new HashSet<>();
         firstInitiator = null;
         firstTokenSender = null;
+        isTesterBound = false;
     }
 
     public void setChannels(HashSet<Neighbor> channels) {
@@ -130,10 +133,16 @@ public class ChannelManager {
 
     public void setTester(Neighbor t) throws UnknownHostException {
         tester = t;
+        isTesterBound = !isTesterBound();
     }
 
     public Neighbor getTester() {
         return tester;
+    }
+
+    // synchronzed to allow main and channel manager to access it
+    public synchronized boolean isTesterBound() {
+        return isTesterBound;
     }
 
     public void resetChannels() {
