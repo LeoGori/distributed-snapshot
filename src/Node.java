@@ -12,7 +12,7 @@ public class Node extends Neighbor {
 
     protected Sender sender;
 
-    protected ChannelManager inputChannelManager;
+    protected ChannelManager channelManager;
 
     public Node() throws IOException {
         super();
@@ -33,7 +33,7 @@ public class Node extends Neighbor {
         this.multiReceiver =  new MultiCastReceiver(this.ipAddr);
         multiReceiver.start();
 
-        inputChannelManager = new ChannelManager();
+        channelManager = new ChannelManager();
     }
 
     public InetAddress getInterfaces() throws Exception {
@@ -92,12 +92,12 @@ public class Node extends Neighbor {
     }
 
     public void setChannels() throws UnknownHostException {
-        inputChannelManager.setChannels(multiReceiver.getSenders());
-        inputChannelManager.setTester(multiReceiver.getTester());
+        channelManager.setChannels(multiReceiver.getSenders());
+        channelManager.setTester(multiReceiver.getTester());
     }
 
     public HashSet<Neighbor> getChannels() {
-        return inputChannelManager.getChannels();
+        return channelManager.getChannels();
     }
 
 }

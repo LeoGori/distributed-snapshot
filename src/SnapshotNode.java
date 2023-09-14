@@ -11,7 +11,7 @@ public class SnapshotNode extends Node implements Observer{
 
     private boolean snapshotInProgress;
 
-    boolean automaticModeOn;
+    private boolean automaticModeOn;
 
     public SnapshotNode() throws IOException {
         super();
