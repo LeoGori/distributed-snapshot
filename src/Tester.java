@@ -57,7 +57,7 @@ public class Tester extends Node implements Observer {
 
             // generate set of ipAddresses from the list of neighbors of input channel manager
 
-            Set<InetAddress> channels = inputChannelManager.getChannels().stream()
+            Set<InetAddress> channels = channelManager.getChannels().stream()
                     .map(Neighbor::getIpAddr)
                     .collect(Collectors.toSet());
 
@@ -90,8 +90,8 @@ public class Tester extends Node implements Observer {
 
     public void setTransmissionProtocol(String type) throws IOException, InterruptedException {
 
-        inputChannelManager.setChannels(multiReceiver.getSenders());
-        inputChannelManager.setTester(multiReceiver.getTester());
+        channelManager.setChannels(multiReceiver.getSenders());
+        channelManager.setTester(multiReceiver.getTester());
 
         sender.interrupt();
         receiverThread.closeSocket();
@@ -122,7 +122,7 @@ public class Tester extends Node implements Observer {
             ArrayList<Neighbor> destinations = new ArrayList<>();
             ArrayList<String> messages = new ArrayList<>();
 
-            for (Neighbor neighbor : inputChannelManager.getChannels()) {
+            for (Neighbor neighbor : channelManager.getChannels()) {
                 destinations.add(neighbor);
                 messages.add("automatic_mode");
             }
