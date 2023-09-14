@@ -67,7 +67,7 @@ public class SnapshotNode extends Node implements Observer{
                     ArrayList<String> shareTokens = new ArrayList<>();
                     ArrayList<Neighbor> neighbors = new ArrayList<>();
 
-                    for (Neighbor neighbor : inputChannelManager.getFreeChannels()) {
+                    for (Neighbor neighbor : inputChannelManager.getChannels()) {
                         token.setTimeStamp(sender.getTimeStamp());
                         sender.incrementTimeStamp();
                         shareTokens.add(token.getSerialized());
