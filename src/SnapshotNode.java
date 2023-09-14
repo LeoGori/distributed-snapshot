@@ -24,9 +24,9 @@ public class SnapshotNode extends Node implements Observer{
     public synchronized void update(Subject subject) {
 //        DatagramPacket dp = receiverThread.getDatagramPacket();
 
-        System.out.println(subject.getClass() + " notified the observer");
-
         if (subject != null) {
+
+            System.out.println(subject.getClass() + " notified the observer");
             if (subject instanceof ReceiverThread) {
 
                 Packet packet = receiverThread.getPacket();
