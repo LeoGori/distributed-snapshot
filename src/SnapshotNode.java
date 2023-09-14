@@ -48,8 +48,6 @@ public class SnapshotNode extends Node implements Observer{
 
                     snapshot = new Snapshot(state);
 
-                    inputChannelManager.blockAllChannels();
-
                     inputChannelManager.setFirstInitiator(token.getInitiator());
                     snapshot.setInitiator(token.getInitiator());
 
@@ -74,6 +72,8 @@ public class SnapshotNode extends Node implements Observer{
                         neighbors.add(neighbor);
                     }
                     sender.addMessage(neighbors, shareTokens);
+
+                    inputChannelManager.blockAllChannels();
                     // if it is not the first token to be sent
                 } else {
                     // if the token is the same of the first initiator
@@ -115,7 +115,6 @@ public class SnapshotNode extends Node implements Observer{
 
                     token.setTimeStamp(sender.getTimeStamp());
                     sender.incrementTimeStamp();
-
 
                     ArrayList<String> endToken = new ArrayList<>();
                     endToken.add(token.getSerialized());
