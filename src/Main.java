@@ -153,7 +153,7 @@ public class Main {
                 snapshotProbability = 0.0F;
             }
 
-            Thread.sleep(100);
+            Thread.sleep(10000);
         }
 
 //        rct.interrupt();
