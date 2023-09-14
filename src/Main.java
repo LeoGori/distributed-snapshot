@@ -89,6 +89,7 @@ public class Main {
                     boolean subEnd = false;
                     while(!subEnd) {
                         if (n.isAutomaticModeOn()) {
+                            System.out.println("Main starting Automatic mode");
                             subEnd = true;
                             automaticSnapshot(n);
                         }
