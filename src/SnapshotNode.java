@@ -192,6 +192,7 @@ public class SnapshotNode extends Node implements Observer{
                 snapshot = new Snapshot(state);
                 snapshot.setInitiator(ipAddr);
                 channelManager.setFirstInitiator(ipAddr);
+                channelManager.setFirstTokenSender(ipAddr);
                 channelManager.blockAllChannels();
 
                 ArrayList<String> startTokens = new ArrayList<>();
