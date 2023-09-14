@@ -132,8 +132,8 @@ public class ChannelManager {
     }
 
     public void setTester(Neighbor t) throws UnknownHostException {
-        tester = t;
         isTesterBound = !isTesterBound();
+        tester = t;
     }
 
     public Neighbor getTester() {
