@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.*;
+import java.util.LinkedList;
 
 public class TcpSender extends Sender {
 
@@ -9,6 +10,14 @@ public class TcpSender extends Sender {
 
     public TcpSender(InetAddress ipAddr) throws IOException {
         super(ipAddr);
+        socket = null;
+        out = null;
+    }
+
+    public void reset() {
+        messages = new LinkedList<>();
+        stop = false;
+        timeStamp = 0;
         socket = null;
         out = null;
     }
