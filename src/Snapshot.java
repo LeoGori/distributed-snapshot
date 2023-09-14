@@ -73,7 +73,7 @@ public class Snapshot {
         s.append("||s:" + state);
         if(!channelState.isEmpty()) {
             for (InetAddress addr : channelState.keySet()) {
-                s.append("||").append(addr).append(":").append(channelState.get(addr));
+                s.append("||").append(addr.getHostAddress()).append(":").append(channelState.get(addr));
             }
         }
         if (!borderList.isEmpty()) {
