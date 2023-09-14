@@ -97,7 +97,7 @@ public class Main {
                             subEnd = true;
                             automaticSnapshot(n);
                         }
-                        Thread.sleep(1000);
+
                     }
                 }
 

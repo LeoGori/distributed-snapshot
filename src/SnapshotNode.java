@@ -142,6 +142,9 @@ public class SnapshotNode extends Node implements Observer{
 
                     snapshotInProgress = false;
 
+                    if (isAutomaticModeOn())
+                        automaticModeOn = !isAutomaticModeOn();
+
                     inputChannelManager.resetChannels();
 
                 }
