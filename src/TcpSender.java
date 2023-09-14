@@ -37,7 +37,7 @@ public class TcpSender extends Sender {
 
                 String msg = p.getMsg();
 
-                if (!Token.isToken(msg)) {
+                if (!Token.isToken(msg) && !msg.contains("automatic_mode")) {
                     lastValue = Integer.parseInt(msg);
                     notifyObserver();
                 }

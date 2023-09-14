@@ -115,7 +115,8 @@ public class Tester extends Node implements Observer {
         receiverThread.start();
     }
 
-    public void automaticSnapshot() throws IOException {
+    public void automaticSnapshot() {
+
         if (sender instanceof TcpSender) {
 
             ArrayList<Neighbor> destinations = new ArrayList<>();
@@ -126,8 +127,9 @@ public class Tester extends Node implements Observer {
                 messages.add("automatic_mode");
             }
 
-        }
+            sender.addMessage(destinations, messages);
 
+        }
 
     }
 

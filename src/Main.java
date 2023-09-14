@@ -24,7 +24,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         while (!end) {
-            System.out.println("Initialization phase");
+//            System.out.println("Initialization phase");
             String menu = """
                     1. Notify neighbors
                     2. Exit
@@ -84,6 +84,8 @@ public class Main {
                 }
 
                 case 3 -> {
+                    System.out.println("Waiting for tester to init automatic mode");
+
                     boolean subEnd = false;
                     while(!subEnd) {
                         if (n.isAutomaticModeOn()) {
@@ -166,7 +168,8 @@ public class Main {
             String menu = """
                     1. Notify neighbors
                     2. Switch transmission mode
-                    3. Exit
+                    3. Init automatic mode
+                    4. Exit
                     """;
 
             System.out.println(menu);
@@ -187,7 +190,11 @@ public class Main {
                     t.setTransmissionProtocol(mode);
                 }
 
-                case 3 -> end = true;
+                case 3 -> {
+                    t.automaticSnapshot();
+                }
+
+                case 4 -> end = true;
             }
 
 

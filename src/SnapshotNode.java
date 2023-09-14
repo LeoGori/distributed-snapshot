@@ -147,6 +147,7 @@ public class SnapshotNode extends Node implements Observer{
                 }
             } else {
                 if (msg.contains("automatic_mode")){
+                    System.out.println("Automatic mode on");
                     automaticModeOn = true;
                 }
                 else {
