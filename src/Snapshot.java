@@ -131,6 +131,16 @@ public class Snapshot {
         return balance;
     }
 
+    public int getChannelsTotalState() {
+        int totalState = 0;
+        for (InetAddress addr : channelState.keySet()) {
+            for (int i : channelState.get(addr)) {
+                totalState += i;
+            }
+        }
+        return totalState;
+    }
+
     public HashSet<Neighbor> getBorderList() {
         return borderList;
     }

@@ -154,6 +154,8 @@ public class SnapshotNode extends Node implements Observer{
 
                         channelManager.resetChannels();
 
+                        updateState(snapshot.getChannelsTotalState());
+
                     }
                 } else {
                     if (msg.contains("automatic_mode")) {
