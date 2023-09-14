@@ -5,7 +5,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        boolean isTester = true;
+        boolean isTester = false;
 
         if (isTester)
             testerMenu();
@@ -19,7 +19,7 @@ public class Main {
 
         SnapshotNode n = new SnapshotNode();
 
-//        boolean end = false;
+        boolean end = false;
 
         Scanner input = new Scanner(System.in);
 
