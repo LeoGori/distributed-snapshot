@@ -14,14 +14,17 @@ public class MultiCastReceiver extends Thread {
 
     private Neighbor tester;
 
-    private NetworkInterface netInt;
+    private boolean isTesterBound;
+
+//    private NetworkInterface netInt;
 
     public MultiCastReceiver(InetAddress inetAddr) {
 
         this.senders = new HashSet<Neighbor>();
         this.stop = false;
         this.inetAddr = inetAddr;
-
+        this.tester = null;
+        this.isTesterBound = false;
     }
 
     public HashSet<Neighbor> getSenders() {
@@ -102,6 +105,9 @@ public class MultiCastReceiver extends Thread {
 
             System.out.println("Neighbors: " + senders);
             System.out.println("Tester: " + tester);
+
+            isTesterBound = !isTesterBound();
+
         }
 
         try {
@@ -110,6 +116,11 @@ public class MultiCastReceiver extends Thread {
             throw new RuntimeException(e);
         }
         socket.close();
+    }
+
+    // synchronzed to allow main and multicast receiver to access it
+    public synchronized boolean isTesterBound() {
+        return isTesterBound;
     }
 
 

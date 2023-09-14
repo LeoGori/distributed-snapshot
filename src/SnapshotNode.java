@@ -244,7 +244,7 @@ public class SnapshotNode extends Node implements Observer{
     }
 
     public boolean isTesterBound() {
-        return inputChannelManager.isTesterBound();
+        return multiReceiver.isTesterBound();
     }
 
 
