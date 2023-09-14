@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class SnapshotNode extends Node implements Observer{
@@ -44,7 +46,9 @@ public class SnapshotNode extends Node implements Observer{
                         throw new RuntimeException(e);
                     }
 
-                    // if it is the first token to be sent
+                    // if it is the first token to be sent, initialize the initiator,
+                    // the sender of the first token
+                    // and propagate the snapshot to all channels except the first token sender
                     if (channelManager.getFirstInitiator() == null) {
                         System.out.println("Blocking all channels");
 
@@ -78,9 +82,11 @@ public class SnapshotNode extends Node implements Observer{
                         sender.addMessage(neighbors, shareTokens);
 
                         channelManager.blockAllChannels();
-                        // if it is not the first token to be sent
-                    } else {
-                        // if the token is the same of the first initiator
+
+
+                    } else { // if it is not the first token to be sent
+
+                        // if the token is the same of the first initiator, free the channel
                         if (channelManager.getFirstInitiator().equals(token.getInitiator())) {
                             channelManager.freeChannel(token.getSrcIpAddr());
 
@@ -154,7 +160,16 @@ public class SnapshotNode extends Node implements Observer{
                         System.out.println("Automatic mode on");
                         automaticModeOn = !isAutomaticModeOn();
                     } else {
-                        if (channelManager.getBlockedChannels().contains(packet.getIpAddr())) {
+
+
+                        Set<InetAddress> channels = channelManager.getBlockedChannels().stream()
+                                .map(Neighbor::getIpAddr)
+                                .collect(Collectors.toSet());
+
+                        System.out.println("blockedChannels: " + channels);
+                        System.out.println("Packet ip: " + packet.getIpAddr());
+
+                        if (channels.contains(packet.getIpAddr())) {
                             snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
                         } else {
                             updateState(Integer.parseInt(msg));
@@ -236,7 +251,7 @@ public class SnapshotNode extends Node implements Observer{
         sender.addMessage(neighbor, msg);
     }
 
-    private synchronized void updateState(int value) {
+    private void updateState(int value) {
         state += value;
     }
 
