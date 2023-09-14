@@ -120,7 +120,7 @@ public class Main {
         int upperbound = 10;
 
         boolean end = false;
-        float snapshotProbability = 0.33F;
+        float snapshotProbability = 1;
 
         while (!end || n.isSnapshotInProgress()) {
 
