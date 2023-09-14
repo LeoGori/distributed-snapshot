@@ -148,7 +148,7 @@ public class Main {
             }
 
             if (n.isSnapshotInProgress() && !end) {
-                System.out.println("Snapshot in progress (end= " + end + ", SiP= " + n.isSnapshotInProgress() + ")");
+//                System.out.println("Snapshot in progress (end= " + end + ", SiP= " + n.isSnapshotInProgress() + ")");
                 end = true;
                 snapshotProbability = 0.0F;
             }

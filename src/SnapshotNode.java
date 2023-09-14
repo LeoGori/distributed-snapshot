@@ -28,7 +28,7 @@ public class SnapshotNode extends Node implements Observer{
 
         if (subject != null) {
 
-            System.out.println(subject.getClass() + " notified the observer");
+//            System.out.println(subject.getClass() + " notified the observer");
             if (subject instanceof ReceiverThread) {
 
                 Packet packet = receiverThread.getPacket();
@@ -50,7 +50,6 @@ public class SnapshotNode extends Node implements Observer{
                     // the sender of the first token
                     // and propagate the snapshot to all channels except the first token sender
                     if (channelManager.getFirstInitiator() == null) {
-                        System.out.println("Blocking all channels");
 
                         snapshotInProgress = true;
 
@@ -81,6 +80,7 @@ public class SnapshotNode extends Node implements Observer{
                         }
                         sender.addMessage(neighbors, shareTokens);
 
+//                        System.out.println("Blocking all channels");
                         channelManager.blockAllChannels();
 
 
@@ -157,10 +157,9 @@ public class SnapshotNode extends Node implements Observer{
                     }
                 } else {
                     if (msg.contains("automatic_mode")) {
-                        System.out.println("Automatic mode on");
+//                        System.out.println("Automatic mode on");
                         automaticModeOn = !isAutomaticModeOn();
                     } else {
-
 
                         Set<InetAddress> channels = channelManager.getBlockedChannels().stream()
                                 .map(Neighbor::getIpAddr)
@@ -178,7 +177,7 @@ public class SnapshotNode extends Node implements Observer{
                 }
             } else {
                 int value = ((Sender) subject).getLastValue();
-                System.out.println("updating state after sending message");
+                System.out.println("updating state and adding message to the queue");
                 updateState(-value);
             }
             System.out.println("State: " + state);
