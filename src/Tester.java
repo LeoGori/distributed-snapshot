@@ -115,4 +115,20 @@ public class Tester extends Node implements Observer {
         receiverThread.start();
     }
 
+    public void automaticSnapshot() throws IOException {
+        if (sender instanceof TcpSender) {
+
+            ArrayList<Neighbor> destinations = new ArrayList<>();
+            ArrayList<String> messages = new ArrayList<>();
+
+            for (Neighbor neighbor : inputChannelManager.getChannels()) {
+                destinations.add(neighbor);
+                messages.add("automatic_mode");
+            }
+
+        }
+
+
+    }
+
 }

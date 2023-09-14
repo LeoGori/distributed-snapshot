@@ -84,7 +84,13 @@ public class Main {
                 }
 
                 case 3 -> {
-                    automaticSnapshot(n);
+                    boolean subEnd = false;
+                    while(!subEnd) {
+                        if (n.isAutomaticModeOn()) {
+                            subEnd = true;
+                            automaticSnapshot(n);
+                        }
+                    }
                 }
 
                 case 4 -> {
@@ -107,7 +113,6 @@ public class Main {
 
         boolean end = false;
         float snapshotProbability = 0.2F;
-
 
         while (!end || n.isSnapshotInProgress()) {
 
@@ -139,8 +144,6 @@ public class Main {
                 end = true;
                 snapshotProbability = 0.0F;
             }
-
-
 
             Thread.sleep(2500);
         }

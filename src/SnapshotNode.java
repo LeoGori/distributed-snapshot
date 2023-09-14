@@ -11,10 +11,13 @@ public class SnapshotNode extends Node implements Observer{
 
     private boolean snapshotInProgress;
 
+    boolean automaticModeOn;
+
     public SnapshotNode() throws IOException {
         super();
         snapshot = null;
         snapshotInProgress = false;
+        automaticModeOn = false;
     }
 
     @Override
@@ -143,10 +146,15 @@ public class SnapshotNode extends Node implements Observer{
 
                 }
             } else {
-                if (inputChannelManager.getBlockedChannels().contains(packet.getIpAddr())) {
-                    snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
-                } else {
-                    updateState(Integer.parseInt(msg));
+                if (msg.contains("automatic_mode")){
+                    automaticModeOn = true;
+                }
+                else {
+                    if (inputChannelManager.getBlockedChannels().contains(packet.getIpAddr())) {
+                        snapshot.addChannelState(packet.getIpAddr(), Integer.parseInt(msg));
+                    } else {
+                        updateState(Integer.parseInt(msg));
+                    }
                 }
             }
         }
@@ -227,6 +235,10 @@ public class SnapshotNode extends Node implements Observer{
 
     public boolean isSnapshotInProgress() {
         return snapshotInProgress;
+    }
+
+    public boolean isAutomaticModeOn() {
+        return automaticModeOn;
     }
 
 //    public Vector<int> getStatus() {
