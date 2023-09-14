@@ -35,12 +35,6 @@ public class SnapshotNode extends Node implements Observer{
             if (Token.isToken(msg)) {
 
                 try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                try {
                     token = new Token(packet);
                 } catch (UnknownHostException e) {
                     throw new RuntimeException(e);
