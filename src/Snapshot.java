@@ -38,6 +38,7 @@ public class Snapshot {
             for (int i = 2; i < parts.length; i++) {
                 subParts = parts[i].split(":");
                 if (!subParts[0].contains("be")) {
+                    subParts[0] = subParts[0].replaceAll("/", "");
                     InetAddress channelIp = InetAddress.getByName(subParts[0]);
                     String[] items = subParts[1].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
                     ArrayList<Integer> values = new ArrayList<Integer>();
