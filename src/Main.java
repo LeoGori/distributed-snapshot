@@ -124,13 +124,14 @@ public class Main {
 
         int counter = 0;
 
-        while (!end && counter < 1) {
+        while (!end && counter < 2) {
 
             float randomFloat = rand.nextFloat();
 //            System.out.println(randomFloat);
 
             if (randomFloat < snapshotProbability ) {
-                n.initSnapshot();
+                if (counter < 1)
+                    n.initSnapshot();
                 counter++;
             }
             else {
