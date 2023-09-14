@@ -99,7 +99,8 @@ public class ChannelManager {
 
     public HashSet<Neighbor> getChannels() {
         HashSet<Neighbor> allChannels = new HashSet<>();
-        allChannels.add(firstTokenSender);
+        if(firstTokenSender != null)
+            allChannels.add(firstTokenSender);
         allChannels.addAll(channels);
         return allChannels;
     }
