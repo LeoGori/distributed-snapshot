@@ -96,6 +96,7 @@ public class Main {
                             System.out.println("Main starting Automatic mode");
                             subEnd = true;
                             automaticSnapshot(n);
+                            Thread.sleep(1000);
                         }
                     }
                 }
