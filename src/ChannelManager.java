@@ -138,7 +138,9 @@ public class ChannelManager {
 
     public void resetChannels() {
         channels.add(firstTokenSender);
+        firstTokenSender = null;
         firstInitiator = null;
+        borderList = new HashSet<>();
     }
 
 
