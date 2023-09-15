@@ -52,6 +52,8 @@ public class Main {
 
         ((UdpSender)n.getSender()).multicastOwnIP("hello");
 
+        Thread.sleep(2000);
+
         end = false;
 
         int numberOfNeighbors = n.getChannels().size();
