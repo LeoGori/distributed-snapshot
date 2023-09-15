@@ -87,8 +87,8 @@ public class Snapshot {
 
     @Override
     public String toString() {
-        StringBuilder string = new StringBuilder("initiator: " + initiator.getHostAddress() + "\n");
-        string.append(new StringBuilder("state: " + state + "\n"));
+        StringBuilder string = new StringBuilder("initiator: " + initiator.getHostAddress());
+        string.append(new StringBuilder("\nstate: " + state + "\n"));
         if (!channelState.keySet().isEmpty()) {
             string.append("channel state: \n");
             for (InetAddress addr : channelState.keySet()) {
