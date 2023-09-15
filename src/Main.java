@@ -54,10 +54,10 @@ public class Main {
 
         end = false;
 
+        int numberOfNeighbors = n.getChannels().size();
+
         n.setChannels();
         n.setTransmissionProtocol("tcp");
-
-        int numberOfNeighbors = n.getChannels().size();
 
         while (!end) {
 
