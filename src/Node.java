@@ -1,9 +1,6 @@
 import java.io.IOException;
 import java.net.*;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 public class Node extends Neighbor {
     protected ReceiverThread receiverThread;
@@ -67,9 +64,11 @@ public class Node extends Neighbor {
 
         Set<Neighbor> nodes = multiReceiver.getSenders();
         System.out.println(nodes);
-        Neighbor[] neighbors = nodes.toArray(new Neighbor[nodes.size()]);
+//        Neighbor[] neighbors = nodes.toArray(new Neighbor[nodes.size()]);
+        ArrayList<Neighbor> neighbors
+                = new ArrayList<>(nodes);
         System.out.println(neighbors);
-        return neighbors[id];
+        return neighbors.get(id);
     }
 
     public int getPort() {
