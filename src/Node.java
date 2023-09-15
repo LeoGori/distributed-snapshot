@@ -100,7 +100,7 @@ public class Node extends Neighbor {
     }
 
     public HashSet<Neighbor> getChannels() {
-        return channelManager.getChannels();
+        return multiReceiver.getSenders();
     }
 
 }
