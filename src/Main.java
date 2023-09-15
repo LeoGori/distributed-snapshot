@@ -115,6 +115,8 @@ public class Main {
 
 //        rct.start();
 
+        ((TcpSender) n.getSender()).reset();
+
         Random rand = new Random();
 
         int upperbound = 10;
@@ -123,6 +125,8 @@ public class Main {
         float snapshotProbability = 0.33F;
 
         int counter = 0;
+
+        int numberOfNeighbors = n.getChannels().size();
 
         while (!end && counter < 2) {
 
@@ -135,8 +139,6 @@ public class Main {
                 counter++;
             }
             else {
-
-                int numberOfNeighbors = n.getChannels().size();
 //                System.out.println(numberOfNeighbors);
 
                 int randomNeighbor = rand.nextInt(numberOfNeighbors);

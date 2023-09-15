@@ -11,6 +11,8 @@ public class Tester extends Node implements Observer {
 
     private HashMap<InetAddress, Snapshot> lastSnapshot;
 
+    private HashSet<InetAddress> incrementalChannels;
+
     public Tester() throws IOException {
         super();
 
@@ -31,29 +33,31 @@ public class Tester extends Node implements Observer {
 
         HashSet<Neighbor> borderList = snapshot.getBorderList();
 
-        String inits;
-        if (!borderList.isEmpty()) {
-            ArrayList<String> initiators = new ArrayList<>();
-            initiators.add(initiator.getHostAddress());
-            for (Neighbor n : borderList) {
-                initiators.add(n.getIpAddr().getHostAddress());
-            }
-            Collections.sort(initiators);
-            inits = String.join("-", initiators);
-        } else {
-            inits = initiator.getHostAddress();
-        }
+//        String inits;
+//        if (!borderList.isEmpty()) {
+//            ArrayList<String> initiators = new ArrayList<>();
+//            initiators.add(initiator.getHostAddress());
+//            for (Neighbor n : borderList) {
+//                initiators.add(n.getIpAddr().getHostAddress());
+//            }
+//            Collections.sort(initiators);
+//            inits = String.join("-", initiators);
+//        } else {
+//            inits = initiator.getHostAddress();
+//        }
 
-        if (!incrementalSnapshots.keySet().contains(inits)) {
+        String inits = initiator.getHostAddress();
+
+        if (!incrementalSnapshots.containsKey(inits)) {
             incrementalSnapshots.put(inits, new HashMap<>());
             System.out.println("added incremental snapshot on key " + inits);
         }
 
         incrementalSnapshots.get(inits).put(senderAddress, snapshot);
 
-        assert incrementalSnapshots.keySet().size() <= 1;
+//        assert incrementalSnapshots.keySet().size() <= 1;
 
-        String init = incrementalSnapshots.keySet().iterator().next();
+//        String init = incrementalSnapshots.keySet().iterator().next();
 
         // generate set of ipAddresses from the list of neighbors of input channel manager
 
@@ -66,9 +70,14 @@ public class Tester extends Node implements Observer {
 //            System.out.println(channels);
 //            System.out.println(incrementalSnapshots.get(init).keySet());
 
-        if (incrementalSnapshots.get(init).keySet().equals(channels)) {
-            System.out.println(incrementalSnapshots.get(init));
-            lastSnapshot = incrementalSnapshots.get(init);
+//        if (incrementalSnapshots.get(init).keySet().equals(channels)) {
+        if (incrementalChannels.equals(channels)) {
+            lastSnapshot = new HashMap<>();
+            System.out.println(incrementalSnapshots);
+            for (String key : incrementalSnapshots.keySet()) {
+                lastSnapshot.putAll(incrementalSnapshots.get(key));
+            }
+//            lastSnapshot = incrementalSnapshots.get(inits);
 //                incrementalSnapshots.remove(init);
 
             if (checkConsistency()) {
