@@ -126,7 +126,7 @@ public class Main {
         int counter = 0;
 
         int numberOfNeighbors = n.getChannels().size();
-        System.out.println("Number of neighbors: " + numberOfNeighbors);
+
 
         while (counter < 2) {
 
@@ -139,8 +139,8 @@ public class Main {
                 counter++;
             }
             else {
-//                System.out.println(numberOfNeighbors);
 
+                System.out.println("Number of neighbors: " + numberOfNeighbors);
                 int randomNeighbor = rand.nextInt(numberOfNeighbors);
 
                 Neighbor dest = n.getNeighbor(randomNeighbor);
