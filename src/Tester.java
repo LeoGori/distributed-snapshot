@@ -89,6 +89,7 @@ public class Tester extends Node implements Observer {
                 System.out.println("Inconsistent snapshot");
             }
             incrementalSnapshots.clear();
+            incrementalChannels.clear();
         }
     }
 
