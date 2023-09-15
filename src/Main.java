@@ -57,6 +57,8 @@ public class Main {
         n.setChannels();
         n.setTransmissionProtocol("tcp");
 
+        int numberOfNeighbors = n.getChannels().size();
+
         while (!end) {
 
             String menu = """
@@ -95,7 +97,7 @@ public class Main {
                         if (n.isAutomaticModeOn()) {
                             System.out.println("Main starting Automatic mode");
                             subEnd = true;
-                            automaticSnapshot(n);
+                            automaticSnapshot(n, numberOfNeighbors);
                         }
 
                     }
@@ -109,7 +111,7 @@ public class Main {
         }
     }
 
-    public static void automaticSnapshot(SnapshotNode n) throws InterruptedException {
+    public static void automaticSnapshot(SnapshotNode n, int numberOfNeighbors) throws InterruptedException {
 
 //        CommandReaderThread rct = new CommandReaderThread();
 
@@ -124,8 +126,6 @@ public class Main {
         float snapshotProbability = 0.33F;
 
         int counter = 0;
-
-        int numberOfNeighbors = n.getChannels().size();
 
 
         while (counter < 2) {
