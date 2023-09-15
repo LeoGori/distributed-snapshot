@@ -30,7 +30,7 @@ public class ChannelManager {
     }
 
     public void setChannels(HashSet<Neighbor> channels) {
-        this.channels = new HashSet<>(channels);
+        this.channels.addAll(channels);
     }
 
     public InetAddress getFirstInitiator() {
