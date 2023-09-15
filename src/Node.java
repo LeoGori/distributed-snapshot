@@ -62,7 +62,7 @@ public class Node extends Neighbor {
 
     public Neighbor getNeighbor(int id) {
 
-        Set<Neighbor> nodes = multiReceiver.getSenders();
+        Set<Neighbor> nodes = channelManager.getChannels();
 //        Neighbor[] neighbors = nodes.toArray(new Neighbor[nodes.size()]);
         ArrayList<Neighbor> neighbors
                 = new ArrayList<>(nodes);
