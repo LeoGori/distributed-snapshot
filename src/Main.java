@@ -115,7 +115,7 @@ public class Main {
 
 //        rct.start();
 
-        ((TcpSender) n.getSender()).reset();
+//        ((TcpSender) n.getSender()).reset();
 
         Random rand = new Random();
 
