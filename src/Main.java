@@ -121,14 +121,14 @@ public class Main {
 
         int upperbound = 10;
 
-        boolean end = false;
         float snapshotProbability = 0.33F;
 
         int counter = 0;
 
         int numberOfNeighbors = n.getChannels().size();
+        System.out.println("Number of neighbors: " + numberOfNeighbors);
 
-        while (!end && counter < 2) {
+        while (counter < 2) {
 
             float randomFloat = rand.nextFloat();
 //            System.out.println(randomFloat);
