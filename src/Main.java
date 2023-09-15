@@ -125,7 +125,7 @@ public class Main {
 
         int counter = 0;
 
-        int numberOfNeighbors = n.getChannels().size();
+        int numberOfNeighbors = n.getChannels().size() - 1;
         System.out.println("Number of neighbors: " + numberOfNeighbors);
 
         while (counter < 2) {
