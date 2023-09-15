@@ -119,6 +119,8 @@ public class Main {
 
 //        ((TcpSender) n.getSender()).reset();
 
+        System.out.println("Number of neighbors: " + numberOfNeighbors);
+
         Random rand = new Random();
 
         int upperbound = 10;
