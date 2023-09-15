@@ -20,7 +20,7 @@ public class MultiCastReceiver extends Thread {
 
     public MultiCastReceiver(InetAddress inetAddr) {
 
-        this.senders = new HashSet<Neighbor>();
+        this.senders = new HashSet<>();
         this.stop = false;
         this.inetAddr = inetAddr;
         this.tester = null;
