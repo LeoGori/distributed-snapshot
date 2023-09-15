@@ -18,6 +18,7 @@ public class Tester extends Node implements Observer {
 
         incrementalSnapshots = new HashMap<>();
         lastSnapshot = new HashMap();
+        incrementalChannels = new HashSet<>();
     }
 
     public void update(Subject subject) throws UnknownHostException {
@@ -54,6 +55,8 @@ public class Tester extends Node implements Observer {
         }
 
         incrementalSnapshots.get(inits).put(senderAddress, snapshot);
+
+        incrementalChannels.add(senderAddress);
 
 //        assert incrementalSnapshots.keySet().size() <= 1;
 
