@@ -67,8 +67,8 @@ public class Node extends Neighbor {
         ArrayList<Neighbor> neighbors
                 = new ArrayList<>(nodes);
 
-        System.out.println("neighbors before conversion: " + nodes);
-        System.out.println("neighbors after conversion: " + neighbors);
+//        System.out.println("neighbors before conversion: " + nodes);
+//        System.out.println("neighbors after conversion: " + neighbors);
 
         return neighbors.get(id);
     }

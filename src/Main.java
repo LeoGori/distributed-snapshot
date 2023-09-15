@@ -140,7 +140,7 @@ public class Main {
             }
             else {
 
-                System.out.println("Number of neighbors: " + numberOfNeighbors);
+//                System.out.println("Number of neighbors: " + numberOfNeighbors);
                 int randomNeighbor = rand.nextInt(numberOfNeighbors);
 
                 Neighbor dest = n.getNeighbor(randomNeighbor);
