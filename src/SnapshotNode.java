@@ -75,9 +75,13 @@ public class SnapshotNode extends Node implements Observer{
                         for (Neighbor neighbor : channelManager.getFreeChannels()) {
                             token.setTimeStamp(sender.getTimeStamp());
                             sender.incrementTimeStamp();
+
+                            System.out.println("Sending token: " + token.getSerialized() + " to " + neighbor.getIpAddr().getHostAddress());
+
                             shareTokens.add(token.getSerialized());
                             neighbors.add(neighbor);
                         }
+
                         sender.addMessage(neighbors, shareTokens);
 
 //                        System.out.println("Blocking all channels");
