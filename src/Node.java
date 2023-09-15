@@ -63,11 +63,10 @@ public class Node extends Neighbor {
     public Neighbor getNeighbor(int id) {
 
         Set<Neighbor> nodes = multiReceiver.getSenders();
-        System.out.println(nodes);
 //        Neighbor[] neighbors = nodes.toArray(new Neighbor[nodes.size()]);
         ArrayList<Neighbor> neighbors
                 = new ArrayList<>(nodes);
-        System.out.println(neighbors);
+
         return neighbors.get(id);
     }
 
